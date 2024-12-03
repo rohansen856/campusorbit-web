@@ -1,30 +1,26 @@
-import { NextResponse } from "next/server"
+// app/api/users/[userId]/route.ts
+import { NextRequest, NextResponse } from "next/server"
 
 import { db } from "@/lib/db"
 
-export async function GET(
-  request: Request,
-  { params }: { params: { userId: string } }
-) {
+interface Params {
+  params: {
+    userId: string
+  }
+}
+
+export async function GET(req: NextRequest, { params }: Params) {
   try {
-    const user = await db.student.findFirst({
-      where: { user_id: params.userId },
+    const { userId } = params
+
+    const user = await db.student.findUnique({
+      where: {
+        user_id: userId,
+      },
       include: {
-        user: {
-          select: {
-            name: true,
-            email: true,
-            image: true,
-            role: true,
-          },
-        },
         institute: true,
+        user: { select: { email: true, name: true } },
         Socials: true,
-        ClubMember: {
-          include: {
-            club: true,
-          },
-        },
       },
     })
 
@@ -32,9 +28,12 @@ export async function GET(
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    return NextResponse.json(user)
+    return NextResponse.json({ user })
   } catch (error) {
     console.error("Failed to fetch user:", error)
-    return NextResponse.json({ error: "Failed to fetch user" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    )
   }
 }

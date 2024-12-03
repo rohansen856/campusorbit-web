@@ -8,6 +8,8 @@ import { Heart, User as UserIcon } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
+import { Badge } from "../ui/badge"
+
 interface UserListItemProps {
   user: Student & { institute: Institute } & { user: User }
   index: number
@@ -27,7 +29,7 @@ export function UserListItem({ user, index }: UserListItemProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
     >
-      <Link href={`/users/${user.user_id}`}>
+      <Link href={`/users?userId=${user.user_id}`}>
         <div
           className={`
           p-4 rounded-lg backdrop-blur-sm bg-gradient-to-r 
@@ -45,7 +47,17 @@ export function UserListItem({ user, index }: UserListItemProps) {
             </Avatar>
 
             <div className="flex-1">
-              <h3 className="font-semibold">{user.user.name}</h3>
+              <h3 className="font-semibold">
+                {user.user.name}{" "}
+                {user.graduation_year > new Date().getFullYear() && (
+                  <Badge
+                    variant={"outline"}
+                    className="ml-2 border-red-900 bg-red-900/10"
+                  >
+                    alumni
+                  </Badge>
+                )}
+              </h3>
               <p className="text-sm text-muted-foreground">@{user.username}</p>
               <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
                 <span>{user.institute.short_name}</span>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Institute } from "@prisma/client"
-import axios, { AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosResponse } from "axios"
 import { motion } from "framer-motion"
 import { Check, ChevronsUpDown, Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -44,6 +44,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Toaster } from "@/components/ui/toaster"
 
 export function StudentRegistrationForm() {
   const router = useRouter()
@@ -88,6 +89,17 @@ export function StudentRegistrationForm() {
         router.push("/dashboard")
       }, 2000)
     } catch (error) {
+      if (error instanceof AxiosError && error.status === 409) {
+        form.setError(error.response?.data.duplicate[0], {
+          message: "already taken",
+        })
+        return toast({
+          title: `${error.response?.data.duplicate[0] ?? "username or roll"} already taken`,
+          description:
+            "This username is already taken. Please use another username",
+          variant: "destructive",
+        })
+      }
       toast({
         title: "Registration Failed",
         description:
@@ -106,6 +118,7 @@ export function StudentRegistrationForm() {
       transition={{ duration: 0.5 }}
       className="p-8"
     >
+      <Toaster />
       <h2 className="text-3xl font-bold mb-6 text-center">
         Complete Student Registration
       </h2>

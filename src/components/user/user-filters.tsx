@@ -34,7 +34,7 @@ interface UserFiltersProps {
 }
 
 export function UserFilters({ onFilterChange }: UserFiltersProps) {
-  const [institutes, setInstitutes] = useState<Institute[]>([])
+  const [institutes, setInstitutes] = useState<any[]>([])
   const [open, setOpen] = useState(false)
   const [filters, setFilters] = useState({
     search: "",
@@ -52,7 +52,7 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
       })
   }, [])
 
-  const handleFilterChange = (key: string, value: string) => {
+  const handleFilterChange = (key: keyof typeof filters, value: string) => {
     const newFilters = { ...filters, [key]: value }
     setFilters(newFilters)
     onFilterChange(newFilters)
@@ -94,21 +94,21 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
               <CommandGroup>
                 {/* {institutes.map((institute) => (
                   <CommandItem
+                    value={institute.name}
                     key={institute.id}
                     onSelect={() => {
                       handleFilterChange("instituteId", institute.id.toString())
-                      setOpen(false)
                     }}
                   >
+                    {institute.name}
                     <Check
                       className={cn(
-                        "mr-2 h-4 w-4",
-                        filters.instituteId === institute.id.toString()
+                        "ml-auto",
+                        institute.id.toString() === filters.instituteId
                           ? "opacity-100"
                           : "opacity-0"
                       )}
                     />
-                    {institute.short_name}
                   </CommandItem>
                 ))} */}
               </CommandGroup>

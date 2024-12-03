@@ -27,6 +27,15 @@ export async function POST(req: Request) {
     console.error(error)
     if (error instanceof z.ZodError)
       return NextResponse.json({ error: "Invalid data" }, { status: 400 })
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return NextResponse.json(
+        { error: "Username already taken", duplicate: error.meta?.target },
+        { status: 409 }
+      )
+    }
     return NextResponse.json({ error: "Error in server" }, { status: 500 })
   }
 }

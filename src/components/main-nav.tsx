@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 
 import { useCurrentUser } from "@/hooks/use-current-user"
@@ -157,6 +156,10 @@ export function MainNav() {
                                 >
                                   <div className="text-sm font-medium leading-none">
                                     {item.title}
+                                  </div>
+                                  <div className="text-primary/30">
+                                    Lorem ipsum dolor sit amet consectetur
+                                    adipisicing elit. Facilis, iusto.
                                   </div>
                                 </a>
                               </NavigationMenuLink>

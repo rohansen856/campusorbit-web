@@ -4,23 +4,16 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import {
   Label,
-  LabelList,
-  Pie,
-  PieChart,
   PolarRadiusAxis,
   RadialBar,
   RadialBarChart,
   Sector,
 } from "recharts"
-import { PieSectorDataItem } from "recharts/types/polar/Pie"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartStyle,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
@@ -31,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface AttendanceGraphProps {
   subjects: {
