@@ -3,6 +3,22 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
+import {
+  Book,
+  Building2,
+  ChevronDown,
+  Code,
+  Flag,
+  GraduationCap,
+  HelpCircle,
+  LayoutDashboard,
+  LucideIcon,
+  Mail,
+  MessageSquare,
+  MessagesSquare,
+  Shield,
+  Users,
+} from "lucide-react"
 
 import { useCurrentUser } from "@/hooks/use-current-user"
 import { buttonVariants } from "@/components/ui/button"
@@ -22,29 +38,37 @@ import { UserButton } from "./auth/user-button"
 const mainNavItems = [
   {
     title: "Features",
+    icon: LayoutDashboard,
     items: [
-      { title: "Dashboard", href: "/dashboard" },
-      { title: "Clubs", href: "/clubs" },
-      { title: "Find Users", href: "/users" },
-      { title: "View Posts", href: "/posts" },
+      { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+      { title: "Clubs", href: "/clubs", icon: Users },
+      { title: "Find Users", href: "/users", icon: Users },
+      { title: "View Posts", href: "/posts", icon: MessageSquare },
     ],
   },
   {
     title: "Resources",
+    icon: Book,
     items: [
-      { title: "Learning Hub", href: "/resources/learning" },
-      { title: "Translation Guide", href: "/resources/guide" },
-      { title: "API Documentation", href: "/docs/api" },
-      { title: "Community Forum", href: "/community" },
+      {
+        title: "Learning Hub",
+        href: "/resources/learning",
+        icon: GraduationCap,
+      },
+      { title: "Translation Guide", href: "/resources/guide", icon: Book },
+      { title: "API Documentation", href: "/docs/api", icon: Code },
+      { title: "Community Forum", href: "/community", icon: MessagesSquare },
+      { title: "Help Center", href: "/help", icon: HelpCircle },
     ],
   },
   {
     title: "About",
+    icon: Building2,
     items: [
-      { title: "About Us", href: "/about" },
-      { title: "Contact", href: "/contact" },
-      { title: "Careers", href: "/careers" },
-      { title: "Blog", href: "/blog" },
+      { title: "About Us", href: "/about", icon: Building2 },
+      { title: "Contact", href: "/contact", icon: Mail },
+      { title: "Privacy Policy", href: "/privacy", icon: Shield },
+      { title: "Terms of Service", href: "/terms", icon: Flag },
     ],
   },
 ]
@@ -73,41 +97,132 @@ const HamburgerButton = ({ isOpen, toggle }: any) => (
     </div>
   </button>
 )
+interface NavItem {
+  title: string
+  href: string
+  icon: LucideIcon
+}
 
-const Sidebar = ({ isOpen, navItems }: any) => (
-  <AnimatePresence>
-    {isOpen && (
-      <motion.div
-        initial={{ x: "-100%" }}
-        animate={{ x: 0 }}
-        exit={{ x: "-100%" }}
-        transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-        className="fixed left-0 top-16 h-screen w-64 bg-background border-r shadow-lg z-40"
-      >
-        <div className="flex flex-col p-4">
-          {navItems.map((section: any) => (
-            <div key={section.title} className="mb-6">
-              <h3 className="mb-2 px-4 text-sm font-semibold text-muted-foreground border-b">
-                {section.title}
-              </h3>
-              <div className="space-y-1">
-                {section.items.map((item: any) => (
-                  <Link
-                    href={item.href}
-                    key={item.title}
-                    className="block w-full rounded-lg px-4 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground text-left"
+interface NavSection {
+  title: string
+  icon: LucideIcon
+  items: NavItem[]
+}
+
+interface SidebarProps {
+  isOpen: boolean
+  navItems: NavSection[]
+  className?: string
+}
+
+interface ExpandedSections {
+  [key: string]: boolean
+}
+
+// Animation variants
+const sidebarVariants = {
+  hidden: { x: "-100%", opacity: 0 },
+  visible: { x: 0, opacity: 1 },
+  exit: { x: "-100%", opacity: 0 },
+}
+
+const contentVariants = {
+  hidden: { height: 0, opacity: 0 },
+  visible: { height: "auto", opacity: 1 },
+  exit: { height: 0, opacity: 0 },
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
+  isOpen,
+  navItems,
+  className = "",
+}) => {
+  const [expandedSections, setExpandedSections] = useState<ExpandedSections>({})
+
+  const toggleSection = (title: string): void => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [title]: !prev[title],
+    }))
+  }
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={sidebarVariants}
+          transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+          className={`fixed left-0 top-16 h-screen w-72 bg-background border-r shadow-lg z-40 ${className}`}
+        >
+          <div className="flex flex-col p-4 h-full overflow-y-auto">
+            {navItems.map((section) => (
+              <motion.div
+                key={section.title}
+                initial={false}
+                className="mb-4 rounded-lg overflow-hidden bg-background hover:bg-accent/5 transition-colors duration-200"
+              >
+                <button
+                  onClick={() => toggleSection(section.title)}
+                  className="flex items-center justify-between w-full p-3 text-sm font-medium text-foreground hover:text-primary"
+                >
+                  <div className="flex items-center gap-3">
+                    <section.icon className="w-4 h-4" />
+                    <span>{section.title}</span>
+                  </div>
+                  <motion.div
+                    animate={{
+                      rotate: expandedSections[section.title] ? 180 : 0,
+                    }}
+                    transition={{ duration: 0.2 }}
                   >
-                    {item.title}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-)
+                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                  </motion.div>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {expandedSections[section.title] && (
+                    <motion.div
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={contentVariants}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-3 pb-3 space-y-1">
+                        {section.items.map((item) => (
+                          <Link
+                            href={item.href}
+                            key={item.title}
+                            className="block"
+                          >
+                            <motion.div
+                              whileHover={{ x: 4 }}
+                              whileTap={{ scale: 0.98 }}
+                              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-accent/10 transition-colors duration-200"
+                            >
+                              <item.icon className="w-4 h-4" />
+                              {item.title}
+                            </motion.div>
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
+
+export default Sidebar
 
 export function MainNav() {
   const user = useCurrentUser()

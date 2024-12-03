@@ -1,13 +1,12 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { Loader, X } from "lucide-react"
 import { toast } from "sonner"
 
-import { useCurrentUser } from "@/hooks/use-current-user"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,7 +20,6 @@ import { UserFilters } from "@/components/user/user-filters"
 import { UserListItem } from "@/components/user/user-list-item"
 
 export default function UsersPage() {
-  const user = useCurrentUser()
   const searchParams = useSearchParams()
   const userId = searchParams.get("userId")
 

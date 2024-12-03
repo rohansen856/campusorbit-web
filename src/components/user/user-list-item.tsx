@@ -49,7 +49,7 @@ export function UserListItem({ user, index }: UserListItemProps) {
             <div className="flex-1">
               <h3 className="font-semibold">
                 {user.user.name}{" "}
-                {user.graduation_year > new Date().getFullYear() && (
+                {user.graduation_year < new Date().getFullYear() && (
                   <Badge
                     variant={"outline"}
                     className="ml-2 border-red-900 bg-red-900/10"
