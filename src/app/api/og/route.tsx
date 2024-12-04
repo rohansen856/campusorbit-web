@@ -73,7 +73,10 @@ export async function GET(req: Request) {
           <div tw="flex flex-col flex-1 py-10">
             <div
               tw="flex text-xl uppercase font-bold tracking-tight"
-              style={{ fontFamily: "Inter", fontWeight: "normal" }}
+              style={{
+                fontFamily: "Inter",
+                fontWeight: "normal",
+              }}
             >
               {values.type}
             </div>
@@ -92,13 +95,19 @@ export async function GET(req: Request) {
           <div tw="flex items-center w-full justify-between">
             <div
               tw="flex text-xl"
-              style={{ fontFamily: "Inter", fontWeight: "normal" }}
+              style={{
+                fontFamily: "Inter",
+                fontWeight: "normal",
+              }}
             >
               tx.campusorbit.com
             </div>
             <div
               tw="flex items-center text-xl"
-              style={{ fontFamily: "Inter", fontWeight: "normal" }}
+              style={{
+                fontFamily: "Inter",
+                fontWeight: "normal",
+              }}
             >
               <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
                 <path

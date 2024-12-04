@@ -13,10 +13,16 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
 const socialIcons = {
-  github: { icon: Github, color: "border-neutral-800/50 hover:bg-neutral-800" },
+  github: {
+    icon: Github,
+    color: "border-neutral-800/50 hover:bg-neutral-800",
+  },
   linkedin: { icon: Linkedin, color: "border-blue-600/50 hover:bg-blue-600" },
   twitter: { icon: Twitter, color: "border-sky-500/50 hover:bg-sky-500" },
-  instagram: { icon: Instagram, color: "border-pink-600/50 hover:bg-pink-600" },
+  instagram: {
+    icon: Instagram,
+    color: "border-pink-600/50 hover:bg-pink-600",
+  },
   discord: {
     icon: MessageSquare,
     color: "border-indigo-600/50 hover:bg-indigo-600",

@@ -1,15 +1,15 @@
-'use server';
+"use server"
 
-import { UserRole } from '@prisma/client';
+import { UserRole } from "@prisma/client"
 
-import { currentRole } from '@/lib/authentication';
+import { currentRole } from "@/lib/authentication"
 
 export async function admin() {
-  const role = await currentRole();
+  const role = await currentRole()
 
   if (role === UserRole.ADMIN) {
-    return { success: 'Server action allowed.' };
+    return { success: "Server action allowed." }
   }
 
-  return { error: 'Server action forbidden.' };
+  return { error: "Server action forbidden." }
 }

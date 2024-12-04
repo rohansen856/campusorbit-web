@@ -1,41 +1,42 @@
-'use server';
+"use server"
 
-import { db } from '@/lib/db';
-import { getUserById } from '@/data/user';
-import { currentUser } from '@/lib/authentication';
-import { getVerificationTokenByUserId } from '@/data/verification-token';
+import { getUserById } from "@/data/user"
+import { getVerificationTokenByUserId } from "@/data/verification-token"
+
+import { currentUser } from "@/lib/authentication"
+import { db } from "@/lib/db"
 
 export async function cancelNewEmail() {
-  const user = await currentUser();
+  const user = await currentUser()
 
   if (!user) {
-    return { error: 'Unauthorized.' };
+    return { error: "Unauthorized." }
   }
 
-  const dbUser = await getUserById(user.id);
+  const dbUser = await getUserById(user.id)
 
   if (!dbUser) {
-    return { error: 'Unauthorized.' };
+    return { error: "Unauthorized." }
   }
 
   await db.user.update({
     where: {
-      id: dbUser.id
+      id: dbUser.id,
     },
     data: {
-      tempEmail: null
-    }
-  });
+      tempEmail: null,
+    },
+  })
 
-  const existingToken = await getVerificationTokenByUserId(dbUser.id);
+  const existingToken = await getVerificationTokenByUserId(dbUser.id)
 
   if (existingToken) {
     await db.verificationToken.delete({
       where: {
-        id: existingToken.id
-      }
-    });
+        id: existingToken.id,
+      },
+    })
   }
 
-  return { success: 'Email update canceled.' };
+  return { success: "Email update canceled." }
 }

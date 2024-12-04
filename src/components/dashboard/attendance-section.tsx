@@ -60,7 +60,11 @@ const StatusBadge = ({ status }: { status: string }) => {
       border: "border-green-500",
       text: "Present",
     },
-    ABSENT: { bg: "bg-red-500/30", border: "border-red-500", text: "Absent" },
+    ABSENT: {
+      bg: "bg-red-500/30",
+      border: "border-red-500",
+      text: "Absent",
+    },
     EXCUSED: {
       bg: "bg-gray-500/30",
       border: "border-gray-500",

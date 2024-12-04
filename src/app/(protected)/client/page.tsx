@@ -1,12 +1,12 @@
-'use client';
+"use client"
 
-import { Computer } from 'lucide-react';
+import { Computer } from "lucide-react"
 
-import { UserInfo } from '@/components/user-info';
-import { useCurrentUser } from '@/hooks/use-current-user';
+import { useCurrentUser } from "@/hooks/use-current-user"
+import { UserInfo } from "@/components/user-info"
 
 export default function ClientPage() {
-  const user = useCurrentUser();
+  const user = useCurrentUser()
 
-  return <UserInfo icon={Computer} label='Client component' user={user} />;
+  return <UserInfo icon={Computer} label="Client component" user={user} />
 }

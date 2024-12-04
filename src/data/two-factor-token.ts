@@ -1,16 +1,16 @@
-import { db } from '@/lib/db';
+import { db } from "@/lib/db"
 
 export async function getTwoFactorTokenByToken(token: string) {
   try {
     const twoFactorToken = await db.twoFactorToken.findUnique({
       where: {
-        token
-      }
-    });
+        token,
+      },
+    })
 
-    return twoFactorToken;
+    return twoFactorToken
   } catch {
-    return null;
+    return null
   }
 }
 
@@ -18,12 +18,12 @@ export async function getTwoFactorTokenByEmail(email: string) {
   try {
     const twoFactorToken = await db.twoFactorToken.findFirst({
       where: {
-        email
-      }
-    });
+        email,
+      },
+    })
 
-    return twoFactorToken;
+    return twoFactorToken
   } catch {
-    return null;
+    return null
   }
 }

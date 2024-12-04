@@ -32,7 +32,10 @@ export function FileUploadModal({ imageFor, ...props }: FileUploadModalProps) {
 
   async function handleUpload(imageUrl: string) {
     try {
-      const res = await axios.post("/api/student/image", { imageUrl, imageFor })
+      const res = await axios.post("/api/student/image", {
+        imageUrl,
+        imageFor,
+      })
       setUploadComplete(true)
       if (res.status === 201) router.refresh()
     } catch (error) {

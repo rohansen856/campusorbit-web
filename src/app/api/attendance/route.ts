@@ -48,7 +48,10 @@ export async function POST(req: Request) {
     console.log(error)
     if (error instanceof z.ZodError) {
       return new Response(
-        JSON.stringify({ error: "Validation error", details: error.errors }),
+        JSON.stringify({
+          error: "Validation error",
+          details: error.errors,
+        }),
         { status: 400 }
       )
     }

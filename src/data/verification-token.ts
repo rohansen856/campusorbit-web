@@ -1,16 +1,16 @@
-import { db } from '@/lib/db';
+import { db } from "@/lib/db"
 
 export async function getVerificationTokenByToken(token: string) {
   try {
     const verificationToken = await db.verificationToken.findUnique({
       where: {
-        token
-      }
-    });
+        token,
+      },
+    })
 
-    return verificationToken;
+    return verificationToken
   } catch {
-    return null;
+    return null
   }
 }
 
@@ -18,12 +18,12 @@ export async function getVerificationTokenByUserId(userId: string) {
   try {
     const verificationToken = await db.verificationToken.findFirst({
       where: {
-        userId
-      }
-    });
+        userId,
+      },
+    })
 
-    return verificationToken;
+    return verificationToken
   } catch {
-    return null;
+    return null
   }
 }

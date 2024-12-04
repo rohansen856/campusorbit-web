@@ -1,10 +1,10 @@
-import { Server } from 'lucide-react';
+import { Server } from "lucide-react"
 
-import { UserInfo } from '@/components/user-info';
-import { currentUser } from '@/lib/authentication';
+import { currentUser } from "@/lib/authentication"
+import { UserInfo } from "@/components/user-info"
 
 export default async function ServerPage() {
-  const user = await currentUser();
+  const user = await currentUser()
 
-  return <UserInfo icon={Server} label='Server component' user={user} />;
+  return <UserInfo icon={Server} label="Server component" user={user} />
 }

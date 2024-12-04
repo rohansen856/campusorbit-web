@@ -83,9 +83,21 @@ export function HeroSection() {
           className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8"
         >
           {[
-            { icon: GraduationCap, label: "Verified Students", color: "blue" },
-            { icon: Users, label: "Active Communities", color: "purple" },
-            { icon: Calendar, label: "Event Planning", color: "pink" },
+            {
+              icon: GraduationCap,
+              label: "Verified Students",
+              color: "blue",
+            },
+            {
+              icon: Users,
+              label: "Active Communities",
+              color: "purple",
+            },
+            {
+              icon: Calendar,
+              label: "Event Planning",
+              color: "pink",
+            },
             {
               icon: ClipboardCheck,
               label: "Attendance Tracking",

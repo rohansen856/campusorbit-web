@@ -11,11 +11,11 @@ export const publicRoutes: string[] = ["/", "/auth/email-verification"]
  * @type {string[]}
  */
 export const authRoutes: string[] = [
-    "/auth/sign-in",
-    "/auth/sign-up",
-    "/auth/error",
-    "/auth/forgot-password",
-    "/auth/reset-password",
+  "/auth/sign-in",
+  "/auth/sign-up",
+  "/auth/error",
+  "/auth/forgot-password",
+  "/auth/reset-password",
 ]
 
 /**

@@ -1,14 +1,14 @@
-import { UserRole } from '@prisma/client';
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server"
+import { UserRole } from "@prisma/client"
 
-import { currentRole } from '@/lib/authentication';
+import { currentRole } from "@/lib/authentication"
 
 export async function GET() {
-  const role = await currentRole();
+  const role = await currentRole()
 
   if (role === UserRole.ADMIN) {
-    return new NextResponse(null, { status: 200 });
+    return new NextResponse(null, { status: 200 })
   }
 
-  return new NextResponse(null, { status: 403 });
+  return new NextResponse(null, { status: 403 })
 }

@@ -19,7 +19,11 @@ export async function POST(req: Request) {
     const validatedData = studentSchema.parse(body)
 
     const student = await db.student.create({
-      data: { ...validatedData, profile_image: user.image, user_id: user.id },
+      data: {
+        ...validatedData,
+        profile_image: user.image,
+        user_id: user.id,
+      },
     })
 
     return NextResponse.json(student, { status: 201 })
@@ -32,7 +36,10 @@ export async function POST(req: Request) {
       error.code === "P2002"
     ) {
       return NextResponse.json(
-        { error: "Username already taken", duplicate: error.meta?.target },
+        {
+          error: "Username already taken",
+          duplicate: error.meta?.target,
+        },
         { status: 409 }
       )
     }

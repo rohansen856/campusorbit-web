@@ -1,20 +1,15 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader
-} from '@/components/ui/card';
-import { Social } from '@/components/auth/social';
-import { AuthHeader } from '@/components/auth/auth-header';
-import { AuthFooter } from '@/components/auth/auth-footer';
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { AuthFooter } from "@/components/auth/auth-footer"
+import { AuthHeader } from "@/components/auth/auth-header"
+import { Social } from "@/components/auth/social"
 
 interface CardWrapperProps {
-  children: React.ReactNode;
-  headerLabel: string;
-  footerLabel: string;
-  footerHref: string;
-  footerDesc: string;
-  showSocial?: boolean;
+  children: React.ReactNode
+  headerLabel: string
+  footerLabel: string
+  footerHref: string
+  footerDesc: string
+  showSocial?: boolean
 }
 
 export function CardWrapper({
@@ -23,10 +18,10 @@ export function CardWrapper({
   footerLabel,
   footerHref,
   footerDesc,
-  showSocial
+  showSocial,
 }: CardWrapperProps) {
   return (
-    <Card className='w-full md:w-[450px] shadow-md'>
+    <Card className="w-full md:w-[450px] shadow-md">
       <CardHeader>
         <AuthHeader label={headerLabel} />
       </CardHeader>
@@ -36,7 +31,7 @@ export function CardWrapper({
           <Social />
         </CardFooter>
       )}
-      <CardFooter className='justify-center'>
+      <CardFooter className="justify-center">
         <AuthFooter
           label={footerLabel}
           href={footerHref}
@@ -44,5 +39,5 @@ export function CardWrapper({
         />
       </CardFooter>
     </Card>
-  );
+  )
 }

@@ -147,7 +147,9 @@ export function Post({ post }: PostProps) {
             </p>
           </div>
           <p className="text-sm text-muted-foreground">
-            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+            {formatDistanceToNow(new Date(post.createdAt), {
+              addSuffix: true,
+            })}
           </p>
         </CardHeader>
 
@@ -173,7 +175,10 @@ export function Post({ post }: PostProps) {
                   height: isExpanded ? "auto" : CONTENT_PREVIEW_HEIGHT,
                   opacity: 1,
                 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeInOut",
+                }}
                 className="relative"
               >
                 <div
@@ -181,7 +186,9 @@ export function Post({ post }: PostProps) {
                     "prose prose-neutral dark:prose-invert max-w-none overflow-hidden transition-all duration-300",
                     !isExpanded && "max-h-[220px]"
                   )}
-                  dangerouslySetInnerHTML={{ __html: content }}
+                  dangerouslySetInnerHTML={{
+                    __html: content,
+                  }}
                 />
                 {shouldShowExpand && !isExpanded && (
                   <motion.div

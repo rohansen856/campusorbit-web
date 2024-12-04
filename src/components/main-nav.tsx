@@ -55,9 +55,17 @@ const mainNavItems = [
         href: "/resources/learning",
         icon: GraduationCap,
       },
-      { title: "Translation Guide", href: "/resources/guide", icon: Book },
+      {
+        title: "Translation Guide",
+        href: "/resources/guide",
+        icon: Book,
+      },
       { title: "API Documentation", href: "/docs/api", icon: Code },
-      { title: "Community Forum", href: "/community", icon: MessagesSquare },
+      {
+        title: "Community Forum",
+        href: "/community",
+        icon: MessagesSquare,
+      },
       { title: "Help Center", href: "/help", icon: HelpCircle },
     ],
   },
@@ -200,8 +208,12 @@ const Sidebar: React.FC<SidebarProps> = ({
                             className="block"
                           >
                             <motion.div
-                              whileHover={{ x: 4 }}
-                              whileTap={{ scale: 0.98 }}
+                              whileHover={{
+                                x: 4,
+                              }}
+                              whileTap={{
+                                scale: 0.98,
+                              }}
                               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-accent/10 transition-colors duration-200"
                             >
                               <item.icon className="w-4 h-4" />
@@ -300,7 +312,9 @@ export function MainNav() {
               ) : (
                 <Link
                   href="/auth/sign-in"
-                  className={buttonVariants({ variant: "secondary" })}
+                  className={buttonVariants({
+                    variant: "secondary",
+                  })}
                 >
                   Login
                 </Link>
