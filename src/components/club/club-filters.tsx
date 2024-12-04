@@ -54,39 +54,41 @@ export function ClubFilters({
         />
       </div>
 
-      <Select value={clubType} onValueChange={onTypeChange}>
-        <SelectTrigger className="w-full md:w-48">
-          <SelectValue placeholder="Orientation" />
-        </SelectTrigger>
-        <SelectContent>
-          {CLUB_TYPES.map((clubType) => (
-            <SelectItem key={clubType.value} value={clubType.value}>
-              <span className="flex items-center gap-2">
-                {clubType.icon} {clubType.label}
-              </span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="grid grid-cols-2 gap-2 w-full md:w-[400px]">
+        <Select value={clubType} onValueChange={onTypeChange}>
+          <SelectTrigger className="col-span-1">
+            <SelectValue placeholder="Orientation" />
+          </SelectTrigger>
+          <SelectContent>
+            {CLUB_TYPES.map((clubType) => (
+              <SelectItem key={clubType.value} value={clubType.value}>
+                <span className="flex items-center gap-2">
+                  {clubType.icon} {clubType.label}
+                </span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-      <Select
-        value={`${institute}`}
-        onValueChange={(e) => onInstituteChange(parseInt(e) || institute)}
-      >
-        <SelectTrigger className="w-full md:w-48" defaultValue={institute}>
-          <SelectValue placeholder="Select college" />
-        </SelectTrigger>
-        <SelectContent>
-          {/* <SelectItem value="">All Clubs</SelectItem> */}
-          {institutes.map((institute) => (
-            <SelectItem key={institute.id} value={`${institute.id}`}>
-              <span className="flex items-center gap-2">
-                {institute.short_name}
-              </span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        <Select
+          value={`${institute}`}
+          onValueChange={(e) => onInstituteChange(parseInt(e) || institute)}
+        >
+          <SelectTrigger className="col-span-1" defaultValue={institute}>
+            <SelectValue placeholder="Select college" />
+          </SelectTrigger>
+          <SelectContent>
+            {/* <SelectItem value="">All Clubs</SelectItem> */}
+            {institutes.map((institute) => (
+              <SelectItem key={institute.id} value={`${institute.id}`}>
+                <span className="flex items-center gap-2">
+                  {institute.short_name}
+                </span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   )
 }
