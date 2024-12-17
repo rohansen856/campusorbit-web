@@ -93,13 +93,13 @@ model Institute {
   website_url String
   mail_slug   String    @unique
 
-  students    Student[] // Relation: One-to-Many with Student
+  students    Student[]
 }
 
 model Student {
   id                Int       @id @default(autoincrement())
   user_id           String    @unique
-  username          String
+  username          String    @unique
   semester          Int       @default(1) @db.SmallInt
   roll_number       String    @unique
   profile_image     String

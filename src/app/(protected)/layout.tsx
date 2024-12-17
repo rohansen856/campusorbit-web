@@ -1,22 +1,25 @@
 import { Footer } from "@/components/footer"
-import { Navbar } from "@/components/protected/navbar"
+import { currentUser } from "@/lib/authentication"
+import { db } from "@/lib/db"
+import { redirect } from "next/navigation"
 
-export default function ProtectedLayout({
+export default async function ProtectedLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    const user = await currentUser()
+    if (!user) return null
+    const student = await db.student.findUnique({
+        where: {
+            user_id: user.id,
+        },
+    })
+    if (!student) return redirect("/register")
     return (
-        <>
-            <div className="h-full min-h-[calc(100vh_-_36px_-_48px)] py-10 px-4 w-full flex flex-col gap-y-10 items-center justify-center">
-                <div className="w-full max-w-[600px] overflow-hidden rounded-[0.5rem] border bg-background shadow-md md:shadow-xl">
-                    <div className="flex flex-col">
-                        <Navbar />
-                        <div className="p-4 md:p-8">{children}</div>
-                    </div>
-                </div>
-            </div>
+        <div className="h-full min-h-screen py-8 px-4 w-full flex flex-col justify-between">
+            <main className="p-4 md:p-8">{children}</main>
             <Footer />
-        </>
+        </div>
     )
 }
