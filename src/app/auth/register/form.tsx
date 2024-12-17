@@ -1,5 +1,6 @@
 "use client"
 
+import { Loader } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -43,21 +44,23 @@ import { Check, ChevronsUpDown } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 const branches = [
-    "CSE",
-    "ECE",
-    "EEE",
-    "ME",
-    "CE",
-    "IT",
-    "DS",
-    "AI",
-    "CS",
-    "CH",
-    "BT",
+    { key: "CSE", label: "Computer Science and Engineering" },
+    { key: "ECE", label: "Electronics and Communication Engineering" },
+    { key: "SM", label: "Smart Manufacturing" },
+    { key: "ME", label: "Mechanical Engineering" },
+    { key: "DS", label: "Design" },
+    { key: "EEE", label: "Electrical and Electronics Engineering" },
+    { key: "CE", label: "Civil Engineering" },
+    { key: "IT", label: "Information Technology" },
+    { key: "AI", label: "Artificial Intelligence" },
+    { key: "CS", label: "Computer Science" },
+    { key: "CH", label: "Chemical Engineering" },
+    { key: "BT", label: "Biotechnology" },
 ]
 
 export function StudentRegistrationForm() {
     const router = useRouter()
+    const [isLoading, setLoading] = useState(false)
     const [institutes, setInstitutes] = useState<
         { id: number; name: string }[]
     >([])
@@ -77,6 +80,7 @@ export function StudentRegistrationForm() {
     }, [])
 
     async function onSubmit(data: StudentFormData) {
+        setLoading(true)
         try {
             const res = await axios.post("/api/auth/student", data)
             if (res.status !== 201) {
@@ -101,6 +105,8 @@ export function StudentRegistrationForm() {
                     "There was an error registering the student. Please try again.",
                 variant: "destructive",
             })
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -145,6 +151,11 @@ export function StudentRegistrationForm() {
                                     <Input
                                         placeholder="Enter roll number"
                                         {...field}
+                                        onChange={(e) =>
+                                            field.onChange(
+                                                e.target.value.toLowerCase()
+                                            )
+                                        }
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -172,38 +183,6 @@ export function StudentRegistrationForm() {
                                                 parseInt(e.target.value)
                                             )
                                         }
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="profile_image"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Profile Image URL</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        placeholder="Enter profile image URL"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="background_banner"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Background Banner URL</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        placeholder="Enter background banner URL"
-                                        {...field}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -277,10 +256,10 @@ export function StudentRegistrationForm() {
                                     <SelectContent>
                                         {branches.map((branch) => (
                                             <SelectItem
-                                                key={branch}
-                                                value={branch}
+                                                key={branch.key}
+                                                value={branch.key}
                                             >
-                                                {branch}
+                                                {branch.label}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -374,8 +353,16 @@ export function StudentRegistrationForm() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="w-full col-span-2">
-                        Register Student
+                    <Button
+                        type="submit"
+                        className="w-full col-span-2"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <Loader className="size-6 animate-spin" />
+                        ) : (
+                            "Register Student"
+                        )}
                     </Button>
                 </form>
             </Form>

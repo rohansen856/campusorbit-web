@@ -102,8 +102,8 @@ model Student {
   username          String    @unique
   semester          Int       @default(1) @db.SmallInt
   roll_number       String    @unique
-  profile_image     String
-  background_banner String
+  profile_image     String?
+  background_banner String?
   enrollment_year   Int
   graduation_year   Int?
   branch            String

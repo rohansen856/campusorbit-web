@@ -15,7 +15,7 @@ export default async function RegisterPage() {
     if (student) return redirect("/dashboard")
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="flex items-center justify-center">
             <StudentRegistrationForm />
         </div>
     )
