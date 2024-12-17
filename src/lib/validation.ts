@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const studentSchema = z.object({
-    user_id: z.string().min(1, "User ID is required"),
+    username: z.string().min(1, "Username is required"),
     semester: z.number().int().min(1).max(12),
     roll_number: z.string().min(1, "Roll number is required"),
     profile_image: z.string().url("Invalid profile image URL"),

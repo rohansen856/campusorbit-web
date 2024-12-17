@@ -9,6 +9,19 @@ import { StudentFormData, studentSchema } from "@/lib/validation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import {
     Form,
     FormControl,
     FormDescription,
@@ -25,6 +38,9 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
+import { cn } from "@/lib/utils"
+import { Check, ChevronsUpDown } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 const branches = [
     "CSE",
@@ -41,6 +57,7 @@ const branches = [
 ]
 
 export function StudentRegistrationForm() {
+    const router = useRouter()
     const [institutes, setInstitutes] = useState<
         { id: number; name: string }[]
     >([])
@@ -54,19 +71,29 @@ export function StudentRegistrationForm() {
     })
 
     useEffect(() => {
-        // axios.get("/api/institutes").then((response) => {
-        //     setInstitutes(response.data)
-        // })
+        axios.get("/api/institutes").then((response) => {
+            setInstitutes(response.data)
+        })
     }, [])
 
     async function onSubmit(data: StudentFormData) {
         try {
-            const response = await axios.post("/api/register-student", data)
+            const res = await axios.post("/api/auth/student", data)
+            if (res.status !== 201) {
+                toast({
+                    title: "Registration Failed",
+                    description:
+                        "There was an error registering the student. Please try again.",
+                    variant: "destructive",
+                })
+            }
             toast({
                 title: "Registration Successful",
                 description: "Your student profile has been created.",
             })
-            form.reset()
+            setTimeout(() => {
+                router.push("/dashboard")
+            }, 2000)
         } catch (error) {
             toast({
                 title: "Registration Failed",
@@ -94,13 +121,13 @@ export function StudentRegistrationForm() {
                 >
                     <FormField
                         control={form.control}
-                        name="user_id"
+                        name="username"
                         render={({ field }) => (
                             <FormItem className="col-span-2">
-                                <FormLabel>User ID</FormLabel>
+                                <FormLabel>Username</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder="Enter user ID"
+                                        placeholder="Choose a unique usename"
                                         {...field}
                                     />
                                 </FormControl>
@@ -236,7 +263,7 @@ export function StudentRegistrationForm() {
                         control={form.control}
                         name="branch"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="flex flex-col">
                                 <FormLabel>Branch</FormLabel>
                                 <Select
                                     onValueChange={field.onChange}
@@ -258,6 +285,9 @@ export function StudentRegistrationForm() {
                                         ))}
                                     </SelectContent>
                                 </Select>
+                                <FormDescription>
+                                    Select your branch from available options
+                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -266,30 +296,80 @@ export function StudentRegistrationForm() {
                         control={form.control}
                         name="institute_id"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="flex flex-col">
                                 <FormLabel>Institute</FormLabel>
-                                <Select
-                                    onValueChange={(value) =>
-                                        field.onChange(parseInt(value))
-                                    }
-                                    defaultValue={field.value?.toString()}
-                                >
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select your institute" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {institutes.map((institute) => (
-                                            <SelectItem
-                                                key={institute.id}
-                                                value={institute.id.toString()}
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                className={cn(
+                                                    "w-full max-w-[350px] overflow-hidden justify-between",
+                                                    !field.value &&
+                                                        "text-muted-foreground"
+                                                )}
                                             >
-                                                {institute.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                                                {field.value
+                                                    ? institutes.find(
+                                                          (institute) =>
+                                                              institute.id ===
+                                                              field.value
+                                                      )?.name
+                                                    : "Select institute"}
+                                                <ChevronsUpDown className="opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="max-w-lg w-full p-0">
+                                        <Command>
+                                            <CommandInput
+                                                placeholder="Search framework..."
+                                                className="h-9"
+                                            />
+                                            <CommandList>
+                                                <CommandEmpty>
+                                                    No framework found.
+                                                </CommandEmpty>
+                                                <CommandGroup>
+                                                    {institutes.map(
+                                                        (institute) => (
+                                                            <CommandItem
+                                                                value={
+                                                                    institute.name
+                                                                }
+                                                                key={
+                                                                    institute.id
+                                                                }
+                                                                onSelect={() => {
+                                                                    form.setValue(
+                                                                        "institute_id",
+                                                                        institute.id
+                                                                    )
+                                                                }}
+                                                            >
+                                                                {institute.name}
+                                                                <Check
+                                                                    className={cn(
+                                                                        "ml-auto",
+                                                                        institute.id ===
+                                                                            field.value
+                                                                            ? "opacity-100"
+                                                                            : "opacity-0"
+                                                                    )}
+                                                                />
+                                                            </CommandItem>
+                                                        )
+                                                    )}
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
+                                    </PopoverContent>
+                                </Popover>
+                                <FormDescription>
+                                    Choose your college among the available IIT,
+                                    NIT, IIITs
+                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
