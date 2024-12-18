@@ -34,7 +34,7 @@ export default async function ProfilePage() {
                 user={{ name: user.name ?? "" }}
                 student={student}
             />
-            <div className="md:block w-full md:w-2/5 md:border-l border-t md:border-t-0 py-4 md:py-4">
+            <div className="md:block w-full md:w-2/5 md:border-l border-t md:border-t-0 py-4 md:pt-0">
                 <ScheduleSection />
             </div>
         </div>

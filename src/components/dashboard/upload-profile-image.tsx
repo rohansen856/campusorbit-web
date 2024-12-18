@@ -77,7 +77,7 @@ export function FileUploadModal() {
                             <div>
                                 <Upload className="mx-auto h-12 w-12 text-gray-400" />
                                 <p className="mt-2">
-                                    Drag 'n' drop some files here, or click to
+                                    Drag &apos;n&apos; drop some files here, or click to
                                     select files
                                 </p>
                             </div>

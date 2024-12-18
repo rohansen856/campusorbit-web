@@ -50,7 +50,7 @@ export function UserInfo({ user, label, icon: Icon }: UserInfoProps) {
           <div className='flex flex-row items-center justify-between rounded-md border px-3 py-1.5'>
             <p className='text-sm font-medium'>Two Factor Authentication</p>
             <Badge
-              variant={user?.isTwoFactorEnabled ? 'success' : 'destructive'}
+              variant={user?.isTwoFactorEnabled ? 'default' : 'destructive'}
             >
               {user?.isTwoFactorEnabled ? 'ON' : 'OFF'}
             </Badge>
