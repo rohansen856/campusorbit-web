@@ -42,21 +42,7 @@ import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { useRouter } from "next/navigation"
-
-const branches = [
-    { key: "CSE", label: "Computer Science and Engineering" },
-    { key: "ECE", label: "Electronics and Communication Engineering" },
-    { key: "SM", label: "Smart Manufacturing" },
-    { key: "ME", label: "Mechanical Engineering" },
-    { key: "DS", label: "Design" },
-    { key: "EEE", label: "Electrical and Electronics Engineering" },
-    { key: "CE", label: "Civil Engineering" },
-    { key: "IT", label: "Information Technology" },
-    { key: "AI", label: "Artificial Intelligence" },
-    { key: "CS", label: "Computer Science" },
-    { key: "CH", label: "Chemical Engineering" },
-    { key: "BT", label: "Biotechnology" },
-]
+import { branches } from "@/lib/data"
 
 export function StudentRegistrationForm() {
     const router = useRouter()
@@ -273,9 +259,33 @@ export function StudentRegistrationForm() {
                     />
                     <FormField
                         control={form.control}
-                        name="institute_id"
+                        name="group"
                         render={({ field }) => (
                             <FormItem className="flex flex-col">
+                                <FormLabel>Your Group (optional)</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="Enter your group"
+                                        {...field}
+                                        onChange={(e) =>
+                                            field.onChange(
+                                                e.target.value.toUpperCase()
+                                            )
+                                        }
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    ex.: A, B, C...
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="institute_id"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col col-span-2">
                                 <FormLabel>Institute</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -284,7 +294,7 @@ export function StudentRegistrationForm() {
                                                 variant="outline"
                                                 role="combobox"
                                                 className={cn(
-                                                    "w-full max-w-[350px] overflow-hidden justify-between",
+                                                    "w-full overflow-hidden justify-between",
                                                     !field.value &&
                                                         "text-muted-foreground"
                                                 )}
@@ -308,7 +318,7 @@ export function StudentRegistrationForm() {
                                             />
                                             <CommandList>
                                                 <CommandEmpty>
-                                                    No framework found.
+                                                    No institute found.
                                                 </CommandEmpty>
                                                 <CommandGroup>
                                                     {institutes.map(

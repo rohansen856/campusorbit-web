@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server"
-import { PrismaClient } from "@prisma/client"
 import { studentSchema } from "@/lib/validation"
 import { db } from "@/lib/db"
 import { currentUser } from "@/lib/authentication"
@@ -23,6 +22,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json(student, { status: 201 })
     } catch (error) {
+        console.error(error)
         if (error instanceof z.ZodError)
             return NextResponse.json({ error: "Invalid data" }, { status: 400 })
         return NextResponse.json({ error: "Error in server" }, { status: 500 })

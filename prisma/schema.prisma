@@ -88,12 +88,13 @@ model Institute {
   id          Int       @id @default(autoincrement())
   name        String    @unique
   short_name  String    @unique
-  affiliation String    @db.VarChar(10) @default("IIIT")
+  affiliation String    @db.VarChar(10)
   logo_url    String
   website_url String
   mail_slug   String    @unique
 
   students    Student[]
+  schedules   Schedule[]
 }
 
 model Student {
@@ -107,11 +108,31 @@ model Student {
   enrollment_year   Int
   graduation_year   Int?
   branch            String
+  group             String
   institute_id      Int
+  verified          Boolean   @default(false)
 
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 
   institute         Institute @relation(fields: [institute_id], references: [id], onDelete: Cascade)
   user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Schedule {
+  id                String    @id @default(cuid())
+  institute_id      Int
+  course_code       String
+  course_title      String
+  prof              String
+  type              String    @default("theory")
+  day               Int 
+  from              DateTime  @map("from")
+  to                DateTime  @map("to")
+  group             String    @default("") @map("group") 
+  branch            String
+  room              String
+  semester          Int
+
+  institute         Institute @relation(fields: [institute_id], references: [id], onDelete: Cascade)
 }

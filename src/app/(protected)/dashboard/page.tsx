@@ -1,77 +1,41 @@
+import { ProfileSection } from "@/components/dashboard/profile-section"
+import { ScheduleSection } from "@/components/dashboard/schedules"
 import { currentUser } from "@/lib/authentication"
-import Image from "next/image"
-import Link from "next/link"
+import { db } from "@/lib/db"
 
 export default async function ProfilePage() {
     const user = await currentUser()
     if (!user) return null
+    const student = await db.student.findUnique({
+        where: {
+            user_id: user.id,
+        },
+        select: {
+            id: true,
+            username: true,
+            verified: true,
+            profile_image: true,
+            institute: {
+                select: {
+                    id: true,
+                    name: true,
+                    short_name: true,
+                    logo_url: true,
+                    website_url: true,
+                },
+            },
+        },
+    })
+    if (!student) return null
+
     return (
-        <div className="w-full flex gap-8">
-            <div className="w-3/5 min-h-[500px]">
-                <div className="h-full max-h-[250px] bg-secondary rounded-lg"></div>
-                <div className="flex justify-between px-12 mt-2">
-                    <div className="size-36 rounded-full bg-blue-500 -mt-16"></div>
-                    <div className="relative flex gap-4">
-                        <Link
-                            href={"/"}
-                            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
-                        >
-                            <Image
-                                src={"/social/linkedin.svg"}
-                                alt="in"
-                                fill
-                                className="object-cover"
-                            />
-                        </Link>
-                        <Link
-                            href={"/"}
-                            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
-                        >
-                            <Image
-                                src={"/social/discord.svg"}
-                                alt="in"
-                                fill
-                                className="object-contain"
-                            />
-                        </Link>
-                        <Link
-                            href={"/"}
-                            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
-                        >
-                            <Image
-                                src={"/social/instagram.svg"}
-                                alt="in"
-                                fill
-                                className="object-cover"
-                            />
-                        </Link>
-                        <Link
-                            href={"/"}
-                            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
-                        >
-                            <Image
-                                src={"/social/twitter.svg"}
-                                alt="in"
-                                fill
-                                className="object-cover"
-                            />
-                        </Link>
-                        <Link
-                            href={"/"}
-                            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
-                        >
-                            <Image
-                                src={"/social/github.svg"}
-                                alt="in"
-                                fill
-                                className="object-cover"
-                            />
-                        </Link>
-                    </div>
-                </div>
-            </div>
-            <div className="hidden md:block w-2/5 h-40 bg-secondary">
-                <h2>{user.name}</h2>
+        <div className="w-full flex gap-8 flex-col md:flex-row">
+            <ProfileSection
+                user={{ name: user.name ?? "" }}
+                student={student}
+            />
+            <div className="hidden md:block w-full md:w-2/5 md:border-l">
+                <ScheduleSection />
             </div>
         </div>
     )
