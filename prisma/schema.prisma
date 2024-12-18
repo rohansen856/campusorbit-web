@@ -95,6 +95,7 @@ model Institute {
 
   students    Student[]
   schedules   Schedule[]
+  Club        Club[]
 }
 
 model Student {
@@ -106,17 +107,18 @@ model Student {
   profile_image     String?
   background_banner String?
   enrollment_year   Int
-  graduation_year   Int?
+  graduation_year   Int
   branch            String
   group             String
   institute_id      Int
   verified          Boolean   @default(false)
-
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 
   institute         Institute @relation(fields: [institute_id], references: [id], onDelete: Cascade)
   user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  ClubMember        ClubMember[]
 }
 
 model Schedule {
@@ -135,4 +137,33 @@ model Schedule {
   semester          Int
 
   institute         Institute @relation(fields: [institute_id], references: [id], onDelete: Cascade)
+}
+
+model Club {
+  id                String   @id @default(cuid())
+  name              String   @unique
+  icon              String
+  banner            String
+  bio               Json?
+  description       String?
+  clubType          String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  institute_id      Int
+
+  institute         Institute  @relation(fields: [institute_id], references: [id])
+
+  members           ClubMember[]
+}
+
+model ClubMember {
+  id                String   @id @default(cuid())
+  userId            String
+  user              Student  @relation(fields: [userId], references: [user_id])
+  clubId            String
+  club              Club     @relation(fields: [clubId], references: [id])
+  role              String   @default("member")
+  joinedAt          DateTime @default(now())
+
+  @@unique([userId, clubId])
 }
