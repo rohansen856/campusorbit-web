@@ -31,7 +31,7 @@ export async function ProfileSection({
                 <FileUploadModal />
             </div>
             <div className="flex justify-between gap-4 px-12 mt-2 mb-4">
-                <div className="relative border border-primary/30 size-36 rounded-full bg-secondary -mt-16">
+                <div className="relative border border-primary/30 size-16 md:size-28 xl:size-36 rounded-full bg-secondary -mt-16">
                     <div className="size-full relative overflow-hidden">
                         <Image
                             src={student.profile_image || "/shield-check.png"}

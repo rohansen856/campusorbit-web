@@ -12,7 +12,7 @@ export const branches = [
     { key: "CH", label: "Chemical Engineering" },
     { key: "BT", label: "Biotechnology" },
 ]
-export const groups = ["A", "B", "C"]
+export const groups = ["A", "B", "C", "Z"]
 export const semesters = [1, 2, 3, 4, 5, 6, 7, 8]
 export const days = [
     { value: 1, label: "Monday" },
