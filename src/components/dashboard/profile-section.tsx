@@ -31,7 +31,7 @@ export async function ProfileSection({
     <section className="w-full md:w-3/5 min-h-[500px]">
       <div className="relative h-full max-h-[250px] min-h-[300px] bg-secondary border border-primary/30 overflow-hidden rounded-lg">
         <Image
-          src={student.background_banner || "/shield-check.png"}
+          src={student.background_banner || "/banner-default.png"}
           alt=""
           fill
           className="object-cover"

@@ -1,6 +1,6 @@
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
-import { ClubSection } from "@/components/dashboard/club-section"
+import { AttendanceSection } from "@/components/dashboard/attendance-section"
 import { ProfileSection } from "@/components/dashboard/profile-section"
 import { ScheduleSection } from "@/components/dashboard/schedules"
 
@@ -34,7 +34,7 @@ export default async function ProfilePage() {
         </div>
       </div>
       <div className="container">
-        <ClubSection />
+        <AttendanceSection student={student} />
       </div>
     </div>
   )
