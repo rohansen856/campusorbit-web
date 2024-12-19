@@ -1,5 +1,6 @@
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
+import { ClubSection } from "@/components/dashboard/club-section"
 import { ProfileSection } from "@/components/dashboard/profile-section"
 import { ScheduleSection } from "@/components/dashboard/schedules"
 
@@ -10,12 +11,7 @@ export default async function ProfilePage() {
     where: {
       user_id: user.id,
     },
-    select: {
-      id: true,
-      username: true,
-      verified: true,
-      profile_image: true,
-      background_banner: true,
+    include: {
       institute: {
         select: {
           id: true,
@@ -31,15 +27,15 @@ export default async function ProfilePage() {
 
   return (
     <div>
-      <div className="w-full flex gap-8 flex-col md:flex-row">
+      <div className="w-full flex gap-8 flex-col md:flex-row mb-16">
         <ProfileSection user={{ name: user.name ?? "" }} student={student} />
         <div className="md:block w-full md:w-2/5 md:border-l border-t md:border-t-0 py-4 md:pt-0">
-          <ScheduleSection />
+          <ScheduleSection student={student} />
         </div>
       </div>
-      <section className="container">
-        <div></div>
-      </section>
+      <div className="container">
+        <ClubSection />
+      </div>
     </div>
   )
 }

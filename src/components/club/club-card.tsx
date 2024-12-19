@@ -1,65 +1,94 @@
 "use client"
 
+import Image from "next/image"
 import { Club } from "@prisma/client"
 import { motion } from "framer-motion"
+import { Building2, Calendar, Sparkles, Trophy, Users } from "lucide-react"
 
-import { CLUB_TYPES } from "@/lib/data"
+import { clubTypeColors, clubTypeIcons } from "@/lib/data"
 import { cn } from "@/lib/utils"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 interface ClubCardProps {
-  club: Club
+  club: Club & { _count: { members: number } }
   index: number
 }
 
 export function ClubCard({ club, index }: ClubCardProps) {
-  const clubType = CLUB_TYPES.find((type) => type.value === club.clubType)
-  const cardDelay = index * 0.1
-
+  const Icon = clubTypeIcons[club.clubType] || Trophy
+  const colorScheme =
+    clubTypeColors[club.clubType] ||
+    "from-blue-500/20 to-cyan-500/20 border-blue-200/20"
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: cardDelay }}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ y: -5 }}
+      className={cn(
+        "relative border rounded-xl bg-secondary/50 flex flex-col md:flex-row overflow-hidden"
+      )}
     >
-      <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-        <div className="relative">
-          <div
-            className={cn(
-              "absolute inset-0 bg-gradient-to-r opacity-75 transition-opacity group-hover:opacity-100",
-              clubType?.color
-            )}
-          />
-          <img
-            src={club.banner}
+      <div className="relative flex items-start gap-4 p-6">
+        <motion.div
+          className="relative w-24 h-24 rounded-lg overflow-hidden"
+          whileHover={{ scale: 1.05 }}
+        >
+          <Image
+            src={/*club.icon ||*/ "/TPC.jpeg"}
             alt={club.name}
-            className="w-full h-32 object-cover"
+            fill
+            className="w-full h-full object-contain"
           />
-          <div className="absolute -bottom-8 left-4">
-            <Avatar className="w-16 h-16 border-4 border-background">
-              <AvatarImage src={club.icon} alt={club.name} />
-              <AvatarFallback>{club.name[0]}</AvatarFallback>
-            </Avatar>
-          </div>
-        </div>
+        </motion.div>
 
-        <div className="p-4 pt-10">
-          <h3 className="text-lg font-semibold mb-1">{club.name}</h3>
-          <p className="text-sm text-muted-foreground mb-3">
-            {club.description?.slice(0, 100)}...
+        <div className="flex-1 md:border-l-2 md: pl-4">
+          <div className="flex items-center gap-3 mb-2">
+            <h2 className="text-2xl font-bold">{club.name}</h2>
+            <div className="p-2 rounded-full bg-white/10">
+              <Icon className="w-4 h-4" />
+            </div>
+          </div>
+
+          <p className="text-secondary-foreground mb-4 line-clamp-2">
+            {club.description}
           </p>
 
-          <div className="flex items-center gap-2">
-            <span className="text-sm bg-muted px-2 py-1 rounded-full">
-              {clubType?.icon} {clubType?.label}
-            </span>
-            <span className="text-sm text-muted-foreground">
-              {/* {club.members.length} members */}0 members
-            </span>
+          <div className="flex flex-wrap gap-3">
+            <Badge>
+              <Users size={14} className="mr-1" />
+              120 Members
+            </Badge>
+            <Badge>
+              <Trophy size={14} className="mr-1" />
+              {club.clubType}
+            </Badge>
+            <Badge>
+              <Calendar size={14} className="mr-1" />
+              {new Date(club.createdAt).toLocaleDateString()}
+            </Badge>
           </div>
         </div>
-      </Card>
+      </div>
+
+      <div className="ml-auto flex gap-2">
+        <div className="py-2">
+          <Avatar className="h-10 w-10 bg-secondary border border-primary/30">
+            <AvatarImage
+              src={"/iiitdmj.jpg"}
+              className="object-contain"
+              alt={""}
+            />
+            <AvatarFallback>
+              <Building2 />
+            </AvatarFallback>
+          </Avatar>
+        </div>
+        <div className="w-16 bg-yellow-600/70 h-full"></div>
+      </div>
     </motion.div>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { type Schedule } from "@prisma/client"
+import { Student, type Schedule } from "@prisma/client"
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "lucide-react"
@@ -11,19 +11,21 @@ import { ScheduleCard } from "@/components/dashboard/schedule-card"
 import { ScheduleFilters } from "@/components/dashboard/schedule-filters"
 import { ScheduleModal } from "@/components/dashboard/schedule-modal"
 
-interface ScheduleSectionProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface ScheduleSectionProps extends React.HTMLAttributes<HTMLDivElement> {
+  student: Student
+}
 
-export function ScheduleSection({ ...props }: ScheduleSectionProps) {
+export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(
     null
   )
   const [schedules, setSchedules] = useState<Schedule[]>([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({
-    day: "",
-    branch: "",
-    group: "",
-    semester: "",
+    day: new Date().getDay().toString(),
+    branch: student.branch,
+    group: student.group,
+    semester: student.semester,
   })
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export function ScheduleSection({ ...props }: ScheduleSectionProps) {
           animate={{ opacity: 1, y: 0 }}
           className="mx-auto"
         >
-          <ScheduleFilters onFilterChange={setFilters} />
+          <ScheduleFilters student={student} onFilterChange={setFilters} />
 
           <AnimatePresence mode="wait">
             {loading ? (

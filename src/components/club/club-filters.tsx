@@ -1,5 +1,8 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { Institute } from "@prisma/client"
+import axios from "axios"
 import { Search } from "lucide-react"
 
 import { CLUB_TYPES } from "@/lib/data"
@@ -13,18 +16,31 @@ import {
 } from "@/components/ui/select"
 
 interface ClubFiltersProps {
-  type: string
+  clubType: string
+  institute: number
   search: string
   onTypeChange: (value: string) => void
+  onInstituteChange: (value: number) => void
   onSearchChange: (value: string) => void
 }
 
 export function ClubFilters({
-  type,
+  clubType,
+  institute,
   search,
   onTypeChange,
+  onInstituteChange,
   onSearchChange,
 }: ClubFiltersProps) {
+  const [institutes, setInstitutes] = useState<Institute[]>([])
+
+  useEffect(() => {
+    axios.get("/api/institutes").then((response) => {
+      console.log(response.data)
+      setInstitutes(response.data)
+    })
+  }, [])
+
   return (
     <div className="gap-2 flex flex-col md:flex-row md:items-center md:justify-between">
       <div className="relative w-full">
@@ -37,16 +53,34 @@ export function ClubFilters({
         />
       </div>
 
-      <Select value={type} onValueChange={onTypeChange}>
+      <Select value={clubType} onValueChange={onTypeChange}>
         <SelectTrigger className="w-full md:w-48">
-          <SelectValue placeholder="Select club type" />
+          <SelectValue placeholder="Orientation" />
         </SelectTrigger>
         <SelectContent>
-          {/* <SelectItem value="">All Clubs</SelectItem> */}
           {CLUB_TYPES.map((clubType) => (
             <SelectItem key={clubType.value} value={clubType.value}>
               <span className="flex items-center gap-2">
                 {clubType.icon} {clubType.label}
+              </span>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select
+        value={`${institute}`}
+        onValueChange={(e) => onInstituteChange(parseInt(e) || institute)}
+      >
+        <SelectTrigger className="w-full md:w-48" defaultValue={institute}>
+          <SelectValue placeholder="Select college" />
+        </SelectTrigger>
+        <SelectContent>
+          {/* <SelectItem value="">All Clubs</SelectItem> */}
+          {institutes.map((institute) => (
+            <SelectItem key={institute.id} value={`${institute.id}`}>
+              <span className="flex items-center gap-2">
+                {institute.short_name}
               </span>
             </SelectItem>
           ))}

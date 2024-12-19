@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Student } from "@prisma/client"
 import { AnimatePresence, motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 
@@ -15,16 +16,20 @@ import {
 } from "@/components/ui/select"
 
 interface ScheduleFiltersProps {
+  student: Student
   onFilterChange: (filters: any) => void
 }
 
-export function ScheduleFilters({ onFilterChange }: ScheduleFiltersProps) {
+export function ScheduleFilters({
+  student,
+  onFilterChange,
+}: ScheduleFiltersProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [filters, setFilters] = useState({
-    day: "",
-    branch: "",
-    group: "",
-    semester: "",
+    day: new Date().getDay().toString(),
+    branch: student.branch,
+    group: student.group,
+    semester: student.semester.toString(),
   })
 
   const handleFilterChange = (key: string, value: string) => {
@@ -40,7 +45,7 @@ export function ScheduleFilters({ onFilterChange }: ScheduleFiltersProps) {
         className="w-full flex items-center justify-between p-4 bg-secondary"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <span>Filters</span>
+        <span>Apply Filters</span>
         <motion.div
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -56,13 +61,13 @@ export function ScheduleFilters({ onFilterChange }: ScheduleFiltersProps) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="space-y-2 p-4"
+            className="grid grid-cols-4 gap-2 p-4"
           >
             <Select
               value={filters.day}
               onValueChange={(value) => handleFilterChange("day", value)}
             >
-              <SelectTrigger className="bg-secondary">
+              <SelectTrigger className="bg-secondary col-span-1">
                 <SelectValue placeholder="Select Day" />
               </SelectTrigger>
               <SelectContent>
@@ -78,7 +83,7 @@ export function ScheduleFilters({ onFilterChange }: ScheduleFiltersProps) {
               value={filters.branch}
               onValueChange={(value) => handleFilterChange("branch", value)}
             >
-              <SelectTrigger className="bg-secondary">
+              <SelectTrigger className="bg-secondary col-span-1">
                 <SelectValue placeholder="Select Branch" />
               </SelectTrigger>
               <SelectContent>
@@ -94,7 +99,7 @@ export function ScheduleFilters({ onFilterChange }: ScheduleFiltersProps) {
               value={filters.group}
               onValueChange={(value) => handleFilterChange("group", value)}
             >
-              <SelectTrigger className="bg-secondary">
+              <SelectTrigger className="bg-secondary col-span-1">
                 <SelectValue placeholder="Select Group" />
               </SelectTrigger>
               <SelectContent>
@@ -110,7 +115,7 @@ export function ScheduleFilters({ onFilterChange }: ScheduleFiltersProps) {
               value={filters.semester}
               onValueChange={(value) => handleFilterChange("semester", value)}
             >
-              <SelectTrigger className="bg-secondary">
+              <SelectTrigger className="bg-secondary col-span-1">
                 <SelectValue placeholder="Select Semester" />
               </SelectTrigger>
               <SelectContent>

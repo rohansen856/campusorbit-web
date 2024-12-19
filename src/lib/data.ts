@@ -1,3 +1,5 @@
+import { Activity, Book, Code, Music, Palette, Users } from "lucide-react"
+
 export const branches = [
   { key: "CSE", label: "Computer Science and Engineering" },
   { key: "ECE", label: "Electronics and Communication Engineering" },
@@ -48,3 +50,21 @@ export const CLUB_TYPES = [
     icon: "🤝",
   },
 ]
+
+export const clubTypeIcons: Record<string, any> = {
+  technical: Code,
+  cultural: Music,
+  arts: Palette,
+  academic: Book,
+  social: Users,
+  sports: Activity,
+}
+
+export const clubTypeColors: Record<string, string> = {
+  technical: "from-purple-500/20 to-blue-500/20 border-purple-200/20",
+  cultural: "from-rose-500/20 to-orange-500/20 border-rose-200/20",
+  arts: "from-green-500/20 to-emerald-500/20 border-green-200/20",
+  academic: "from-blue-500/20 to-cyan-500/20 border-blue-200/20",
+  social: "from-yellow-500/20 to-orange-500/20 border-yellow-200/20",
+  sports: "from-pink-500/20 to-purple-500/20 border-pink-200/20",
+}

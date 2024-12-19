@@ -1,19 +1,22 @@
 import { NextResponse } from "next/server"
+import { Prisma } from "@prisma/client"
 
 import { db } from "@/lib/db"
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
-    const type = searchParams.get("type")
+    const clubType = searchParams.get("clubType")
     const search = searchParams.get("search")
+    const institute = searchParams.get("institute")
 
-    const where = {
-      ...(type && { type }),
+    const where: Prisma.ClubWhereInput = {
+      ...(clubType && { clubType }),
+      ...(institute && { institute_id: parseInt(institute) }),
       ...(search && {
         OR: [
-          //   { name: { contains: search, mode: "insensitive" } },
-          //   { description: { contains: search, mode: "insensitive" } },
+          { name: { contains: search, mode: "insensitive" } },
+          { description: { contains: search, mode: "insensitive" } },
         ],
       }),
     }
@@ -21,9 +24,7 @@ export async function GET(request: Request) {
     const clubs = await db.club.findMany({
       where,
       include: {
-        members: {
-          take: 3, // Preview first 3 members
-        },
+        _count: { select: { members: true } },
       },
       orderBy: { createdAt: "desc" },
     })
