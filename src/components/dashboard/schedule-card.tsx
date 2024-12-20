@@ -81,10 +81,12 @@ export function ScheduleCard({
             <span className="truncate">{schedule.prof}</span>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <MapPin className={`w-3.5 h-3.5 ${typeColors?.icon}`} />
-            <span>{schedule.room}</span>
-          </div>
+          {schedule.room.length > 0 && (
+            <div className="flex items-center gap-1.5">
+              <MapPin className={`w-3.5 h-3.5 ${typeColors?.icon}`} />
+              <span>{schedule.room}</span>
+            </div>
+          )}
 
           <div className="flex items-center gap-1.5 col-span-2">
             <Clock className={`w-3.5 h-3.5 ${typeColors?.icon}`} />

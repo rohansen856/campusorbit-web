@@ -66,7 +66,6 @@ export function AttendanceGraph({ subjects, ...props }: AttendanceGraphProps) {
         `/api/attendance/${selectedSubject.course_code}`
       )
       setAttendanceData(res.data)
-      console.log(res.data)
     } catch (error) {}
   }
 
@@ -97,7 +96,7 @@ export function AttendanceGraph({ subjects, ...props }: AttendanceGraphProps) {
           )
         }
       >
-        <SelectTrigger className="bg-secondary col-span-1">
+        <SelectTrigger className="bg-secondary w-full mb-4">
           <SelectValue placeholder="Select Day" />
         </SelectTrigger>
         <SelectContent>
@@ -115,7 +114,7 @@ export function AttendanceGraph({ subjects, ...props }: AttendanceGraphProps) {
       ) : (
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square w-full max-w-[250px]"
+          className="mx-auto aspect-square w-[250px] min-w-[250px]"
         >
           <RadialBarChart
             data={chartData}

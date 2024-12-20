@@ -1,15 +1,14 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Edit } from "lucide-react"
+import { Socials } from "@prisma/client"
 
-import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import { FileUploadModal } from "@/components/dashboard/upload-profile-image"
+import { FileUploadModal } from "@/components/settings/upload-profile-image"
 
 interface ProfileSectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  user: { name: string }
+  user: { id: string; name: string }
   student: {
     profile_image?: string | null
     background_banner?: string | null
@@ -20,11 +19,13 @@ interface ProfileSectionProps extends React.HTMLAttributes<HTMLDivElement> {
       website_url: string
     }
   }
+  socials: Socials | null
 }
 
 export async function ProfileSection({
   user,
   student,
+  socials,
   ...props
 }: ProfileSectionProps) {
   return (
@@ -52,8 +53,11 @@ export async function ProfileSection({
         </div>
         <div className="relative flex gap-4">
           <Link
-            href={"/"}
-            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
+            href={"/settings"}
+            className={cn(
+              "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
+              !socials?.linkedin && "cursor-not-allowed"
+            )}
           >
             <Image
               src={"/social/linkedin.svg"}
@@ -63,8 +67,11 @@ export async function ProfileSection({
             />
           </Link>
           <Link
-            href={"/"}
-            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
+            href={"/settings"}
+            className={cn(
+              "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
+              !socials?.discord && "cursor-not-allowed"
+            )}
           >
             <Image
               src={"/social/discord.svg"}
@@ -74,8 +81,11 @@ export async function ProfileSection({
             />
           </Link>
           <Link
-            href={"/"}
-            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
+            href={"/settings"}
+            className={cn(
+              "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
+              !socials?.instagram && "cursor-not-allowed"
+            )}
           >
             <Image
               src={"/social/instagram.svg"}
@@ -85,8 +95,11 @@ export async function ProfileSection({
             />
           </Link>
           <Link
-            href={"/"}
-            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
+            href={"/settings"}
+            className={cn(
+              "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
+              !socials?.twitter && "cursor-not-allowed"
+            )}
           >
             <Image
               src={"/social/twitter.svg"}
@@ -96,8 +109,11 @@ export async function ProfileSection({
             />
           </Link>
           <Link
-            href={"/"}
-            className="size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative"
+            href={"/settings"}
+            className={cn(
+              "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
+              !socials?.github && "cursor-not-allowed"
+            )}
           >
             <Image
               src={"/social/github.svg"}

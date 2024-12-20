@@ -4,6 +4,7 @@ import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
 import { cn } from "@/lib/utils"
 
+import { ScrollArea } from "../ui/scroll-area"
 import { AttendanceGraph } from "./attendance-graph"
 
 type AttendanceRecord = {
@@ -91,36 +92,43 @@ export async function AttendanceSection({
   const groupedAttendance = getGroupedAttendance(attendanceHistory)
 
   return (
-    <section className="w-full bg-secondary/30 border rounded-xl p-4 flex flex-col md:flex-row">
-      <div className="w-full min-w-64 max-w-64 h-64 md:pr-4 md:border-r border-primary/30 md:mr-4">
+    <section className="w-full bg-secondary/30 border rounded-xl p-4 flex flex-col md:flex-row pr-0">
+      <div className="w-full md:w-64 h-full md:pr-4 md:border-r border-primary/30 md:mr-4">
         <AttendanceGraph subjects={allSubjects} />
       </div>
-      <div className="flex gap-2 max-w-full overflow-x-auto border-t-2 md:border-t-0 py-4 md:py-0">
-        {groupedAttendance.map((attendance) => (
-          <div className="h-full">
-            <p className="text-sm text-muted-foreground text-center mb-4 pb-px border-b-2">
-              {new Intl.DateTimeFormat("en-GB", {
-                day: "2-digit",
-                month: "short",
-              }).format(new Date(attendance.date))}
-            </p>
-            {attendance.details.map((detail) => (
-              <p
-                className={cn(
-                  "min-w-24 w-full rounded-lg text-center border mb-2",
-                  detail.status === "PRESENT" &&
-                    "bg-green-500/30 border-green-500",
-                  detail.status === "ABSENT" && "bg-red-500/30 border-red-500",
-                  detail.status === "EXCUSED" &&
-                    "bg-gray-500/30 border-gray-500"
-                )}
-              >
-                {detail.course_code}
+      <ScrollArea className="max-h-[70vh] w-full pr-4">
+        <div className="grid gap-2 grid-cols-3 xl:grid-cols-6 w-full">
+          {groupedAttendance.map((attendance) => (
+            <div
+              className="h-64 rounded-xl p-2 col-span-1"
+              key={attendance.date}
+            >
+              <p className="text-sm text-muted-foreground text-center mb-4 pb-px border-b-2">
+                {new Intl.DateTimeFormat("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                }).format(new Date(attendance.date))}
               </p>
-            ))}
-          </div>
-        ))}
-      </div>
+              {attendance.details.map((detail) => (
+                <p
+                  key={detail.course_code}
+                  className={cn(
+                    "min-w-24 w-full rounded-lg text-center border mb-2",
+                    detail.status === "PRESENT" &&
+                      "bg-green-500/30 border-green-500",
+                    detail.status === "ABSENT" &&
+                      "bg-red-500/30 border-red-500",
+                    detail.status === "EXCUSED" &&
+                      "bg-gray-500/30 border-gray-500"
+                  )}
+                >
+                  {detail.course_code}
+                </p>
+              ))}
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
     </section>
   )
 }

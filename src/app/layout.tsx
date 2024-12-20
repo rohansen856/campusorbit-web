@@ -20,7 +20,7 @@ export const metadata: Metadata = {
         ? `https://${process.env.VERCEL_URL}`
         : `http://localhost:${process.env.PORT || 3000}`
   ),
-  title: "Auth — Next.js 14 Authentication Example",
+  title: "Campusorbut",
   description:
     "This is a complete authentication example app built with Next.js 14 and Auth.js using the latest server actions.",
   openGraph: {

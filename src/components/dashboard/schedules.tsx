@@ -5,7 +5,7 @@ import { Student, type Schedule } from "@prisma/client"
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "lucide-react"
-import { toast, Toaster } from "sonner"
+import { toast } from "sonner"
 
 import { ScheduleCard } from "@/components/dashboard/schedule-card"
 import { ScheduleFilters } from "@/components/dashboard/schedule-filters"
@@ -39,7 +39,6 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
         })
         setSchedules(res.data)
       } catch (error) {
-        console.error("Failed to fetch schedules:", error)
         toast.error("Failed to fetch schedules. Please try again later.")
       } finally {
         setTimeout(() => {
@@ -53,7 +52,6 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
 
   return (
     <>
-      <Toaster position="top-center" />
       <ScrollArea className="md:h-[70vh]">
         <section className="container mx-auto px-4">
           <motion.div

@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { CheckCircle, Edit, File, Upload, X } from "lucide-react"
+import { toast } from "sonner"
 
 import { UploadDropzone } from "@/lib/uploadthing"
 import { cn } from "@/lib/utils"
-import { toast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -36,10 +36,7 @@ export function FileUploadModal({ imageFor, ...props }: FileUploadModalProps) {
       setUploadComplete(true)
       if (res.status === 201) router.refresh()
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Upload failed!",
-      })
+      toast.success("Image Successfully Uploaded!")
     }
   }
 
@@ -71,9 +68,6 @@ export function FileUploadModal({ imageFor, ...props }: FileUploadModalProps) {
             <UploadDropzone
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
-                toast({
-                  title: "Image uploaded!",
-                })
                 handleUpload(res[0].url)
               }}
               onUploadError={(error: Error) => {

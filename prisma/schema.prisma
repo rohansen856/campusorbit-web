@@ -119,8 +119,8 @@ model Student {
   user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   ClubMember        ClubMember[]
-
-  Attendance Attendance[]
+  Attendance        Attendance[]
+  Socials           Socials[]
 }
 
 model Schedule {
@@ -140,7 +140,7 @@ model Schedule {
 
   institute         Institute @relation(fields: [institute_id], references: [id], onDelete: Cascade)
 
-  Attendance Attendance[]
+  Attendance        Attendance[]
 }
 
 model Club {
@@ -189,4 +189,16 @@ enum AttendanceStatus {
   PRESENT
   ABSENT
   EXCUSED
+}
+
+model Socials {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  github            String?
+  linkedin          String?
+  twitter           String?
+  instagram         String?
+  discord           String?
+
+  student           Student   @relation(fields: [userId], references: [user_id], onDelete: Cascade)
 }
