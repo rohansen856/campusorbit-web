@@ -61,7 +61,7 @@ export function Footer() {
             <div className="mb-4 flex items-center space-x-4">
               <Logo />
               <span className="gradient-text text-lg font-bold">
-                Translate Hub
+                Campusorbit
               </span>
             </div>
             <p className="text-muted-foreground mb-4">
@@ -103,7 +103,7 @@ export function Footer() {
         <div className="border-border mt-12 border-t pt-8">
           <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
             <p className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} Translate Hub. All rights reserved.
+              © {new Date().getFullYear()} Campusorbit. All rights reserved.
             </p>
             <div className="flex items-center space-x-4">
               <Input

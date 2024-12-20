@@ -93,7 +93,7 @@ export async function AttendanceSection({
 
   return (
     <section className="w-full bg-secondary/30 border rounded-xl p-4 flex flex-col md:flex-row pr-0">
-      <div className="w-full md:w-64 h-full md:pr-4 md:border-r border-primary/30 md:mr-4">
+      <div className="w-full md:w-[400px] h-full md:pr-4 md:border-r border-primary/30 md:mr-4">
         <AttendanceGraph subjects={allSubjects} />
       </div>
       <ScrollArea className="max-h-[70vh] w-full pr-4">

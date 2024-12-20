@@ -53,7 +53,7 @@ export async function ProfileSection({
         </div>
         <div className="relative flex gap-4">
           <Link
-            href={"/settings"}
+            href={socials?.linkedin ? socials.linkedin : "/settings"}
             className={cn(
               "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
               !socials?.linkedin && "cursor-not-allowed"
@@ -67,7 +67,7 @@ export async function ProfileSection({
             />
           </Link>
           <Link
-            href={"/settings"}
+            href={socials?.discord ? socials.discord : "/settings"}
             className={cn(
               "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
               !socials?.discord && "cursor-not-allowed"
@@ -81,7 +81,7 @@ export async function ProfileSection({
             />
           </Link>
           <Link
-            href={"/settings"}
+            href={socials?.instagram ? socials.instagram : "/settings"}
             className={cn(
               "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
               !socials?.instagram && "cursor-not-allowed"
@@ -95,7 +95,7 @@ export async function ProfileSection({
             />
           </Link>
           <Link
-            href={"/settings"}
+            href={socials?.twitter ? socials.twitter : "/settings"}
             className={cn(
               "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
               !socials?.twitter && "cursor-not-allowed"
@@ -109,7 +109,7 @@ export async function ProfileSection({
             />
           </Link>
           <Link
-            href={"/settings"}
+            href={socials?.github ? socials.github : "/settings"}
             className={cn(
               "size-8 md:size-12 border overflow-hidden rounded-full border-primary/20 bg-secondary relative",
               !socials?.github && "cursor-not-allowed"

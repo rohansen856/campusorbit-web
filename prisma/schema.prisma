@@ -202,3 +202,4 @@ model Socials {
 
   student           Student   @relation(fields: [userId], references: [user_id], onDelete: Cascade)
 }
+

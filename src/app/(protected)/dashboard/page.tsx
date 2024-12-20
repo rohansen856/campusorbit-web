@@ -32,9 +32,6 @@ export default async function ProfilePage() {
           <ScheduleSection student={student} />
         </div>
       </div>
-      {/* <div className="container">
-        <AttendanceSection student={student} />
-      </div> */}
     </div>
   )
 }

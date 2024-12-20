@@ -62,9 +62,7 @@ export function MainNav() {
             onClick={() => router.push("/")}
           >
             <Logo />
-            <span className="gradient-text text-lg font-bold">
-              Translate Hub
-            </span>
+            <span className="gradient-text text-lg font-bold">Campusorbit</span>
           </div>
 
           <NavigationMenu className="hidden md:block">
