@@ -2,17 +2,9 @@
 
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { TrendingUp } from "lucide-react"
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { CardTitle } from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
@@ -87,7 +79,8 @@ export function AttendanceGraph({ subjects, ...props }: AttendanceGraphProps) {
   }, [attendanceData])
 
   return (
-    <div className="w-full h-full pr-4 md:pr-0">
+    <div className="w-full pr-4 md:pr-0">
+      <CardTitle className="text-center mb-2">Course Attendance</CardTitle>
       <Select
         value={selectedSubject?.course_code}
         onValueChange={(value) =>
@@ -108,13 +101,19 @@ export function AttendanceGraph({ subjects, ...props }: AttendanceGraphProps) {
         </SelectContent>
       </Select>
       {selectedSubject && chartData[0].absent + chartData[0].present === 0 ? (
-        <p className="text-center py-12 italic text-yellow-500">
+        <p className="text-center w-full aspect-square pt-12 italic text-yellow-500">
           No Data Available
         </p>
+      ) : subjects.length === 0 ? (
+        <div className="aspect-square w-full">
+          <p className="text-center py-12 text-yellow-500">
+            No attendance data
+          </p>
+        </div>
       ) : (
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square w-full min-w-[250px] bg-secondary rounded-lg"
+          className="mx-auto aspect-square w-full min-w-[250px] rounded-lg"
         >
           <RadialBarChart
             data={chartData}

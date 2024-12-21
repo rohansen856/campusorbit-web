@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "lucide-react"
 import { toast } from "sonner"
 
+import { days } from "@/lib/data"
 import { ScheduleCard } from "@/components/dashboard/schedule-card"
 import { ScheduleFilters } from "@/components/dashboard/schedule-filters"
 import { ScheduleModal } from "@/components/dashboard/schedule-modal"
@@ -95,7 +96,9 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
                       animate={{ opacity: 1 }}
                       className="text-center text-muted-foreground"
                     >
-                      No schedules found with the selected filters.
+                      No classes found for {days[Number(filters.day)]?.label}{" "}
+                      {filters.semester && "sem " + filters.semester}{" "}
+                      {filters.branch} {filters.group}
                     </motion.p>
                   )}
                 </motion.div>

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 
 import { ScrollArea } from "../ui/scroll-area"
 import { AttendanceGraph } from "./attendance-graph"
+import { TotalAttendance } from "./total-attendance"
 
 type AttendanceRecord = {
   attendanceDate: Date
@@ -95,14 +96,15 @@ export async function AttendanceSection({
     <section className="w-full flex flex-col-reverse md:flex-row pr-0">
       <div className="w-full md:w-[400px] h-full md:pr-4 md:border-r md:mr-4">
         <AttendanceGraph subjects={allSubjects} />
+        <TotalAttendance
+          subjects={allSubjects}
+          attendanceData={groupedAttendance}
+        />
       </div>
       <ScrollArea className="max-h-[70vh] w-full pr-2">
         <div className="grid gap-2 grid-cols-3 md:grid-cols-2 xl:grid-cols-6 w-full">
           {groupedAttendance.map((attendance) => (
-            <div
-              className="h-64 rounded-xl p-2 col-span-1"
-              key={attendance.date}
-            >
+            <div className="h-64 p-2 col-span-1" key={attendance.date}>
               <p className="text-sm text-muted-foreground text-center mb-4 pb-px border-b-2">
                 {new Intl.DateTimeFormat("en-GB", {
                   day: "2-digit",
@@ -113,7 +115,7 @@ export async function AttendanceSection({
                 <p
                   key={detail.course_code}
                   className={cn(
-                    "min-w-24 w-full rounded-lg text-center border mb-2",
+                    "min-w-24 w-full rounded text-center border mb-2",
                     detail.status === "PRESENT" &&
                       "bg-green-500/30 border-green-500",
                     detail.status === "ABSENT" &&

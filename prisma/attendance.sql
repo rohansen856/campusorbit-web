@@ -1,0 +1,15 @@
+INSERT INTO "public"."Attendance" (id, studentId, scheduleId, attendanceDate, status) VALUES
+('cm4yf3uk80003phedel7t1o4b', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_1_018', '2024-12-21 12:30:00', 'PRESENT'),
+('cm4yf3uk80003phedel7t1o5c', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_1_019', '2024-12-21 12:30:00', 'ABSENT'),
+('cm4yf3uk80003phedel7t1o6d', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_1_020', '2024-12-22 12:30:00', 'EXCUSED'),
+('cm4yf3uk80003phedel7t1o7e', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_0_4_1_023', '2024-12-22 12:30:00', 'PRESENT'),
+('cm4yf3uk80003phedel7t1o8f', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_1_058', '2024-12-23 12:30:00', 'ABSENT'),
+('cm4yf3uk80003phedel7t1o9g', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_1_059', '2024-12-23 12:30:00', 'EXCUSED'),
+('cm4yf3uk80003phedel7t1oah', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_1_060', '2024-12-23 12:30:00', 'PRESENT'),
+('cm4yf3uk80003phedel7t1oai', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_0_4_1_063', '2024-12-18 12:30:00', 'ABSENT'),
+('cm4yf3uk80003phedel7t1oaj', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_2_033', '2024-12-18 12:30:00', 'EXCUSED'),
+('cm4yf3uk80003phedel7t1oak', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_2_034', '2024-12-19 12:30:00', 'PRESENT'),
+('cm4yf3uk80003phedel7t1oal', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_2_035', '2024-12-24 12:30:00', 'ABSENT'),
+('cm4yf3uk80003phedel7t1oam', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_0_4_1_038', '2024-12-24 12:30:00', 'EXCUSED'),
+('cm4yf3uk80003phedel7t1oan', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_lab_050', '2024-12-24 12:30:00', 'PRESENT'),
+('cm4yf3uk80003phedel7t1oao', 'cm4ub6ng600005zjkxnggpunn', 'iiitdmj_cse_Z_4_lab_051', '2024-12-24 12:30:00', 'ABSENT');
