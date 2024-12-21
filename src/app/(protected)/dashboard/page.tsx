@@ -1,5 +1,6 @@
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
+import { Separator } from "@/components/ui/separator"
 import { AttendanceSection } from "@/components/dashboard/attendance-section"
 import { ScheduleSection } from "@/components/dashboard/schedules"
 
@@ -26,8 +27,9 @@ export default async function ProfilePage() {
 
   return (
     <div>
-      <div className="w-full flex gap-8 flex-col md:flex-row mb-16">
+      <div className="w-full flex gap-4 flex-col-reverse md:flex-row mb-16">
         <AttendanceSection student={student} />
+        <Separator className="w-full md:hidden" />
         <div className="w-full md:w-2/5 md:border-l border-t md:border-t-0 py-4 md:pt-0">
           <ScheduleSection student={student} />
         </div>

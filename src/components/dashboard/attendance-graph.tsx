@@ -87,7 +87,7 @@ export function AttendanceGraph({ subjects, ...props }: AttendanceGraphProps) {
   }, [attendanceData])
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full pr-4 md:pr-0">
       <Select
         value={selectedSubject?.course_code}
         onValueChange={(value) =>
@@ -114,7 +114,7 @@ export function AttendanceGraph({ subjects, ...props }: AttendanceGraphProps) {
       ) : (
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square w-[250px] min-w-[250px]"
+          className="mx-auto aspect-square w-full min-w-[250px] bg-secondary rounded-lg"
         >
           <RadialBarChart
             data={chartData}
@@ -159,6 +159,20 @@ export function AttendanceGraph({ subjects, ...props }: AttendanceGraphProps) {
                         >
                           Total Classes Recorded:{" "}
                           {chartData[0].present + chartData[0].absent}
+                        </tspan>
+                        <tspan
+                          x={(viewBox.cx || 0) - 56}
+                          y={(viewBox.cy || 0) + 56}
+                          className="text-lg fill-green-500"
+                        >
+                          Attended: {chartData[0].present}
+                        </tspan>
+                        <tspan
+                          x={(viewBox.cx || 0) + 56}
+                          y={(viewBox.cy || 0) + 56}
+                          className="text-lg fill-red-500"
+                        >
+                          Missed: {chartData[0].absent}
                         </tspan>
                       </text>
                     )

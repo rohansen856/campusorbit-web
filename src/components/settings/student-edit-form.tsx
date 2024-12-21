@@ -7,7 +7,6 @@ import axios from "axios"
 import { Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { z } from "zod"
 
 import { branches, groups, semesters } from "@/lib/data"
 import { StudentFormData, studentSchema } from "@/lib/validation"
@@ -60,7 +59,7 @@ export default function StudentEditForm({
 
   useEffect(() => {
     axios.get("/api/institutes").then((response) => {
-      setInstitutes(response.data)
+      setInstitutes(response.data.toSorted())
     })
   }, [])
 
@@ -68,9 +67,9 @@ export default function StudentEditForm({
     setIsLoading(true)
     try {
       await axios.patch("/api/auth/student", data)
+      toast.success("Successfully updated your information")
     } catch (error) {
       toast.error("Failed to update your information")
-      console.error("Error submitting form:", error)
     } finally {
       setIsLoading(false)
     }

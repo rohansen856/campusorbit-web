@@ -47,8 +47,7 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
     axios
       .get("/api/institutes")
       .then((response: AxiosResponse<Institute[]>) => {
-        setInstitutes(response.data)
-        console.log(institutes)
+        setInstitutes(response.data.toSorted())
       })
   }, [])
 

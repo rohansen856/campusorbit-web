@@ -22,7 +22,6 @@ export default function UserProfilePage() {
         const data = await response.json()
         setUser(data)
       } catch (error) {
-        console.error("Error:", error)
         toast.error("Failed to load user profile")
       } finally {
         setLoading(false)

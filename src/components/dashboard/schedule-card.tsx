@@ -100,7 +100,8 @@ export function ScheduleCard({
       {student.institute_id === schedule.institute_id &&
         student.branch === schedule.branch &&
         student.semester === schedule.semester &&
-        student.group === schedule.group && (
+        student.group === schedule.group &&
+        schedule.type.toLowerCase() !== "lab" && (
           <div className="w-40 h-full flex flex-col justify-between items-center gap-1">
             <Button
               variant={"secondary"}

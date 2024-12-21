@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Institute } from "@prisma/client"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import { Search } from "lucide-react"
 
 import { CLUB_TYPES } from "@/lib/data"
@@ -35,10 +35,11 @@ export function ClubFilters({
   const [institutes, setInstitutes] = useState<Institute[]>([])
 
   useEffect(() => {
-    axios.get("/api/institutes").then((response) => {
-      console.log(response.data)
-      setInstitutes(response.data)
-    })
+    axios
+      .get("/api/institutes")
+      .then((response: AxiosResponse<Institute[]>) => {
+        setInstitutes(response.data.toSorted())
+      })
   }, [])
 
   return (

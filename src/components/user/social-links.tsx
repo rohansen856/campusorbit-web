@@ -24,7 +24,6 @@ const socialIcons = {
 }
 
 export function SocialLinks({ socials }: { socials: any }) {
-  console.log(socials)
   if (!socials) return null
 
   return (

@@ -92,12 +92,12 @@ export async function AttendanceSection({
   const groupedAttendance = getGroupedAttendance(attendanceHistory)
 
   return (
-    <section className="w-full bg-secondary/30 border rounded-xl p-4 flex flex-col md:flex-row pr-0">
-      <div className="w-full md:w-[400px] h-full md:pr-4 md:border-r border-primary/30 md:mr-4">
+    <section className="w-full flex flex-col-reverse md:flex-row pr-0">
+      <div className="w-full md:w-[400px] h-full md:pr-4 md:border-r md:mr-4">
         <AttendanceGraph subjects={allSubjects} />
       </div>
-      <ScrollArea className="max-h-[70vh] w-full pr-4">
-        <div className="grid gap-2 grid-cols-3 xl:grid-cols-6 w-full">
+      <ScrollArea className="max-h-[70vh] w-full pr-2">
+        <div className="grid gap-2 grid-cols-3 md:grid-cols-2 xl:grid-cols-6 w-full">
           {groupedAttendance.map((attendance) => (
             <div
               className="h-64 rounded-xl p-2 col-span-1"
