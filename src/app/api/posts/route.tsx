@@ -3,9 +3,10 @@ import { z } from "zod"
 
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
+import { PostSchemaType } from "@/lib/validation"
 
 const PostSchema = z.object({
-  content: z.string().min(1).max(500),
+  content: z.string().min(1).max(3000),
 })
 
 export async function POST(req: NextRequest) {
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(post)
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { error: "Failed to create post" },
       { status: 500 }
@@ -39,11 +41,16 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
+    const user = await currentUser()
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
+    }
+
     const { searchParams } = new URL(req.url)
     const cursor = searchParams.get("cursor")
     const limit = 10
 
-    const posts = await db.post.findMany({
+    const posts: PostSchemaType[] = await db.post.findMany({
       take: limit,
       skip: cursor ? 1 : 0,
       cursor: cursor ? { id: Number(cursor) } : undefined,
@@ -51,7 +58,19 @@ export async function GET(req: NextRequest) {
         createdAt: "desc",
       },
       include: {
-        user: { select: { username: true } },
+        user: {
+          select: {
+            username: true,
+            profile_image: true,
+            verified: true,
+            user: { select: { name: true } },
+          },
+        },
+        likes: {
+          where: { userId: user.id },
+          distinct: ["userId", "postId"],
+          take: 1,
+        },
         _count: {
           select: {
             likes: true,
@@ -60,6 +79,7 @@ export async function GET(req: NextRequest) {
         },
       },
     })
+    console.log(posts[0])
 
     const nextCursor = posts[limit - 1]?.id.toString()
 

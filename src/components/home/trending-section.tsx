@@ -3,37 +3,6 @@
 import { motion } from "framer-motion"
 import { Calendar, TrendingUp } from "lucide-react"
 
-export const demoUsers = [
-  { id: "1", username: "johndoe", email: "john@example.com" },
-  { id: "2", username: "janedoe", email: "jane@example.com" },
-  { id: "3", username: "bobsmith", email: "bob@example.com" },
-]
-
-export const demoPosts = [
-  {
-    id: "1",
-    content: "Just launched my new project! 🚀 #coding",
-    createdAt: new Date().toISOString(),
-    user: demoUsers[0],
-    _count: { likes: 15, comments: 5 },
-  },
-  {
-    id: "2",
-    content:
-      "@johndoe Great work on the project! Looking forward to collaborating",
-    createdAt: new Date(Date.now() - 3600000).toISOString(),
-    user: demoUsers[1],
-    _count: { likes: 8, comments: 2 },
-  },
-  {
-    id: "3",
-    content: "Learning #TypeScript and loving it! @janedoe any tips?",
-    createdAt: new Date(Date.now() - 7200000).toISOString(),
-    user: demoUsers[2],
-    _count: { likes: 12, comments: 4 },
-  },
-]
-
 export const trendingPosts = {
   day: [
     {

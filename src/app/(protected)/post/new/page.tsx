@@ -53,7 +53,7 @@ export default function CreatePost() {
               maxRows={10}
             />
             <p className="text-sm text-gray-500 mt-2">
-              {500 - content.length} characters remaining
+              {3000 - content.length} characters remaining
             </p>
           </div>
           <motion.button

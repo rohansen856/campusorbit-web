@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
+import { Loader } from "lucide-react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
+import { PostSchemaType } from "@/lib/validation"
 import { Post } from "@/components/home/post"
 
 export type UserType = {
@@ -13,26 +15,15 @@ export type UserType = {
   email: string
 }
 
-export type PostType = {
-  id: string
-  content: string
-  createdAt: string
-  user: UserType
-  _count: {
-    likes: number
-    comments: number
-  }
-}
-
-export type SearchFilter = "all" | "users" | "mentions"
+export type SearchFilter = "all" | "users" | "mentions" | "institutes" | "clubs"
 
 type PostFeedProps = {
   isSearchActive: boolean
-  searchResults: PostType[]
+  searchResults: PostSchemaType[]
 }
 
 export function PostFeed({ isSearchActive, searchResults }: PostFeedProps) {
-  const [posts, setPosts] = useState<PostType[]>([])
+  const [posts, setPosts] = useState<PostSchemaType[]>([])
   const [cursor, setCursor] = useState<string | null>(null)
   const [hasMore, setHasMore] = useState(true)
 
@@ -71,7 +62,17 @@ export function PostFeed({ isSearchActive, searchResults }: PostFeedProps) {
       dataLength={posts.length}
       next={fetchPosts}
       hasMore={hasMore}
-      loader={<div className="p-4 text-center">Loading...</div>}
+      loader={
+        <motion.div
+          key="loading"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="flex justify-center py-12"
+        >
+          <Loader className="size-6 animate-spin" />
+        </motion.div>
+      }
       endMessage={<div className="p-4 text-center">No more posts</div>}
     >
       <AnimatePresence>
@@ -82,7 +83,7 @@ export function PostFeed({ isSearchActive, searchResults }: PostFeedProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
-            className="overflow-hidden"
+            className="overflow-hidden border border-t-0"
           >
             <Post post={post} />
           </motion.div>

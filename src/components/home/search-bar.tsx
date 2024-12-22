@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Hash, Search, User } from "lucide-react"
+import { Building, Club, Hash, Search, User } from "lucide-react"
 
 import { FilterButton } from "@/components/home/filter-button"
 
@@ -60,6 +60,18 @@ export function SearchBar({ onSearch }: SearchBarProps) {
           onClick={() => setFilter("mentions")}
           icon={<Hash className="h-4 w-4" />}
           label="Mentions"
+        />
+        <FilterButton
+          active={filter === "institutes"}
+          onClick={() => setFilter("institutes")}
+          icon={<Building className="h-4 w-4" />}
+          label="Institutes"
+        />
+        <FilterButton
+          active={filter === "clubs"}
+          onClick={() => setFilter("clubs")}
+          icon={<Club className="h-4 w-4" />}
+          label="Clubs"
         />
       </div>
     </div>

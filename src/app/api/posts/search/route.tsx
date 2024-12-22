@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from "next/server"
 
+import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
+import { PostSchemaType } from "@/lib/validation"
 
 export async function GET(req: NextRequest) {
   try {
+    const user = await currentUser()
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
+    }
+
     const { searchParams } = new URL(req.url)
     const query = searchParams.get("q")?.toLowerCase() || ""
     const filter = searchParams.get("filter") || "all"
 
-    let results = []
+    let results: PostSchemaType[] = []
 
     switch (filter) {
       case "users":
@@ -22,7 +29,19 @@ export async function GET(req: NextRequest) {
             },
           },
           include: {
-            user: { select: { username: true } },
+            user: {
+              select: {
+                username: true,
+                profile_image: true,
+                verified: true,
+                user: { select: { name: true } },
+              },
+            },
+            likes: {
+              where: { userId: user.id },
+              distinct: ["userId", "postId"],
+              take: 1,
+            },
             _count: {
               select: {
                 likes: true,
@@ -41,7 +60,19 @@ export async function GET(req: NextRequest) {
             ],
           },
           include: {
-            user: { select: { username: true } },
+            user: {
+              select: {
+                username: true,
+                profile_image: true,
+                verified: true,
+                user: { select: { name: true } },
+              },
+            },
+            likes: {
+              where: { userId: user.id },
+              distinct: ["userId", "postId"],
+              take: 1,
+            },
             _count: {
               select: {
                 likes: true,
@@ -57,7 +88,19 @@ export async function GET(req: NextRequest) {
             content: { contains: query, mode: "insensitive" },
           },
           include: {
-            user: { select: { username: true } },
+            user: {
+              select: {
+                username: true,
+                profile_image: true,
+                verified: true,
+                user: { select: { name: true } },
+              },
+            },
+            likes: {
+              where: { userId: user.id },
+              distinct: ["userId", "postId"],
+              take: 1,
+            },
             _count: {
               select: {
                 likes: true,
@@ -70,7 +113,7 @@ export async function GET(req: NextRequest) {
     }
     console.log(filter)
 
-    return NextResponse.json({ results })
+    return NextResponse.json(results, { status: 200 })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }

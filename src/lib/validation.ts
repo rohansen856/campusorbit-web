@@ -30,3 +30,32 @@ export const socialsSchema = z.object({
 export type SocialsFormData = z.infer<typeof socialsSchema>
 
 export type Socials = SocialsFormData & { id: string; userId: string }
+
+export const PostSchema = z.object({
+  user: z.object({
+    user: z.object({
+      name: z.string().nullable(),
+    }),
+    username: z.string(),
+    profile_image: z.string().nullable(),
+    verified: z.boolean().default(false),
+  }),
+  likes: z.array(
+    z.object({
+      id: z.number(),
+      postId: z.number(),
+      userId: z.string(),
+      createdAt: z.date(),
+    })
+  ),
+  _count: z.object({
+    comments: z.number(),
+    likes: z.number(),
+  }),
+  id: z.number(),
+  userId: z.string(),
+  content: z.string(),
+  createdAt: z.date(),
+})
+
+export type PostSchemaType = z.infer<typeof PostSchema>
