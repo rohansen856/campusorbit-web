@@ -43,8 +43,8 @@ export function TotalAttendance({
   ...props
 }: TotalAttendanceProps) {
   const id = "pie-interactive"
-  const [activeCourse, setActiveCourse] = React.useState(
-    subjects[0]?.course_code || undefined
+  const [activeCourse, setActiveCourse] = React.useState<string | undefined>(
+    undefined
   )
 
   const chartConfig = {} satisfies ChartConfig
@@ -105,9 +105,7 @@ export function TotalAttendance({
                 value={item.course_code}
                 className="rounded-lg [&_span]:flex"
               >
-                <div className="flex items-center gap-2 text-xs">
-                  <span>{item.course_code}</span>
-                </div>
+                <p>{item.course_code}</p>
               </SelectItem>
             ))}
           </SelectContent>

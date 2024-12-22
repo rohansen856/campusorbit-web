@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url  	    = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 enum UserRole {
@@ -121,6 +120,16 @@ model Student {
   ClubMember        ClubMember[]
   Attendance        Attendance[]
   Socials           Socials[]
+
+  Post Post[]
+
+  Comment Comment[]
+
+  Like Like[]
+
+  Follower Follow[] @relation("follower")
+
+  Followee Follow[] @relation("followee")
 }
 
 model Schedule {
@@ -203,3 +212,54 @@ model Socials {
   student           Student   @relation(fields: [userId], references: [user_id], onDelete: Cascade)
 }
 
+model Post {
+  id        Int      @id @default(autoincrement())
+  userId    String   @map("user_id")
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      Student  @relation(fields: [userId], references: [user_id], onDelete: Cascade)
+  comments  Comment[]
+  likes     Like[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  userId    String   @map("user_id")
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      Student  @relation(fields: [userId], references: [user_id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      Student  @relation(fields: [userId], references: [user_id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@map("likes")
+}
+
+model Follow {
+  id         Int      @id @default(autoincrement())
+  followerId String   @map("follower_id")
+  followeeId String   @map("followee_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  follower   Student  @relation("follower", fields: [followerId], references: [user_id], onDelete: Cascade)
+  followee   Student  @relation("followee", fields: [followeeId], references: [user_id], onDelete: Cascade)
+
+  @@unique([followerId, followeeId])
+  @@map("follows")
+}

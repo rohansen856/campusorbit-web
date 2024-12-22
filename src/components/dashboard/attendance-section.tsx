@@ -41,10 +41,12 @@ function getGroupedAttendance(
     })
   })
 
-  return Object.entries(groupedByDate).map(([date, details]) => ({
-    date,
-    details,
-  }))
+  return Object.entries(groupedByDate)
+    .map(([date, details]) => ({
+      date,
+      details,
+    }))
+    .sort((a, b) => (a.date > b.date ? 1 : -1))
 }
 
 interface AttendanceSectionProps extends React.HTMLAttributes<HTMLDivElement> {

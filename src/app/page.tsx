@@ -1,53 +1,47 @@
-import Link from "next/link"
-import { ArrowRightIcon } from "@radix-ui/react-icons"
-import { ShieldCheck } from "lucide-react"
+"use client"
 
-import { Button } from "@/components/ui/button"
-import { SignInButton } from "@/components/auth/sign-in-button"
-import { Footer } from "@/components/footer"
+import { useState } from "react"
+import axios from "axios"
 
-export default function HomePage() {
+import { PostFeed } from "@/components/home/post-feed"
+import { SearchBar } from "@/components/home/search-bar"
+import { TrendingSection } from "@/components/home/trending-section"
+
+export default function Home() {
+  const [isSearchActive, setIsSearchActive] = useState(false)
+  const [searchResults, setSearchResults] = useState<any[]>([])
+
+  const handleSearch = async (query: string, filter: string) => {
+    try {
+      if (query.length === 0) {
+        return setIsSearchActive(false)
+      }
+      console.log(query, filter)
+      const res = await axios.get(`/api/posts/search`, {
+        params: { q: query, filter },
+      })
+      const { data } = res
+      setIsSearchActive(true)
+      setSearchResults(data.results)
+    } catch (error) {
+      console.error("Search failed:", error)
+    }
+  }
+
   return (
-    <>
-      <main className="flex h-full min-h-[calc(100vh_-_36px_-_48px)] flex-col items-center justify-center">
-        <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
-          <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
-            <Link href="/" className="flex items-center mb-5">
-              <ShieldCheck
-                strokeWidth={2.5}
-                className="mr-1 w-10 md:w-14 lg:w-16 h-auto"
-              />
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
-                Auth
-              </h1>
-            </Link>
-            <h1 className="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
-              An example authentication app built using Auth.js
-            </h1>
-            <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-lg sm:leading-8">
-              This is a complete authentication example app built with Next.js
-              14 and Auth.js using the latest server actions.
-            </p>
-            <div className="space-x-4 mt-5">
-              <SignInButton mode="redirect" asChild>
-                <Button variant="default" size="lg">
-                  Sign in <ArrowRightIcon className="ml-2" />
-                </Button>
-              </SignInButton>
-              <Button variant="secondary" size="lg" asChild>
-                <Link
-                  href="https://github.com/rohansen856/campusorbit-web"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  GitHub
-                </Link>
-              </Button>
-            </div>
+    <div className="min-h-screen">
+      <main className="container max-w-5xl mx-auto px-4 py-6">
+        <div className="flex">
+          <div className="relative w-full">
+            <SearchBar onSearch={handleSearch} />
+            <PostFeed
+              isSearchActive={isSearchActive}
+              searchResults={searchResults}
+            />
           </div>
-        </section>
+          <TrendingSection />
+        </div>
       </main>
-      <Footer />
-    </>
+    </div>
   )
 }

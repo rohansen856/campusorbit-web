@@ -22,11 +22,9 @@ const mainNavItems = [
   {
     title: "Features",
     items: [
-      { title: "Text Translation", href: "/translate" },
-      { title: "Document Translation", href: "/translate/file" },
-      { title: "Batch Translation", href: "/translate/multi" },
-      { title: "Language Alphabets", href: "/alphabets" },
-      { title: "Language Country Map", href: "/language-maps" },
+      { title: "Dashboard", href: "/dashboard" },
+      { title: "Clubs", href: "/clubs" },
+      { title: "Find Users", href: "/users" },
     ],
   },
   {
@@ -39,7 +37,7 @@ const mainNavItems = [
     ],
   },
   {
-    title: "Company",
+    title: "About",
     items: [
       { title: "About Us", href: "/about" },
       { title: "Contact", href: "/contact" },
