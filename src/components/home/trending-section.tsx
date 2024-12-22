@@ -68,7 +68,7 @@ export function TrendingSection() {
   const timeRanges: TimeRange[] = ["day", "week", "month", "year"]
 
   return (
-    <div className="hidden lg:block w-96 ml-8">
+    <div className="hidden lg:block w-96">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
         <h2 className="text-xl font-bold mb-4 flex items-center">
           <TrendingUp className="h-5 w-5 mr-2" />

@@ -6,7 +6,7 @@ import axios from "axios"
 import { formatDistanceToNow } from "date-fns"
 import { AnimatePresence, motion } from "framer-motion"
 import {
-  Check,
+  CheckCircle2,
   ChevronDown,
   ChevronUp,
   Heart,
@@ -52,9 +52,11 @@ export function Post({ post }: PostProps) {
 
   async function likePost() {
     try {
-      await axios.post(`/api/posts/like/${post.id}`)
+      const res = await axios.post(`/api/posts/like/${post.id}`)
+      console.log(res)
       setIsLiked(!isLiked)
-      toast.success("You liked the post!")
+      if (res.status === 202) toast.success("You liked the post!")
+      if (res.status === 200) toast.success("You disliked the post!")
     } catch (error) {
       toast.error("Failed to like the post!")
     }
@@ -76,7 +78,7 @@ export function Post({ post }: PostProps) {
   }, [content])
 
   return (
-    <Card className="w-full max-w-2xl mx-auto overflow-hidden border-0">
+    <Card className="w-full max-w-2xl mx-auto overflow-hidden border-0 bg-transparent">
       <CardHeader className="flex flex-row items-center justify-center space-x-4 p-4 border-b">
         <Avatar className="size-12">
           <AvatarImage
@@ -98,7 +100,7 @@ export function Post({ post }: PostProps) {
                   "bg-green-700/10 border-green-700 text-green-700"
                 )}
               >
-                verified <Check className="size-4" />{" "}
+                verified <CheckCircle2 className="size-4 ml-1" />{" "}
               </Badge>
             )}
           </h3>

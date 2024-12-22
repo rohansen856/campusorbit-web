@@ -38,7 +38,7 @@ export async function POST(
       },
     })
 
-    let like
+    let like, status
     if (existingLike) {
       // Unlike the post
       like = await db.like.delete({
@@ -49,6 +49,7 @@ export async function POST(
           },
         },
       })
+      status = 200
     } else {
       // Like the post
       like = await db.like.create({
@@ -57,9 +58,10 @@ export async function POST(
           userId: user.id,
         },
       })
+      status = 202
     }
 
-    return NextResponse.json(like)
+    return NextResponse.json(like, { status })
   } catch (error) {
     console.error("[POST_LIKE]", error)
     return new NextResponse("Internal Server Error", { status: 500 })

@@ -83,7 +83,7 @@ export function PostFeed({ isSearchActive, searchResults }: PostFeedProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
-            className="overflow-hidden border border-t-0"
+            className="overflow-hidden border border-t-0 hover:bg-secondary/20"
           >
             <Post post={post} />
           </motion.div>
