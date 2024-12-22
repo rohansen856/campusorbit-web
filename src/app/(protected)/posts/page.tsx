@@ -6,6 +6,7 @@ import axios from "axios"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { MyPostsList } from "@/components/posts/posts-list"
+import { ScrollToTopButton } from "@/components/scroll-to-top"
 
 export default function MyPostsPage() {
   const { toast } = useToast()
@@ -45,11 +46,12 @@ export default function MyPostsPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <div className="max-w-2xl mx-auto p-4">
         <h1 className="text-2xl font-bold mb-6">Your Posts</h1>
         <MyPostsList onDelete={handleDelete} onUpdate={handleUpdate} />
       </div>
+      <ScrollToTopButton />
       <Toaster />
     </div>
   )

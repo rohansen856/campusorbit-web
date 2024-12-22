@@ -75,7 +75,9 @@ export function MyPostsList({ onDelete, onUpdate }: MyPostsListProps) {
         </motion.div>
       }
       endMessage={
-        <p className="text-center text-gray-500 py-4">No more posts</p>
+        <p className="text-center text-secondary-foreground py-4">
+          No more posts
+        </p>
       }
     >
       <AnimatePresence mode="popLayout">

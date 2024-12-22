@@ -31,7 +31,7 @@ export type SocialsFormData = z.infer<typeof socialsSchema>
 
 export type Socials = SocialsFormData & { id: string; userId: string }
 
-export const PostSchema = z.object({
+export const postSchema = z.object({
   user: z.object({
     user: z.object({
       name: z.string().nullable(),
@@ -58,4 +58,4 @@ export const PostSchema = z.object({
   createdAt: z.date(),
 })
 
-export type PostSchemaType = z.infer<typeof PostSchema>
+export type PostSchemaType = z.infer<typeof postSchema>

@@ -54,7 +54,7 @@ export function MyPostItem({ post, onDelete, onUpdate }: MyPostItemProps) {
 
   useEffect(() => {
     parseContent()
-  }, [post.content])
+  }, [post])
 
   return (
     <motion.div
@@ -62,10 +62,10 @@ export function MyPostItem({ post, onDelete, onUpdate }: MyPostItemProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-4"
+      className="bg-secondary/50 rounded shadow-sm p-4 mb-2"
     >
       <div className="flex items-start space-x-4">
-        <div className="relative h-10 w-10 rounded-full overflow-hidden">
+        <div className="relative h-12 w-12 rounded-full border border-primary/10 overflow-hidden">
           <Avatar className="size-12">
             <AvatarImage
               src={post.user.profile_image || ""}

@@ -79,7 +79,6 @@ export async function GET(req: NextRequest) {
         },
       },
     })
-    console.log(posts[0])
 
     const nextCursor = posts[limit - 1]?.id.toString()
 

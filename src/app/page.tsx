@@ -14,7 +14,9 @@ export default function Home() {
         <div className="flex gap-4">
           <SideMenuSection />
           <AllPostsSection />
-          <TrendingSection />
+          <div className="hidden lg:block w-[500px]">
+            <TrendingSection />
+          </div>
         </div>
       </main>
       <ScrollToTopButton />

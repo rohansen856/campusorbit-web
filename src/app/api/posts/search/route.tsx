@@ -109,9 +109,7 @@ export async function GET(req: NextRequest) {
             },
           },
         })
-        console.log(query, results.length)
     }
-    console.log(filter)
 
     return NextResponse.json(results, { status: 200 })
   } catch (error) {

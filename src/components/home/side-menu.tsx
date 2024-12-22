@@ -11,22 +11,28 @@ export function SideMenuSection() {
   return (
     <div className="hidden w-96 lg:flex flex-col gap-2 h-[80vh]">
       <Link
-        href={"/"}
+        href={"/dashboard"}
         className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
       >
         Class Schedules
       </Link>
       <Link
-        href={"/"}
+        href={"/clubs"}
         className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
       >
         View Clubs
       </Link>
       <Link
-        href={"/"}
+        href={"/users"}
         className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
       >
         Find Users
+      </Link>
+      <Link
+        href={"/posts/trending"}
+        className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
+      >
+        Trending Posts
       </Link>
       <Link
         href={"/posts"}

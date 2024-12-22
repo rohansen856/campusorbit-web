@@ -9,6 +9,8 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import { PostSchemaType } from "@/lib/validation"
 import { Post } from "@/components/home/post"
 
+import { PostSkeleton } from "./post-skeleton"
+
 export type UserType = {
   id: string
   username: string
@@ -63,15 +65,11 @@ export function PostFeed({ isSearchActive, searchResults }: PostFeedProps) {
       next={fetchPosts}
       hasMore={hasMore}
       loader={
-        <motion.div
-          key="loading"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="flex justify-center py-12"
-        >
-          <Loader className="size-6 animate-spin" />
-        </motion.div>
+        <div className="flex flex-col gap-8">
+          <PostSkeleton />
+          <PostSkeleton />
+          <PostSkeleton />
+        </div>
       }
       endMessage={<div className="p-4 text-center">No more posts</div>}
     >
