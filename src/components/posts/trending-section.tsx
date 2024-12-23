@@ -129,14 +129,14 @@ export function TrendingSection() {
               Trending this {range}
             </h3>
 
-            {trendingPosts[range].length === 0 ? (
+            {trendingPosts[range]?.length === 0 ? (
               <p className="pl-8 italic">No posts found for this {range}</p>
             ) : (
               (trendingPosts[range] || []).map((post, index) => (
                 <motion.div
                   key={post.id + index}
                   whileHover={{ scale: 1.02 }}
-                  className="mb-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                  className="mb-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer overflow-hidden"
                 >
                   <div className="flex items-start">
                     <span className="text-2xl font-bold text-gray-300 mr-3">
@@ -146,7 +146,7 @@ export function TrendingSection() {
                       <p className="font-medium text-sm">
                         {post.user.username}
                       </p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 max-w-full">
                         {post.content}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">

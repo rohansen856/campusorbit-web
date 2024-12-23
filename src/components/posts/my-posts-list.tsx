@@ -8,7 +8,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 
 import { PostSchemaType } from "@/lib/validation"
 
-import { MyPostItem } from "./post-item"
+import { MyPostItem } from "./my-post-item"
 
 type MyPostsListProps = {
   onDelete: (postId: string) => Promise<void>

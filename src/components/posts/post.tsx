@@ -15,6 +15,7 @@ import {
   MessageSquare,
   Share,
 } from "lucide-react"
+import rehypeHightlight from "rehype-highlight"
 import rehypeSanitize from "rehype-sanitize"
 import rehypeStringify from "rehype-stringify"
 import remarkParse from "remark-parse"
@@ -55,6 +56,7 @@ export function Post({ post }: PostProps) {
         .use(remarkRehype)
         .use(rehypeSanitize)
         .use(rehypeStringify)
+        .use(rehypeHightlight)
         .process(post.content)
       const parsedContent = file.value.toString()
       setContent(parsedContent)

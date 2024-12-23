@@ -7,7 +7,7 @@ import { Loader } from "lucide-react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 import { PostSchemaType } from "@/lib/validation"
-import { Post } from "@/components/home/post"
+import { Post } from "@/components/posts/post"
 
 import { PostSkeleton } from "./post-skeleton"
 

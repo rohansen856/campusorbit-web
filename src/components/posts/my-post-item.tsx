@@ -6,6 +6,7 @@ import { formatDistanceToNow } from "date-fns"
 import { motion } from "framer-motion"
 import { Check, Loader, Pencil, Trash2, X } from "lucide-react"
 import TextareaAutosize from "react-textarea-autosize"
+import rehypeHighlight from "rehype-highlight"
 import rehypeSanitize from "rehype-sanitize"
 import rehypeStringify from "rehype-stringify"
 import remarkParse from "remark-parse"
@@ -32,6 +33,7 @@ export function MyPostItem({ post, onDelete, onUpdate }: MyPostItemProps) {
       .use(remarkRehype)
       .use(rehypeSanitize)
       .use(rehypeStringify)
+      .use(rehypeHighlight)
       .process(post.content)
     const parsedContent = file.value.toString()
     setContent(parsedContent)

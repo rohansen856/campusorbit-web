@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react"
 
 import "./globals.css"
 
+import Image from "next/image"
 import { auth } from "@/auth"
 
 import { cn } from "@/lib/utils"
@@ -47,10 +48,15 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en" suppressHydrationWarning>
-        <body className={cn("relative", inter.className)}>
+        <body
+          className={cn(
+            "relative max-w-full overflow-x-hidden",
+            inter.className
+          )}
+        >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <MainNav />
-            {children}
+            <main className="z-10">{children}</main>
           </ThemeProvider>
         </body>
       </html>

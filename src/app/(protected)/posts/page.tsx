@@ -1,58 +1,24 @@
-"use client"
+import { Toaster } from "sonner"
 
-import { useRouter } from "next/navigation"
-import axios from "axios"
-
-import { useToast } from "@/hooks/use-toast"
-import { Toaster } from "@/components/ui/toaster"
-import { MyPostsList } from "@/components/posts/posts-list"
+import { AllPostsSection } from "@/components/posts/all-post-section"
+import { SideMenuSection } from "@/components/posts/side-menu"
+import { TrendingSection } from "@/components/posts/trending-section"
 import { ScrollToTopButton } from "@/components/scroll-to-top"
 
-export default function MyPostsPage() {
-  const { toast } = useToast()
-
-  const handleDelete = async (postId: string) => {
-    try {
-      await axios.delete(`/api/posts/${postId}`)
-
-      toast({
-        title: "Success",
-        description: "Post deleted successfully",
-      })
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete post",
-        variant: "destructive",
-      })
-    }
-  }
-
-  const handleUpdate = async (postId: string, content: string) => {
-    try {
-      await axios.patch(`/api/posts/${postId}`, { content })
-
-      toast({
-        title: "Success",
-        description: "Post updated successfully",
-      })
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update post",
-        variant: "destructive",
-      })
-    }
-  }
-
+export default async function Home() {
   return (
-    <div className="min-h-screen relative">
-      <div className="max-w-2xl mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-6">Your Posts</h1>
-        <MyPostsList onDelete={handleDelete} onUpdate={handleUpdate} />
-      </div>
-      <ScrollToTopButton />
+    <div className="relative min-h-screen">
       <Toaster />
+      <main className="container max-w-6xl mx-auto px-4 py-6">
+        <div className="flex gap-4">
+          <SideMenuSection />
+          <AllPostsSection />
+          <div className="hidden lg:block w-[500px]">
+            <TrendingSection />
+          </div>
+        </div>
+      </main>
+      <ScrollToTopButton />
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Building, Club, Hash, Search, User } from "lucide-react"
 
-import { FilterButton } from "@/components/home/filter-button"
+import { FilterButton } from "@/components/posts/filter-button"
 
 import { SearchFilter } from "./post-feed"
 

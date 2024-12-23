@@ -4,8 +4,8 @@ import { useState } from "react"
 import axios from "axios"
 
 import { PostSchemaType } from "@/lib/validation"
-import { PostFeed } from "@/components/home/post-feed"
-import { SearchBar } from "@/components/home/search-bar"
+import { PostFeed } from "@/components/posts/post-feed"
+import { SearchBar } from "@/components/posts/search-bar"
 
 export function AllPostsSection() {
   const [isSearchActive, setIsSearchActive] = useState(false)

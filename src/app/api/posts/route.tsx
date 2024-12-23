@@ -6,7 +6,7 @@ import { db } from "@/lib/db"
 import { PostSchemaType } from "@/lib/validation"
 
 const PostSchema = z.object({
-  content: z.string().min(1).max(3000),
+  content: z.string().min(1).max(1000),
 })
 
 export async function POST(req: NextRequest) {

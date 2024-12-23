@@ -1,6 +1,6 @@
 "use client"
 
-import { TrendingSection } from "@/components/home/trending-section"
+import { TrendingSection } from "@/components/posts/trending-section"
 
 export default function TrendingPage() {
   return (
