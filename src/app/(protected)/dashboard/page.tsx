@@ -26,13 +26,10 @@ export default async function ProfilePage() {
   if (!student) return null
 
   return (
-    <div>
-      <div className="w-full flex gap-4 flex-col-reverse md:flex-row mb-16">
-        <AttendanceSection student={student} />
-        <Separator className="w-full md:hidden" />
-        <div className="w-full md:w-2/5 md:border-l border-t md:border-t-0 py-4 md:pt-0">
-          <ScheduleSection student={student} />
-        </div>
+    <div className="w-full flex gap-4 flex-col-reverse md:flex-row mb-16">
+      <AttendanceSection student={student} />
+      <div className="w-full md:w-2/5 py-4 md:pt-0">
+        <ScheduleSection student={student} />
       </div>
     </div>
   )

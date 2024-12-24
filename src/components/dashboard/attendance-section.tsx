@@ -1,8 +1,12 @@
+import React, { useState } from "react"
 import { Student } from "@prisma/client"
+import { Calendar } from "lucide-react"
 
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
 import { cn } from "@/lib/utils"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { ScrollArea } from "../ui/scroll-area"
 import { AttendanceGraph } from "./attendance-graph"
@@ -29,7 +33,7 @@ function getGroupedAttendance(
 
   records.forEach((record) => {
     const { attendanceDate, status, schedule } = record
-    const date = new Date(attendanceDate).toISOString() // Standardize date format
+    const date = new Date(attendanceDate).toISOString()
 
     if (!groupedByDate[date]) {
       groupedByDate[date] = []
@@ -47,6 +51,64 @@ function getGroupedAttendance(
       details,
     }))
     .sort((a, b) => (a.date > b.date ? 1 : -1))
+}
+
+const StatusBadge = ({ status }: { status: string }) => {
+  const statusConfig = {
+    PRESENT: {
+      bg: "bg-green-500/30",
+      border: "border-green-500",
+      text: "Present",
+    },
+    ABSENT: { bg: "bg-red-500/30", border: "border-red-500", text: "Absent" },
+    EXCUSED: {
+      bg: "bg-gray-500/30",
+      border: "border-gray-500",
+      text: "Excused",
+    },
+  }
+
+  const config = statusConfig[status as keyof typeof statusConfig]
+
+  return (
+    <span
+      className={cn("text-xs px-2 py-1 rounded-full", config.bg, config.border)}
+    >
+      {config.text}
+    </span>
+  )
+}
+
+const AttendanceCard = ({ attendance }: { attendance: TransformedRecord }) => {
+  return (
+    <Card className="h-full">
+      <CardHeader className="p-3">
+        <div className="flex items-center gap-2">
+          <Calendar className="w-4 h-4 text-muted-foreground" />
+          <CardTitle className="text-sm font-medium">
+            {new Intl.DateTimeFormat("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            }).format(new Date(attendance.date))}
+          </CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent className="p-3 pt-0">
+        <div className="space-y-2">
+          {attendance.details.map((detail) => (
+            <div
+              key={detail.course_code}
+              className="flex items-center justify-between p-2 rounded bg-muted/50"
+            >
+              <span className="text-sm font-medium">{detail.course_code}</span>
+              <StatusBadge status={detail.status} />
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
 }
 
 interface AttendanceSectionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -92,47 +154,40 @@ export async function AttendanceSection({
       },
     },
   })
+
   const groupedAttendance = getGroupedAttendance(attendanceHistory)
 
   return (
-    <section className="w-full flex flex-col-reverse md:flex-row pr-0">
-      <div className="w-full md:w-[400px] h-full md:pr-4 md:border-r md:mr-4">
-        <AttendanceGraph subjects={allSubjects} />
-        <TotalAttendance
-          subjects={allSubjects}
-          attendanceData={groupedAttendance}
-        />
-      </div>
-      <ScrollArea className="max-h-[70vh] w-full pr-2">
-        <div className="grid gap-2 grid-cols-3 md:grid-cols-2 xl:grid-cols-6 w-full">
-          {groupedAttendance.map((attendance) => (
-            <div className="h-64 p-2 col-span-1" key={attendance.date}>
-              <p className="text-sm text-muted-foreground text-center mb-4 pb-px border-b-2">
-                {new Intl.DateTimeFormat("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                }).format(new Date(attendance.date))}
-              </p>
-              {attendance.details.map((detail) => (
-                <p
-                  key={detail.course_code}
-                  className={cn(
-                    "min-w-24 w-full rounded text-center border mb-2",
-                    detail.status === "PRESENT" &&
-                      "bg-green-500/30 border-green-500",
-                    detail.status === "ABSENT" &&
-                      "bg-red-500/30 border-red-500",
-                    detail.status === "EXCUSED" &&
-                      "bg-gray-500/30 border-gray-500"
-                  )}
-                >
-                  {detail.course_code}
-                </p>
+    <Card className="w-full p-0 h-[80vh] border-none">
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="w-full justify-start mb-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="history">Attendance History</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="mt-0 h-full">
+          <div className="grid gap-4 md:grid-cols-2">
+            <AttendanceGraph
+              subjects={allSubjects}
+              attendanceData={groupedAttendance}
+            />
+            <TotalAttendance
+              subjects={allSubjects}
+              attendanceData={groupedAttendance}
+            />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="history" className="mt-0">
+          <ScrollArea className="h-[75vh]">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {groupedAttendance.map((attendance) => (
+                <AttendanceCard key={attendance.date} attendance={attendance} />
               ))}
             </div>
-          ))}
-        </div>
-      </ScrollArea>
-    </section>
+          </ScrollArea>
+        </TabsContent>
+      </Tabs>
+    </Card>
   )
 }

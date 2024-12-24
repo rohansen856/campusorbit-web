@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Schedule, Student } from "@prisma/client"
 import axios, { AxiosError } from "axios"
 import { format } from "date-fns"
@@ -28,11 +29,13 @@ export function ScheduleCard({
 
   async function markAttendance(status: "PRESENT" | "ABSENT" | "EXCUSED") {
     try {
+      const date = new Date()
+      date.setDate(date.getDate() + (schedule.day - new Date().getDay()))
       const res = await axios.post("/api/attendance", {
         studentId: student.user_id,
         scheduleId: schedule.id,
         status,
-        date: new Date(),
+        date,
       })
       console.log({
         studentId: student.user_id,
@@ -70,6 +73,9 @@ export function ScheduleCard({
             <div className="flex items-center gap-2 text-xs">
               <Badge variant="outline" className={typeColors?.text}>
                 {schedule.course_code}
+              </Badge>
+              <Badge variant="outline" className={typeColors?.text}>
+                {schedule.type}
               </Badge>
             </div>
           </div>

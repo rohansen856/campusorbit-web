@@ -234,7 +234,7 @@ export function Post({ post }: PostProps) {
             disabled={isLikeLoading}
           >
             {isLikeLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader className="mr-2 h-4 w-4 animate-spin" />
             ) : isLiked ? (
               <HeartFilledIcon className="mr-2 h-4 w-4 text-rose-700" />
             ) : (

@@ -1,7 +1,19 @@
 "use client"
 
 import * as React from "react"
-import { Label, Pie, PieChart, Sector } from "recharts"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Label,
+  LabelList,
+  Pie,
+  PieChart,
+  Rectangle,
+  RectangleProps,
+  Sector,
+  XAxis,
+} from "recharts"
 import { PieSectorDataItem } from "recharts/types/polar/Pie"
 
 import {
@@ -37,152 +49,170 @@ interface TotalAttendanceProps extends React.HTMLAttributes<HTMLDivElement> {
   }[]
 }
 
+const CustomBar = ({ ...props }: RectangleProps) => {
+  const { fill, x, y, width, height, color } = props
+  const minHeight = 4
+
+  return (
+    <Rectangle
+      {...props}
+      fill={color ? color : fill}
+      y={
+        height && height > minHeight
+          ? y
+          : (y as number) - (minHeight - (height as number))
+      }
+      height={Math.max(minHeight, height as number)}
+    />
+  )
+}
+
 export function TotalAttendance({
   subjects,
   attendanceData,
   ...props
 }: TotalAttendanceProps) {
-  const id = "pie-interactive"
-  const [activeCourse, setActiveCourse] = React.useState<string | undefined>(
-    undefined
-  )
-
-  const chartConfig = {} satisfies ChartConfig
+  const chartConfig = {
+    present: {
+      label: "Present",
+      color: "hsl(var(--chart-1))",
+    },
+    absent: {
+      label: "Absent",
+      color: "hsl(var(--chart-2))",
+    },
+  } satisfies ChartConfig
 
   let i = 0
-  const result: { course_code: string; total: number; fill: string }[] =
-    Object.values(
-      attendanceData
-        .flatMap((item) => item.details)
-        .reduce(
-          (
-            acc: Record<
-              string,
-              { course_code: string; total: number; fill: string }
-            >,
-            { course_code }
-          ) => {
-            acc[course_code] = acc[course_code] || {
-              course_code,
-              total: 0,
-              fill: "",
+  const result: {
+    course_code: string
+    present: number
+    absent: number
+  }[] = Object.values(
+    attendanceData
+      .flatMap((item) => item.details)
+      .reduce(
+        (
+          acc: Record<
+            string,
+            {
+              course_code: string
+              present: number
+              absent: number
+              fill: string
             }
-            acc[course_code].total += 1
-            acc[course_code].fill = "hsl(var(--chart-" + ((i % 5) + 1) + "))"
-            i++
-            return acc
-          },
-          {}
-        )
-    )
-
-  console.log(result)
-
-  const activeIndex = React.useMemo(
-    () => result.findIndex((item) => item.course_code === activeCourse),
-    [activeCourse, result]
+          >,
+          { course_code, status }
+        ) => {
+          acc[course_code] = acc[course_code] || {
+            course_code,
+            present: 0,
+            absent: 0,
+            fill: "",
+          }
+          if (status === "PRESENT") {
+            acc[course_code].present += 1
+          } else if (status === "ABSENT") {
+            acc[course_code].absent += 1
+          }
+          i++
+          return acc
+        },
+        {}
+      )
   )
 
   return (
-    <div data-chart={id} className="w-full pr-4 md:pr-0">
-      <ChartStyle id={id} config={chartConfig} />
-      <div className="grid gap-2 mb-4">
-        <CardTitle className="text-center">Total Classes Recorded</CardTitle>
-        <Select value={activeCourse} onValueChange={setActiveCourse}>
-          <SelectTrigger
-            className="w-full bg-secondary"
-            aria-label="Select a course"
-          >
-            <SelectValue
-              placeholder="Select course"
-              defaultValue={result[0]?.course_code}
-            />
-          </SelectTrigger>
-          <SelectContent align="end" className="rounded-xl">
-            {result.map((item) => (
-              <SelectItem
-                key={item.course_code}
-                value={item.course_code}
-                className="rounded-lg [&_span]:flex"
-              >
-                <p>{item.course_code}</p>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <CardContent className="flex flex-1 flex-col justify-center pb-0 w-full">
-        {subjects.length === 0 && (
-          <div className="w-full py-12 text-yellow-500 text-center">
-            No Data available
-          </div>
-        )}
-        <ChartContainer
-          id={id}
-          config={chartConfig}
-          className="mx-auto aspect-square w-full max-w-[300px]"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Pie
-              data={result}
-              dataKey="total"
-              nameKey="course_code"
-              innerRadius={60}
-              strokeWidth={5}
-              activeIndex={activeIndex}
-              activeShape={({
-                outerRadius = 0,
-                ...props
-              }: PieSectorDataItem) => (
-                <g>
-                  <Sector {...props} outerRadius={outerRadius + 10} />
-                  <Sector
-                    {...props}
-                    outerRadius={outerRadius + 25}
-                    innerRadius={outerRadius + 12}
-                  />
-                </g>
-              )}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
-                        >
-                          {result[activeIndex]?.total.toLocaleString() ||
-                            result.reduce((sum, item) => sum + item.total, 0) ||
-                            0}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          Classes
-                        </tspan>
-                      </text>
-                    )
-                  }
-                }}
+    <Card className="flex flex-col">
+      <CardHeader>
+        <CardTitle>Total Attendance</CardTitle>
+      </CardHeader>
+      <CardContent className="h-full">
+        <div className="mt-12 md:mt-32">
+          <ChartContainer config={chartConfig}>
+            <BarChart accessibilityLayer data={result}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="course_code"
+                tickLine={true}
+                tickMargin={10}
+                axisLine={true}
               />
-            </Pie>
-          </PieChart>
-        </ChartContainer>
+              <Bar
+                dataKey="present"
+                shape={<CustomBar color={"hsl(var(--chart-1))"} />}
+                radius={4}
+              >
+                <LabelList
+                  dataKey="present"
+                  position="centerBottom"
+                  className="fill-primary"
+                  fontSize={20}
+                />
+              </Bar>
+              <Bar
+                dataKey="absent"
+                shape={<CustomBar color={"hsl(var(--chart-2))"} />}
+                radius={4}
+              >
+                <LabelList
+                  dataKey="absent"
+                  position="centerBottom"
+                  className="fill-primary"
+                  fontSize={20}
+                />
+              </Bar>
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    hideLabel
+                    className="w-[180px]"
+                    formatter={(value, name, item) => {
+                      if (!item || !item.payload) {
+                        return null // Return null if item or item.payload is undefined
+                      }
+                      return (
+                        <>
+                          <div
+                            className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
+                            style={
+                              {
+                                "--color-bg": `var(--color-${name})`,
+                              } as React.CSSProperties
+                            }
+                          />
+                          {chartConfig[name as keyof typeof chartConfig]
+                            ?.label || name}
+                          <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                            {value}
+                            <span className="font-normal text-muted-foreground">
+                              classes
+                            </span>
+                          </div>
+                          {/* Add total after the last item */}
+                          {name === "absent" && (
+                            <div className="mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground">
+                              Total
+                              <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                                {(item.payload.present || 0) +
+                                  (item.payload.absent || 0)}
+                                <span className="font-normal text-muted-foreground">
+                                  classes
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )
+                    }}
+                  />
+                }
+                cursor={false}
+              />
+            </BarChart>
+          </ChartContainer>
+        </div>
       </CardContent>
-    </div>
+    </Card>
   )
 }
