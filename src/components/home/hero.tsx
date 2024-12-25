@@ -1,10 +1,12 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { Calendar, ClipboardCheck, GraduationCap, Users } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { Button, buttonVariants } from "@/components/ui/button"
 
 export function HeroSection() {
   return (
@@ -29,19 +31,31 @@ export function HeroSection() {
               management.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              <Link
+                href={"/dashboard"}
+                className={cn(
+                  buttonVariants({
+                    size: "lg",
+                    className:
+                      "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200",
+                  })
+                )}
               >
                 Join Now
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-purple-600/10"
+              </Link>
+              <Link
+                href={"/dashboard"}
+                className={cn(
+                  buttonVariants({
+                    size: "lg",
+                    variant: "outline",
+                    className:
+                      "border-2 hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-purple-600/10",
+                  })
+                )}
               >
                 Learn More
-              </Button>
+              </Link>
             </div>
           </motion.div>
 

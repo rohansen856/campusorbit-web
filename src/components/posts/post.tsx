@@ -11,6 +11,7 @@ import {
   ChevronDown,
   ChevronUp,
   Heart,
+  Loader,
   Loader2,
   MessageSquare,
   Share,
@@ -234,11 +235,11 @@ export function Post({ post }: PostProps) {
             disabled={isLikeLoading}
           >
             {isLikeLoading ? (
-              <Loader className="mr-2 h-4 w-4 animate-spin" />
+              <Loader className="mr-2 size-4 animate-spin" />
             ) : isLiked ? (
-              <HeartFilledIcon className="mr-2 h-4 w-4 text-rose-700" />
+              <HeartFilledIcon className="mr-2 size-4 text-rose-700" />
             ) : (
-              <Heart className="mr-2 h-4 w-4" />
+              <Heart className="mr-2 size-4" />
             )}
             <motion.span
               key={isLiked ? "liked" : "unliked"}

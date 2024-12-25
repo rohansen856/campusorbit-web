@@ -5,7 +5,7 @@ import { Schedule, Student } from "@prisma/client"
 import axios, { AxiosError } from "axios"
 import { format } from "date-fns"
 import { motion } from "framer-motion"
-import { Check, Clock, MapPin, User, X } from "lucide-react"
+import { CalendarDays, Check, Clock, MapPin, User, X } from "lucide-react"
 import { toast } from "sonner"
 
 import { courseTypeColors } from "@/lib/theme-utils"
@@ -26,16 +26,18 @@ export function ScheduleCard({
 }: ScheduleCardProps) {
   const typeColors =
     courseTypeColors[schedule.type as keyof typeof courseTypeColors]
+  const scheduleDate = new Date()
+  scheduleDate.setDate(
+    scheduleDate.getDate() + (schedule.day - new Date().getDay())
+  )
 
   async function markAttendance(status: "PRESENT" | "ABSENT" | "EXCUSED") {
     try {
-      const date = new Date()
-      date.setDate(date.getDate() + (schedule.day - new Date().getDay()))
       const res = await axios.post("/api/attendance", {
         studentId: student.user_id,
         scheduleId: schedule.id,
         status,
-        date,
+        date: scheduleDate,
       })
       console.log({
         studentId: student.user_id,
@@ -101,6 +103,18 @@ export function ScheduleCard({
               {format(new Date(schedule.to), "hh:mm a")}
             </span>
           </div>
+
+          {scheduleDate.getDay() !== new Date().getDay() && (
+            <div className="flex items-center gap-1.5 col-span-2">
+              <CalendarDays className={`w-3.5 h-3.5 ${typeColors?.icon}`} />
+              <span>
+                {scheduleDate.toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                })}
+              </span>
+            </div>
+          )}
         </div>
       </div>
       {student.institute_id === schedule.institute_id &&

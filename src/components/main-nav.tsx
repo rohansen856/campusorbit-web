@@ -27,6 +27,7 @@ const mainNavItems = [
       { title: "Dashboard", href: "/dashboard" },
       { title: "Clubs", href: "/clubs" },
       { title: "Find Users", href: "/users" },
+      { title: "View Posts", href: "/posts" },
     ],
   },
   {
@@ -87,7 +88,7 @@ const Sidebar = ({ isOpen, navItems, router }: any) => (
         <div className="flex flex-col p-4">
           {navItems.map((section: any) => (
             <div key={section.title} className="mb-6">
-              <h3 className="mb-2 px-4 text-sm font-semibold text-muted-foreground">
+              <h3 className="mb-2 px-4 text-sm font-semibold text-muted-foreground border-b">
                 {section.title}
               </h3>
               <div className="space-y-1">
@@ -95,7 +96,7 @@ const Sidebar = ({ isOpen, navItems, router }: any) => (
                   <button
                     key={item.title}
                     onClick={() => router.push(item.href)}
-                    className="w-full rounded-lg px-4 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                    className="w-full rounded-lg px-4 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground text-left"
                   >
                     {item.title}
                   </button>

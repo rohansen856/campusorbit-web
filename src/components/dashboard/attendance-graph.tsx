@@ -145,13 +145,13 @@ export function AttendanceGraph({
           ) : (
             <ChartContainer
               config={radialChartConfig}
-              className="mx-auto aspect-square w-full max-w-md"
+              className="mx-auto aspect-square w-full"
             >
               <RadialBarChart
                 data={radialChartData}
                 endAngle={180}
-                innerRadius={80}
-                outerRadius={130}
+                innerRadius={150}
+                outerRadius={250}
               >
                 <ChartTooltip
                   cursor={false}
