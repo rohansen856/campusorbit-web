@@ -81,12 +81,12 @@ export function ProfileHeader({ user }: { user: any }) {
               className="flex gap-2"
             >
               <Button size="lg" className="bg-blue-500 hover:bg-blue-600">
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Message
+                <MessageSquare className="w-4 h-4 md:mr-2" />
+                <span className="hidden md:block">Message</span>
               </Button>
               <Button size="lg" variant="outline" className="border-2">
-                <Heart className="w-4 h-4 mr-2" />
-                Follow
+                <Heart className="w-4 h-4 md:mr-2" />
+                <span className="hidden md:block">Follow</span>
               </Button>
               <Button size="icon" variant="ghost">
                 <Share2 className="w-5 h-5" />

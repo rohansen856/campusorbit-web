@@ -47,6 +47,7 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
     axios
       .get("/api/institutes")
       .then((response: AxiosResponse<Institute[]>) => {
+        console.log(response.data)
         setInstitutes(response.data.toSorted())
       })
   }, [])
@@ -69,14 +70,14 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="justify-between"
+              className="justify-between col-span-2 md:col-span-1"
             >
               {filters.instituteId
                 ? institutes.find(

@@ -75,7 +75,7 @@ const HamburgerButton = ({ isOpen, toggle }: any) => (
   </button>
 )
 
-const Sidebar = ({ isOpen, navItems, router }: any) => (
+const Sidebar = ({ isOpen, navItems }: any) => (
   <AnimatePresence>
     {isOpen && (
       <motion.div
@@ -93,13 +93,13 @@ const Sidebar = ({ isOpen, navItems, router }: any) => (
               </h3>
               <div className="space-y-1">
                 {section.items.map((item: any) => (
-                  <button
+                  <Link
+                    href={item.href}
                     key={item.title}
-                    onClick={() => router.push(item.href)}
-                    className="w-full rounded-lg px-4 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground text-left"
+                    className="block w-full rounded-lg px-4 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground text-left"
                   >
                     {item.title}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -111,7 +111,6 @@ const Sidebar = ({ isOpen, navItems, router }: any) => (
 )
 
 export function MainNav() {
-  const router = useRouter()
   const user = useCurrentUser()
   const [isOpen, setIsOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -130,15 +129,15 @@ export function MainNav() {
       <nav className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="relative flex items-center space-x-8 w-full">
-            <div
-              className="flex cursor-pointer items-center space-x-4"
-              onClick={() => router.push("/")}
+            <Link
+              href={"/"}
+              className="flex cursor-pointer items-center space-x-2 md:space-x-4"
             >
               <Logo />
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-lg font-bold text-transparent">
                 Campusorbit
               </span>
-            </div>
+            </Link>
             {!isMobile && (
               <NavigationMenu>
                 <NavigationMenuList>
@@ -170,7 +169,7 @@ export function MainNav() {
                 </NavigationMenuList>
               </NavigationMenu>
             )}
-            <div className="flex items-center space-x-8 m-auto absolute right-0">
+            <div className="flex items-center space-x-2 md:space-x-4 xl:space-x-8 m-auto absolute right-0">
               <ModeToggle />
               {user ? (
                 <UserButton
@@ -198,7 +197,7 @@ export function MainNav() {
           </div>
         </div>
       </nav>
-      <Sidebar isOpen={isOpen} navItems={mainNavItems} router={router} />
+      <Sidebar isOpen={isOpen} navItems={mainNavItems} />
     </>
   )
 }

@@ -59,7 +59,7 @@ export function ScheduleCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02 }}
-      className={`flex items-center
+      className={`flex flex-col md:flex-row gap-4 items-center
         relative p-4 rounded-lg cursor-pointer
         ${typeColors?.bg || ""} ${typeColors?.border || ""}
         border backdrop-blur-md shadow-lg
@@ -122,10 +122,10 @@ export function ScheduleCard({
         student.semester === schedule.semester &&
         student.group === schedule.group &&
         schedule.type.toLowerCase() !== "lab" && (
-          <div className="w-40 h-full flex flex-col justify-between items-center gap-1">
+          <div className="w-full md:w-40 md:h-full grid grid-cols-3 gap-1">
             <Button
               variant={"secondary"}
-              className="w-full text-green-600"
+              className="w-full col-span-1 md:col-span-3 text-green-600"
               onClick={(e) => markAttendance("PRESENT")}
             >
               <Check />
@@ -133,7 +133,7 @@ export function ScheduleCard({
             </Button>
             <Button
               variant={"secondary"}
-              className="w-full text-rose-600"
+              className="w-full col-span-1 md:col-span-3 text-rose-600"
               onClick={(e) => markAttendance("ABSENT")}
             >
               <X />
@@ -141,7 +141,7 @@ export function ScheduleCard({
             </Button>
             <Button
               variant={"secondary"}
-              className="w-full text-yellow-600"
+              className="w-full col-span-1 md:col-span-3 text-yellow-600"
               onClick={(e) => markAttendance("EXCUSED")}
             >
               Cancelled

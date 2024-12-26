@@ -2,6 +2,12 @@ import { z } from "zod"
 
 import { branches } from "./data"
 
+export const ogImageSchema = z.object({
+  heading: z.string(),
+  type: z.string(),
+  mode: z.enum(["light", "dark"]).default("dark"),
+})
+
 export const studentSchema = z.object({
   username: z.string().min(1, "Username is required"),
   semester: z.number().int().min(1).max(12),

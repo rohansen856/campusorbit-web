@@ -117,3 +117,21 @@ INSERT INTO "public"."Schedule" (id, institute_id, course_code, course_title, pr
 INSERT INTO "public"."Schedule" (id, institute_id, course_code, course_title, prof, type, day, "from", "to", "group", branch, room, semester) VALUES 
 ('iiitdmj_cse_Z_4_lab_050', 53, 'CS2009', 'Lab Course 1', 'RKR', 'lab', 5, '2024-12-27 14:00', '2024-12-27 17:00', 'Z', 'CSE', '', 4),
 ('iiitdmj_cse_Z_4_lab_051', 53, 'CS2007', 'Lab Course 2', 'ShM', 'lab', 5, '2024-12-27 14:00', '2024-12-27 17:00', 'Z', 'CSE', '', 4);
+
+-- CSE A Branch Classes
+INSERT INTO "public"."Schedule" (id, institute_id, course_code, course_title, prof, type, day, "from", "to", "group", branch, room, semester) VALUES 
+('iiitdmj_cse_B_2_5_052', 53, 'CS2008', 'CSE class', 'ND', 'theory', 4, '2024-12-27 09:00', '2024-12-27 09:55', 'A', 'CSE', '', 4),
+('iiitdmj_cse_B_2_5_053', 53, 'CS2007', 'CSE class', 'ACP', 'theory', 4, '2024-12-27  11:00', '2024-12-27  11:55', 'A', 'CSE', '', 4),
+('iiitdmj_cse_B_2_5_054', 53, 'CS2006', 'CSE class', 'YTD', 'theory', 4, '2024-12-27  12:00', '2024-12-27  12:55', 'A', 'CSE', '', 4);
+
+-- CSE B Branch Classes
+INSERT INTO "public"."Schedule" (id, institute_id, course_code, course_title, prof, type, day, "from", "to", "group", branch, room, semester) VALUES 
+('iiitdmj_cse_B_2_5_055', 53, 'CS2007', 'CSE class', 'ACP', 'theory', 4, '2024-12-27 09:00', '2024-12-27 09:55', 'B', 'CSE', '', 4),
+('iiitdmj_cse_B_2_5_056', 53, 'CS2006', 'CSE class', 'YTD', 'theory', 4, '2024-12-27  11:00', '2024-12-27  11:55', 'B', 'CSE', '', 4),
+('iiitdmj_cse_B_2_5_057', 53, 'CS2008', 'CSE class', 'ND', 'theory', 4, '2024-12-27  12:00', '2024-12-27  12:55', 'B', 'CSE', '', 4);
+
+-- CSE B Branch Classes
+INSERT INTO "public"."Schedule" (id, institute_id, course_code, course_title, prof, type, day, "from", "to", "group", branch, room, semester) VALUES 
+('iiitdmj_cse_B_2_5_058', 53, 'CS2006', 'CSE class', 'NA', 'theory', 4, '2024-12-27 09:00', '2024-12-27 09:55', 'Z', 'CSE', '', 4),
+('iiitdmj_cse_B_2_5_059', 53, 'CS2008', 'CSE class', 'ASP', 'theory', 4, '2024-12-27  11:00', '2024-12-27  11:55', 'Z', 'CSE', '', 4),
+('iiitdmj_cse_B_2_5_060', 53, 'CS2007', 'CSE class', 'ShM', 'theory', 4, '2024-12-27  12:00', '2024-12-27  12:55', 'Z', 'CSE', '', 4);

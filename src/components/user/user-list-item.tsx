@@ -52,7 +52,7 @@ export function UserListItem({ user, index }: UserListItemProps) {
                 <span>•</span>
                 <span>{user.branch}</span>
                 <span>•</span>
-                <span>Semester {user.semester}</span>
+                <span>sem {user.semester}</span>
               </div>
             </div>
 
