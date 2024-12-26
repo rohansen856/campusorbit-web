@@ -204,7 +204,7 @@ export function ScheduleFilters({
               </div>
             </div>
 
-            <div className="flex justify-end mt-4 gap-2">
+            <div className="flex justify-end my-2 gap-2">
               <Button
                 variant="outline"
                 size="sm"

@@ -179,6 +179,11 @@ export async function AttendanceSection({
         </TabsContent>
 
         <TabsContent value="history" className="mt-0">
+          {groupedAttendance.length === 0 && (
+            <div className="w-full h-[50vh] flex justify-center items-center text-yellow-500">
+              No record found
+            </div>
+          )}
           <ScrollArea className="h-[75vh]">
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {groupedAttendance.map((attendance) => (
