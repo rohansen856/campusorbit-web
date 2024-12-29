@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
+import { Badge } from "../ui/badge"
+
 export type ExtendedStudent = Student & {
   institute: Institute
   user: User
@@ -48,7 +50,7 @@ interface UserDetailsProps extends React.HTMLAttributes<typeof Card> {
 export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
   if (loading) {
     return (
-      <Card className="w-full h-[60vh] flex items-center justify-center">
+      <Card className="flex h-[60vh] w-full items-center justify-center">
         <Loader className="size-6 animate-spin" />
       </Card>
     )
@@ -56,14 +58,14 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
 
   if (!user) {
     return (
-      <Card className="w-full h-[60vh] flex items-center justify-center">
+      <Card className="flex h-[60vh] w-full items-center justify-center">
         <p className="text-muted-foreground">User not found</p>
       </Card>
     )
   }
 
   return (
-    <Card className={cn("w-full h-[60vh] overflow-y-auto", props.className)}>
+    <Card className={cn("h-[60vh] w-full overflow-y-auto", props.className)}>
       <div
         className="h-48 bg-cover bg-center"
         style={{
@@ -73,9 +75,9 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
         }}
       />
 
-      <CardHeader className="-mt-12 relative">
+      <CardHeader className="relative -mt-12">
         <div className="flex items-end gap-4">
-          <Avatar className="size-24 border-4 border-background">
+          <Avatar className="border-background size-24 border-4">
             <AvatarImage src={user.profile_image || undefined} />
             <AvatarFallback>
               {user.username.slice(0, 2).toUpperCase()}
@@ -85,7 +87,12 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
             <div className="flex items-center gap-2">
               <CardTitle className="text-2xl">{user.username}</CardTitle>
               {user.verified && (
-                <CheckCircle className="text-blue-500 size-5" />
+                <Badge
+                  variant={"secondary"}
+                  className="border border-green-500 bg-green-500/30"
+                >
+                  verified
+                </Badge>
               )}
             </div>
             <p className="text-muted-foreground">@{user.username}</p>
@@ -94,9 +101,9 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           <div className="flex items-center gap-2">
-            <Building className="size-5 text-muted-foreground" />
+            <Building className="text-muted-foreground size-5" />
             <div>
               <p className="text-sm font-medium">Institute</p>
               <p className="text-muted-foreground">
@@ -105,14 +112,14 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <GraduationCap className="size-5 text-muted-foreground" />
+            <GraduationCap className="text-muted-foreground size-5" />
             <div>
               <p className="text-sm font-medium">Branch</p>
               <p className="text-muted-foreground">{user.branch}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Calendar className="size-5 text-muted-foreground" />
+            <Calendar className="text-muted-foreground size-5" />
             <div>
               <p className="text-sm font-medium">Batch</p>
               <p className="text-muted-foreground">
@@ -124,14 +131,14 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
 
         {user.Socials.length > 0 && (
           <div>
-            <h3 className="font-semibold mb-3">Social Links</h3>
+            <h3 className="mb-3 font-semibold">Social Links</h3>
             <div className="grid grid-cols-2 gap-4">
               {user.Socials[0].github && (
                 <a
                   href={user.Socials[0].github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-2"
                 >
                   <Github className="size-5" />
                   <span>GitHub</span>
@@ -142,7 +149,7 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
                   href={user.Socials[0].linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-2"
                 >
                   <Linkedin className="size-5" />
                   <span>LinkedIn</span>
@@ -153,7 +160,7 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
                   href={user.Socials[0].twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-2"
                 >
                   <Twitter className="size-5" />
                   <span>Twitter</span>
@@ -164,7 +171,7 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
                   href={user.Socials[0].instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-2"
                 >
                   <Instagram className="size-5" />
                   <span>Instagram</span>
@@ -175,7 +182,7 @@ export function UserDetails({ user, loading, ...props }: UserDetailsProps) {
                   href={user.Socials[0].discord}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-2"
                 >
                   <MessageCircleHeart className="size-5" />
                   <span>Discord</span>

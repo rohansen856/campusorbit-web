@@ -118,18 +118,18 @@ export default function UsersPage() {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
-        <div className="relative grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div className="relative grid grid-cols-1 gap-8 md:grid-cols-5">
           {/* Desktop view */}
-          {userId && (
-            <div className="hidden md:block col-span-2">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-              >
+          <div className="col-span-2 hidden md:block">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              {userId && (
                 <UserDetails user={selectedUser} loading={loadingUser} />
-              </motion.div>
-            </div>
-          )}
+              )}
+            </motion.div>
+          </div>
 
           {/* Mobile popup */}
           <AnimatePresence>
@@ -138,14 +138,14 @@ export default function UsersPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="md:hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/50"
+                className="bg-background/50 fixed inset-0 z-50 flex items-center justify-center p-4 md:hidden"
               >
-                <Alert className="relative max-w-lg w-full max-h-[90vh] overflow-y-auto bg-background">
+                <Alert className="bg-background relative max-h-[90vh] w-full max-w-lg overflow-y-auto">
                   <Button
                     variant={"secondary"}
                     size={"icon"}
                     onClick={() => setShowMobileAlert(false)}
-                    className="absolute right-4 top-4 p-2 hover:bg-secondary rounded-full border border-primary/50"
+                    className="hover:bg-secondary border-primary/50 absolute right-4 top-4 rounded-full border p-2"
                   >
                     <X className="size-4" />
                   </Button>
@@ -205,7 +205,7 @@ export default function UsersPage() {
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center text-muted-foreground"
+                        className="text-muted-foreground text-center"
                       >
                         No users found matching your criteria.
                       </motion.p>

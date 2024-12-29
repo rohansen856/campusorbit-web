@@ -5,6 +5,7 @@ import { Institute, Student, User } from "@prisma/client"
 import { motion } from "framer-motion"
 import { Heart, User as UserIcon } from "lucide-react"
 
+import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
@@ -31,18 +32,20 @@ export function UserListItem({ user, index }: UserListItemProps) {
     >
       <Link href={`/users?userId=${user.user_id}`}>
         <div
-          className={`
-          p-4 rounded-lg backdrop-blur-sm bg-gradient-to-r 
-          ${getInstituteColor(user.institute.affiliation)}
-          hover:shadow-lg transition-all duration-300
-          border border-primary/10
-        `}
+          className={cn(
+            `
+          border-primary/10 rounded-lg border bg-gradient-to-r 
+          p-4 backdrop-blur-sm transition-all
+          duration-300 hover:shadow-lg
+        `,
+            getInstituteColor(user.institute.affiliation)
+          )}
         >
           <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12 border border-primary/30">
-              <AvatarImage src={user.profile_image || "/shield-check.png"} />
+            <Avatar className="border-primary/30 size-12 border">
+              <AvatarImage src={user.profile_image || "/logo.png"} />
               <AvatarFallback>
-                <UserIcon className="h-6 w-6" />
+                <UserIcon className="size-6" />
               </AvatarFallback>
             </Avatar>
 
@@ -58,8 +61,8 @@ export function UserListItem({ user, index }: UserListItemProps) {
                   </Badge>
                 )}
               </h3>
-              <p className="text-sm text-muted-foreground">@{user.username}</p>
-              <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-sm">@{user.username}</p>
+              <div className="text-muted-foreground mt-1 flex items-center gap-2 text-xs">
                 <span>{user.institute.short_name}</span>
                 <span>•</span>
                 <span>{user.branch}</span>
@@ -77,7 +80,7 @@ export function UserListItem({ user, index }: UserListItemProps) {
                 // Add friend logic here
               }}
             >
-              <Heart className="h-5 w-5" />
+              <Heart className="size-5" />
             </Button>
           </div>
         </div>

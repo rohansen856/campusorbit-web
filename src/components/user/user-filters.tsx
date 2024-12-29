@@ -59,25 +59,25 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
   }
 
   return (
-    <div className="space-y-4 p-4 backdrop-blur-sm bg-white/5 rounded-lg border border-white/10">
+    <div className="space-y-4 rounded-lg border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        <Search className="text-muted-foreground absolute left-3 top-1/2 size-4 -translate-y-1/2" />
         <Input
           placeholder="Search users..."
           value={filters.search}
           onChange={(e) => handleFilterChange("search", e.target.value)}
-          className="pl-10 bg-background"
+          className="bg-background pl-10"
         />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-4">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="justify-between col-span-2 md:col-span-1"
+              className="col-span-2 justify-between md:col-span-1"
             >
               {filters.instituteId
                 ? institutes.find(

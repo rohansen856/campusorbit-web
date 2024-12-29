@@ -33,11 +33,11 @@ export function SocialLinks({ socials }: { socials: any }) {
   if (!socials) return null
 
   return (
-    <Card className="p-6 backdrop-blur-sm bg-white/10 dark:bg-black/10 border-neutral-200/10">
+    <Card className="border-neutral-200/10 bg-white/10 p-6 backdrop-blur-sm dark:bg-black/10">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="flex flex-wrap gap-4 justify-around"
+        className="flex flex-wrap justify-around gap-4"
       >
         {Object.entries(socialIcons).map(
           ([key, { icon: Icon, color }], index) => {
@@ -60,7 +60,7 @@ export function SocialLinks({ socials }: { socials: any }) {
                     variant="outline"
                     className={`transition-colors duration-300 ${color}`}
                   >
-                    <Icon className="w-5 h-5 mr-2" />
+                    <Icon className="mr-2 size-5" />
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </Button>
                 </a>
