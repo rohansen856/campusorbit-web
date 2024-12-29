@@ -1,27 +1,26 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Institute } from "@prisma/client"
-import axios, { AxiosResponse } from "axios"
+import axios from "axios"
 import { motion } from "framer-motion"
-import { Check, ChevronsUpDown, Loader } from "lucide-react"
+import { Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
 
-import { branches } from "@/lib/data"
-import { cn } from "@/lib/utils"
-import { StudentFormData, studentSchema } from "@/lib/validation"
+import { UploadButton } from "@/lib/uploadthing"
+import {
+  StudentVerificationFormData,
+  studentVerificationSchema,
+} from "@/lib/validation"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import {
   Form,
   FormControl,
@@ -32,70 +31,45 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Toaster } from "@/components/ui/toaster"
 
-export function StudentVerificationForm() {
-  const router = useRouter()
-  const [isLoading, setLoading] = useState(false)
-  const [institutes, setInstitutes] = useState<{ id: number; name: string }[]>(
-    []
-  )
+export function VerificationForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isEmailSent, setIsEmailSent] = useState(false)
   const { toast } = useToast()
-  const form = useForm<StudentFormData>({
-    resolver: zodResolver(studentSchema),
+
+  const form = useForm<StudentVerificationFormData>({
+    resolver: zodResolver(studentVerificationSchema),
     defaultValues: {
-      semester: 1,
-      enrollment_year: new Date().getFullYear(),
+      collegeEmail: "",
+      idCardImage: "",
+      portraitImage: "",
+      holdingIdImage: "",
     },
   })
 
-  useEffect(() => {
-    axios
-      .get("/api/institutes")
-      .then((response: AxiosResponse<Institute[]>) => {
-        setInstitutes(response.data.toSorted())
-      })
-  }, [])
-
-  async function onSubmit(data: StudentFormData) {
-    setLoading(true)
+  const onSubmit = async (data: StudentVerificationFormData) => {
+    setIsSubmitting(true)
     try {
-      const res = await axios.post("/api/auth/student", data)
-      if (res.status !== 201) {
-        toast({
-          title: "Registration Failed",
-          description:
-            "There was an error registering the student. Please try again.",
-          variant: "destructive",
-        })
-      }
+      console.log(data)
+      const response = await axios.post("/api/auth/student/verification", data)
       toast({
-        title: "Registration Successful",
-        description: "Your student profile has been created.",
-      })
-      setTimeout(() => {
-        router.push("/dashboard")
-      }, 2000)
-    } catch (error) {
-      toast({
-        title: "Registration Failed",
+        title: "Verification Submitted",
         description:
-          "There was an error registering the student. Please try again.",
+          "Your verification request has been submitted successfully.",
+      })
+      setIsEmailSent(true)
+    } catch (error) {
+      console.log(error)
+      toast({
+        title: "Error",
+        description:
+          "There was an error submitting your verification. Please try again.",
         variant: "destructive",
       })
+      setIsEmailSent(false)
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
@@ -104,235 +78,160 @@ export function StudentVerificationForm() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="p-8"
     >
-      <h2 className="text-3xl font-bold mb-6 text-center">
-        Complete Student Registration
-      </h2>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="gap-4 grid grid-cols-1 md:grid-cols-2"
-        >
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="Choose a unique usename" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="roll_number"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Roll Number</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter roll number"
-                    {...field}
-                    onChange={(e) =>
-                      field.onChange(e.target.value.toLowerCase())
-                    }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="semester"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Semester</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={1}
-                    max={12}
-                    {...field}
-                    value={field.value ?? new Date().getFullYear()}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="enrollment_year"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Enrollment Year</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={2000}
-                    max={new Date().getFullYear()}
-                    {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="graduation_year"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Graduation Year</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={2000}
-                    {...field}
-                    value={field.value ?? new Date().getFullYear()}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="branch"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Branch</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a branch" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {branches.map((branch) => (
-                      <SelectItem key={branch.key} value={branch.key}>
-                        {branch.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  Select your branch from available options
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="group"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Your Group (optional)</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter your group"
-                    {...field}
-                    onChange={(e) =>
-                      field.onChange(e.target.value.toUpperCase())
-                    }
-                  />
-                </FormControl>
-                <FormDescription>ex.: A, B, C...</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="institute_id"
-            render={({ field }) => (
-              <FormItem className="flex flex-col col-span-2">
-                <FormLabel>Institute</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
+      <Toaster />
+      <Card className="mx-auto w-full max-w-2xl">
+        <CardHeader>
+          <CardTitle>ID Verification</CardTitle>
+          <CardDescription>
+            Please provide your college email and upload the required images for
+            verification.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="collegeEmail"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>College Email</FormLabel>
                     <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "w-full overflow-hidden justify-between",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value
-                          ? institutes.find(
-                              (institute) => institute.id === field.value
-                            )?.name
-                          : "Select institute"}
-                        <ChevronsUpDown className="opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="max-w-lg w-full p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder="Search framework..."
-                        className="h-9"
+                      <Input
+                        {...field}
+                        placeholder="collegemail@institute.ac.in"
+                        type="email"
                       />
-                      <CommandList>
-                        <CommandEmpty>No institute found.</CommandEmpty>
-                        <CommandGroup>
-                          {institutes.map((institute) => (
-                            <CommandItem
-                              value={institute.name}
-                              key={institute.id}
-                              onSelect={() => {
-                                form.setValue("institute_id", institute.id)
-                              }}
-                            >
-                              {institute.name}
-                              <Check
-                                className={cn(
-                                  "ml-auto",
-                                  institute.id === field.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>
-                  Choose your college among the available IIT, NIT, IIITs
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className="w-full col-span-2"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <Loader className="size-6 animate-spin" />
-            ) : (
-              "Register Student"
-            )}
-          </Button>
-        </form>
-      </Form>
+                    </FormControl>
+                    <FormDescription>
+                      Enter your college email address (.ac.in domain required).
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="idCardImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ID Card Image</FormLabel>
+                    <FormControl>
+                      <UploadButton
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          field.onChange(res?.[0].url)
+                        }}
+                        onUploadError={(error: Error) => {
+                          toast({
+                            title: "Error",
+                            description: `ERROR! ${error.message}`,
+                            variant: "destructive",
+                          })
+                        }}
+                        className="rounded-lg bg-blue-700 pb-2"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Upload a clear image of your ID card (front side).
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="portraitImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Portrait Image</FormLabel>
+                    <FormControl>
+                      <UploadButton
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          field.onChange(res?.[0].url)
+                        }}
+                        onUploadError={(error: Error) => {
+                          toast({
+                            title: "Error",
+                            description: `ERROR! ${error.message}`,
+                            variant: "destructive",
+                          })
+                        }}
+                        className="rounded-lg bg-blue-700 pb-2"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Upload a recent full portrait image of yourself.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="holdingIdImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Image Holding ID</FormLabel>
+                    <FormControl>
+                      <UploadButton
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          field.onChange(res?.[0].url)
+                        }}
+                        onUploadError={(error: Error) => {
+                          toast({
+                            title: "Error",
+                            description: `ERROR! ${error.message}`,
+                            variant: "destructive",
+                          })
+                        }}
+                        className="rounded-lg bg-blue-700 pb-2"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Upload an image of yourself holding your ID card.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {isEmailSent ? (
+                <div className="flex w-full items-center rounded-lg border border-green-500 bg-green-500/30 p-4">
+                  <p className="font-bold">
+                    Confirmation email has been sent to your mail
+                  </p>
+                  <Button
+                    type="submit"
+                    size={"sm"}
+                    className="ml-auto"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting && (
+                      <Loader className={`size-4 animate-spin`} />
+                    )}
+                    Try again
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full"
+                >
+                  {isSubmitting ? "Submitting..." : "Submit Verification"}
+                </Button>
+              )}
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </motion.div>
   )
 }

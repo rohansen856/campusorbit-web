@@ -21,8 +21,9 @@ export async function POST(req: Request) {
     const student = await db.student.create({
       data: {
         ...validatedData,
-        profile_image: user.image,
         user_id: user.id,
+        verified: false,
+        profile_image: user.image,
       },
     })
 

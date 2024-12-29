@@ -65,3 +65,23 @@ export const postSchema = z.object({
 })
 
 export type PostSchemaType = z.infer<typeof postSchema>
+
+export const studentVerificationSchema = z.object({
+  collegeEmail: z
+    .string()
+    .email("Invalid email address")
+    .endsWith(".ac.in", "Must be a valid college email"),
+  idCardImage: z
+    .string()
+    .startsWith("https://utfs.io", { message: "Invalid image url" }),
+  portraitImage: z
+    .string()
+    .startsWith("https://utfs.io", { message: "Invalid image url" }),
+  holdingIdImage: z
+    .string()
+    .startsWith("https://utfs.io", { message: "Invalid image url" }),
+})
+
+export type StudentVerificationFormData = z.infer<
+  typeof studentVerificationSchema
+>
