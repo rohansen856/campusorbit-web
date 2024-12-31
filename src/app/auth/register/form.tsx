@@ -119,13 +119,13 @@ export function StudentRegistrationForm() {
       className="p-8"
     >
       <Toaster />
-      <h2 className="text-3xl font-bold mb-6 text-center">
+      <h2 className="mb-6 text-center text-3xl font-bold">
         Complete Student Registration
       </h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="gap-4 grid grid-cols-1 md:grid-cols-2"
+          className="grid grid-cols-1 gap-4 md:grid-cols-2"
         >
           <FormField
             control={form.control}
@@ -271,7 +271,7 @@ export function StudentRegistrationForm() {
             control={form.control}
             name="institute_id"
             render={({ field }) => (
-              <FormItem className="flex flex-col col-span-2">
+              <FormItem className="col-span-2 flex flex-col">
                 <FormLabel>Institute</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -280,7 +280,7 @@ export function StudentRegistrationForm() {
                         variant="outline"
                         role="combobox"
                         className={cn(
-                          "w-full overflow-hidden justify-between",
+                          "w-full justify-between overflow-hidden",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -293,7 +293,7 @@ export function StudentRegistrationForm() {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="max-w-lg w-full p-0">
+                  <PopoverContent className="w-full max-w-lg p-0">
                     <Command>
                       <CommandInput
                         placeholder="Search framework..."
@@ -335,7 +335,7 @@ export function StudentRegistrationForm() {
           />
           <Button
             type="submit"
-            className="w-full col-span-2"
+            className="col-span-2 w-full"
             disabled={isLoading}
           >
             {isLoading ? (

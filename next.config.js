@@ -7,6 +7,8 @@ const nextConfig = {
       "icon.com",
       "api.dicebear.com",
       "lh3.googleusercontent.com",
+      "example.com",
+      "images.unsplash.com",
     ],
   },
 }

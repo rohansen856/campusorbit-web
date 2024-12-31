@@ -1,3 +1,4 @@
+import { Merch } from "@prisma/client"
 import { z } from "zod"
 
 import { branches } from "./data"
@@ -85,3 +86,45 @@ export const studentVerificationSchema = z.object({
 export type StudentVerificationFormData = z.infer<
   typeof studentVerificationSchema
 >
+
+const colorSchema = z.object({
+  name: z.string().min(1, "Color name is required"),
+  hexCode: z.string().regex(/^#[0-9A-F]{6}$/i, "Invalid hex color code"),
+})
+
+export const merchSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(500, "Description must not exceed 500 characters"),
+  thumbnailImage: z.string().url("Invalid image URL"),
+  price: z
+    .number()
+    .positive("Price must be positive")
+    .min(0.01, "Price must be at least 0.01"),
+  category: z.string().min(1, "Category is required"),
+  sizes: z.array(z.string()).min(1, "At least one size is required"),
+  colors: z.array(colorSchema).min(1, "At least one color is required"),
+  images: z
+    .array(z.string().url("Invalid image URL"))
+    .min(1, "At least one image is required"),
+  stock: z
+    .number()
+    .int("Stock must be a whole number")
+    .positive("Stock must be positive"),
+  featured: z.boolean().default(false),
+})
+
+export type MerchFormData = z.infer<typeof merchSchema>
+
+export type MerchCardType = Merch & {
+  club: {
+    institute: {
+      short_name: string
+    }
+    name: string
+    clubType: string
+    institute_id: number
+  }
+}

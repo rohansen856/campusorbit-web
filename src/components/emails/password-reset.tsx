@@ -73,7 +73,7 @@ export function PasswordReset({ name, resetLink }: PasswordResetProps) {
 
             <Text className="text-gray-500 text-xs text-center mt-5">
               <Link
-                href="https://github.com/rohansen856/next-auth-starter"
+                href="https://github.com/rohansen856/campusorbit"
                 className="text-gray-500 font-semibold"
               >
                 Next Auth Starter

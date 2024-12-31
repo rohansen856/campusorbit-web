@@ -180,6 +180,8 @@ model Club {
   institute         Institute  @relation(fields: [institute_id], references: [id])
 
   members           ClubMember[]
+
+  Merch Merch[]
 }
 
 model ClubMember {
@@ -275,4 +277,38 @@ model Follow {
 
   @@unique([followerId, followeeId])
   @@map("follows")
+}
+
+
+model Merch {
+  id               Int       @id @default(autoincrement())
+  clubId           String
+  club             Club      @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  name             String
+  description      String
+  price            Decimal   @default(0.00)
+  sizes            String[]
+  colors           Json[]
+  registrationFee  Decimal   @default(0.00)
+  availabilityDate DateTime?
+  isAvailable      Boolean   @default(false)
+  remainingQuanity Int       @default(0)
+  thumbnailImage   String
+  images           String[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  variants Variant[]
+}
+
+model Variant {
+  id             Int       @id @default(autoincrement())
+  merchId        Int
+  sku            String    @unique // Stock Keeping Unit
+  stock          Int       @default(0)
+  additionalPrice Decimal  @default(0.00)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  merch Merch @relation(fields: [merchId], references: [id], onDelete: Cascade)
 }
