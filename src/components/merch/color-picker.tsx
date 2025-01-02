@@ -15,7 +15,7 @@ import {
 interface Color {
   id: number
   name: string
-  hexCode: string
+  hex: string
 }
 
 interface ColorPickerProps {
@@ -49,14 +49,15 @@ export function ColorPicker({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <motion.button
-                    onClick={() => onChange(color.hexCode)}
+                    onClick={() => onChange(color.hex)}
                     className={cn(
                       `ring-secondary flex size-12 items-center justify-center rounded-full ring transition-all`,
-                      selectedColor === color.hexCode
+                      `bg-[${color.hex}]`,
+                      selectedColor === color.hex
                         ? "ring-primary ring-2 ring-offset-2"
                         : "hover:ring-muted hover:ring-2 hover:ring-offset-2"
                     )}
-                    style={{ backgroundColor: color.hexCode }}
+                    style={{ backgroundColor: color.hex }}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: index * 0.05 }}
@@ -64,7 +65,7 @@ export function ColorPicker({
                     whileTap={{ scale: 0.95 }}
                   >
                     <AnimatePresence mode="wait">
-                      {selectedColor === color.hexCode && (
+                      {selectedColor === color.hex && (
                         <motion.div
                           initial={{ scale: 0, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
@@ -74,7 +75,7 @@ export function ColorPicker({
                           <Check
                             className={cn(
                               `size-6`,
-                              isLightColor(color.hexCode)
+                              isLightColor(color.hex)
                                 ? "text-black"
                                 : "text-white"
                             )}
@@ -97,6 +98,7 @@ export function ColorPicker({
 }
 
 function isLightColor(hexColor: string): boolean {
+  if (!hexColor) return false
   const r = parseInt(hexColor.slice(1, 3), 16)
   const g = parseInt(hexColor.slice(3, 5), 16)
   const b = parseInt(hexColor.slice(5, 7), 16)

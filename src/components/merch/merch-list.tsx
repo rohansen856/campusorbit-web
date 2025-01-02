@@ -168,7 +168,7 @@ export default function MerchListing() {
           </PopoverTrigger>
           <PopoverContent className="w-full max-w-lg p-0">
             <Command>
-              <CommandInput placeholder="Search framework..." className="h-9" />
+              <CommandInput placeholder="Search college..." className="h-9" />
               <CommandList>
                 <CommandEmpty>No institute found.</CommandEmpty>
                 <CommandGroup>
@@ -217,7 +217,7 @@ export default function MerchListing() {
           </PopoverTrigger>
           <PopoverContent className="w-full max-w-lg p-0">
             <Command>
-              <CommandInput placeholder="Search framework..." className="h-9" />
+              <CommandInput placeholder="Search club..." className="h-9" />
               <CommandList>
                 <CommandEmpty>No club found.</CommandEmpty>
                 <CommandGroup>
@@ -328,16 +328,21 @@ export default function MerchListing() {
               <Loader className={`mx-auto size-4 animate-spin`} />
             </div>
           ) : (
-            <motion.div
-              className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              {merch.map((item) => (
-                <MerchCard key={item.id} merch={item} />
-              ))}
-            </motion.div>
+            <>
+              {merch.length === 0 && (
+                <p className="w-full text-center">No merch found.</p>
+              )}
+              <motion.div
+                className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                {merch.map((item) => (
+                  <MerchCard key={item.id} merch={item} />
+                ))}
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>

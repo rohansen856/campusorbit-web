@@ -11,14 +11,8 @@ import {
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-interface Size {
-  id: number
-  size: string
-  chest: string // Added for size guide
-}
-
 interface SizePickerProps {
-  sizes: Size[]
+  sizes: string[]
   selectedSize: string
   onChange: (size: string) => void
 }
@@ -72,9 +66,9 @@ export function SizePicker({ sizes, selectedSize, onChange }: SizePickerProps) {
                     </thead>
                     <tbody>
                       {sizes.map((size) => (
-                        <tr key={size.id} className="border-t">
-                          <td className="px-4 py-2 text-sm">{size.size}</td>
-                          <td className="px-4 py-2 text-sm">{size.chest}</td>
+                        <tr key={size} className="border-t">
+                          <td className="px-4 py-2 text-sm">{size}</td>
+                          {/* <td className="px-4 py-2 text-sm">{size.chest}</td> */}
                         </tr>
                       ))}
                     </tbody>
@@ -100,7 +94,7 @@ export function SizePicker({ sizes, selectedSize, onChange }: SizePickerProps) {
           <AnimatePresence mode="wait">
             {sizes.map((size) => (
               <motion.div
-                key={size.id}
+                key={size}
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
@@ -109,16 +103,16 @@ export function SizePicker({ sizes, selectedSize, onChange }: SizePickerProps) {
                 whileTap={{ scale: 0.95 }}
               >
                 <RadioGroupItem
-                  value={size.size}
-                  id={`size-${size.size}`}
+                  value={size}
+                  id={`size-${size}`}
                   className="peer sr-only"
-                  aria-label={`Select size ${size.size}`}
+                  aria-label={`Select size ${size}`}
                 />
                 <Label
-                  htmlFor={`size-${size.size}`}
+                  htmlFor={`size-${size}`}
                   className="border-input bg-background peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-secondary peer-data-[state=checked]:text-primary hover:border-primary/50 flex size-12 cursor-pointer items-center justify-center rounded-full border font-medium transition-all duration-200"
                 >
-                  {size.size}
+                  {size}
                 </Label>
               </motion.div>
             ))}

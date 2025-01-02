@@ -2,6 +2,15 @@
 
 import Image from "next/image"
 
-export function Logo() {
-  return <Image src={"/logo.svg"} alt="" height={40} width={40} />
+interface LogoProps extends React.HTMLProps<typeof Image> {}
+
+export function Logo({ ...props }: LogoProps) {
+  return (
+    <Image
+      src={"/logo.svg"}
+      alt=""
+      height={Number(props.height || 40)}
+      width={Number(props.height || 40)}
+    />
+  )
 }

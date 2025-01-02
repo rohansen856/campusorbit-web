@@ -67,7 +67,7 @@ export function ReviewStep({ form }: ReviewStepProps) {
                 )}
               </dd>
               <dt className="text-muted-foreground font-medium">Price:</dt>
-              <dd className="font-semibold">₹{values.price}</dd>
+              <dd className="font-semibold">₹{values.price || 0}</dd>
               <dt className="text-muted-foreground font-medium">Category:</dt>
               <dd className="font-semibold">{values.category}</dd>
             </div>

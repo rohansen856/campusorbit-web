@@ -75,7 +75,7 @@ export function ImageGallery({ images, productName }: ImageGalleryProps) {
                 </DialogTrigger>
                 <DialogContent className="max-w-screen-lg">
                   <img
-                    src={images[currentIndex].imageUrl}
+                    src="https://images.unsplash.com/photo-1696086152504-4843b2106ab4?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" //{images[currentIndex].imageUrl}
                     alt={`${productName} - Full size image ${currentIndex + 1}`}
                     className="size-full object-contain"
                   />
@@ -83,7 +83,7 @@ export function ImageGallery({ images, productName }: ImageGalleryProps) {
               </Dialog>
 
               <img
-                src={images[currentIndex].imageUrl}
+                src="https://images.unsplash.com/photo-1696086152504-4843b2106ab4?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" //{images[currentIndex].imageUrl}
                 alt={`${productName} - Image ${currentIndex + 1}`}
                 className="size-full object-cover"
               />
@@ -185,7 +185,7 @@ export function ImageGallery({ images, productName }: ImageGalleryProps) {
             onClick={() => setCurrentIndex(index)}
           >
             <img
-              src={image.imageUrl}
+              src="https://images.unsplash.com/photo-1696086152504-4843b2106ab4?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" //{image.imageUrl}
               alt={`${productName} thumbnail ${index + 1}`}
               className="size-full object-cover"
             />

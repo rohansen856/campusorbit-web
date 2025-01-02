@@ -6,14 +6,13 @@ import { AnimatePresence, motion } from "framer-motion"
 
 import { useToast } from "@/hooks/use-toast"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 import { ImageGallery } from "./image-gallery"
 import { ProductInfo } from "./product-info"
 
 interface MerchDetailsProps {
-  id: string
+  id: number
 }
 
 export function MerchDetails({ id }: MerchDetailsProps) {
@@ -33,7 +32,7 @@ export function MerchDetails({ id }: MerchDetailsProps) {
         const response = await axios.get(`/api/merch/${id}`)
         setMerch(response.data)
         setSelectedColor(response.data.colors[0].hexCode)
-        setSelectedSize(response.data.sizes[0].size)
+        setSelectedSize(response.data.sizes[0])
       } catch (error) {
         console.error("Failed to fetch merch:", error)
         setError("Failed to load product details")

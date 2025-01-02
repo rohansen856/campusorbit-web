@@ -1,8 +1,10 @@
 "use client"
 
+import { Merch } from "@prisma/client"
 import { AnimatePresence, motion } from "framer-motion"
 import { Info, Share2, ShoppingCart } from "lucide-react"
 
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -33,8 +35,18 @@ import { ProductActions } from "./product-actions"
 import { QuantityPicker } from "./quantity-picker"
 import { SizePicker } from "./size-picker"
 
+interface MerchDetailsType extends Merch {
+  id: number
+  name: string
+  description: string
+  isAvailable: boolean
+  remainingQuanity: number
+  colors: any[]
+  sizes: string[]
+}
+
 interface ProductInfoProps {
-  product: any
+  product: MerchDetailsType
   selectedColor: string
   selectedSize: string
   quantity: number
@@ -69,6 +81,7 @@ export function ProductInfo({
   onQuantityChange,
   onAddToCart,
 }: ProductInfoProps) {
+  const [_, copyToClipboard] = useCopyToClipboard()
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -80,7 +93,7 @@ export function ProductInfo({
       } catch (error) {
         console.log("Error sharing:", error)
       }
-    }
+    } else copyToClipboard(window.location.href)
   }
 
   return (
@@ -119,7 +132,7 @@ export function ProductInfo({
                 </AnimatePresence>
               </div>
               <CardDescription className="text-primary text-2xl font-semibold">
-                ₹{product.price.toFixed(2)}
+                ₹{Number(product.price)}
               </CardDescription>
             </motion.div>
 
