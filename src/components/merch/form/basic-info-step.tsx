@@ -1,7 +1,6 @@
-"use client"
-
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
+import { Book, Coffee, Gift, Laptop, Shirt } from "lucide-react"
 import { UseFormReturn } from "react-hook-form"
 import rehypeHighlight from "rehype-highlight"
 import rehypeSanitize from "rehype-sanitize"
@@ -12,7 +11,6 @@ import { unified } from "unified"
 
 import { type MerchFormData } from "@/lib/validation"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 import {
   FormControl,
   FormField,
@@ -22,7 +20,16 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
+
+const categoryOptions = [
+  { value: "clothing", label: "Clothing", icon: Shirt },
+  { value: "electronics", label: "Electronics", icon: Laptop },
+  { value: "books", label: "Books", icon: Book },
+  { value: "accessories", label: "Accessories", icon: Gift },
+  { value: "others", label: "Others", icon: Coffee },
+]
 
 interface BasicInfoStepProps {
   form: UseFormReturn<MerchFormData>
@@ -60,6 +67,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
 
   return (
     <div className="space-y-6">
+      {/* Name field remains the same */}
       <motion.div {...formFieldAnimation}>
         <FormField
           control={form.control}
@@ -69,7 +77,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
               <FormLabel className="font-semibold">Name</FormLabel>
               <FormControl>
                 <Input
-                  className={`transition-all duration-200`}
+                  className="transition-all duration-200"
                   placeholder="Enter merch name"
                   {...field}
                 />
@@ -80,6 +88,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
         />
       </motion.div>
 
+      {/* Description field remains the same */}
       <motion.div {...formFieldAnimation}>
         <FormField
           control={form.control}
@@ -94,7 +103,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
               </FormLabel>
               <FormControl>
                 <Textarea
-                  className={`min-h-[120px] transition-all duration-200`}
+                  className="min-h-[120px] transition-all duration-200"
                   placeholder="Enter merch description (markdown supported)"
                   {...field}
                   onChange={(e) => {
@@ -136,7 +145,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
                     ₹
                   </span>
                   <Input
-                    className={`pl-6 transition-all duration-200`}
+                    className="pl-6 transition-all duration-200"
                     type="number"
                     step="1"
                     placeholder="0.00"
@@ -159,11 +168,30 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
             <FormItem>
               <FormLabel className="font-semibold">Category</FormLabel>
               <FormControl>
-                <Input
-                  className={`transition-all duration-200`}
-                  placeholder="Enter category"
-                  {...field}
-                />
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5"
+                >
+                  {categoryOptions.map((option) => (
+                    <div key={option.value}>
+                      <RadioGroupItem
+                        value={option.value}
+                        id={option.value}
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor={option.value}
+                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-transparent p-4 hover:bg-muted hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:text-primary"
+                      >
+                        <option.icon className="mb-2 h-6 w-6" />
+                        <span className="text-sm font-medium">
+                          {option.label}
+                        </span>
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
               </FormControl>
               <FormMessage />
             </FormItem>

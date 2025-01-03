@@ -24,7 +24,7 @@ import { ReviewStep } from "./review-step"
 import { VariantsStep } from "./variants-step"
 
 const steps = [
-  { id: "basic-info", title: "Basic Information" },
+  { id: "basic-info", title: "Basic info" },
   { id: "images", title: "Images" },
   { id: "variants", title: "Variants" },
   { id: "review", title: "Review" },
@@ -46,7 +46,6 @@ export function MerchCreationForm() {
       colors: [],
       images: [],
       stock: 0,
-      featured: false,
     },
   })
 

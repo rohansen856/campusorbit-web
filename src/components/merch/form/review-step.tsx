@@ -4,14 +4,7 @@ import { UseFormReturn } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
 import { type MerchFormData } from "@/lib/validation"
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
-import { Switch } from "@/components/ui/switch"
 
 interface ReviewStepProps {
   form: UseFormReturn<MerchFormData>
@@ -56,9 +49,7 @@ export function ReviewStep({ form }: ReviewStepProps) {
 
         <motion.div variants={staggerChildren} className="grid gap-6">
           <motion.div variants={fadeInUp} className="space-y-3">
-            <h4 className="text-primary/90 text-lg font-medium">
-              Basic Information
-            </h4>
+            <h4 className="text-primary/90 text-lg font-medium">Basic info</h4>
             <div className="grid grid-cols-2 gap-3 rounded-lg p-4 text-sm">
               <dt className="text-muted-foreground font-medium">Name:</dt>
               <dd className="font-semibold">
@@ -153,27 +144,6 @@ export function ReviewStep({ form }: ReviewStepProps) {
         </motion.div>
 
         <Separator />
-
-        <motion.div variants={fadeInUp}>
-          <FormField
-            control={form.control}
-            name="featured"
-            render={({ field }) => (
-              <FormItem className="flex items-center justify-between rounded-lg p-4 transition-colors">
-                <FormLabel className="cursor-pointer text-base font-medium">
-                  Feature this merch?
-                </FormLabel>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="data-[state=checked]:bg-primary"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </motion.div>
       </motion.div>
     </motion.div>
   )

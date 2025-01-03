@@ -113,7 +113,6 @@ export const merchSchema = z.object({
     .number()
     .int("Stock must be a whole number")
     .positive("Stock must be positive"),
-  featured: z.boolean().default(false),
 })
 
 export type MerchFormData = z.infer<typeof merchSchema>
@@ -128,3 +127,24 @@ export type MerchCardType = Merch & {
     institute_id: number
   }
 }
+
+export const scheduleSchema = z.object({
+  institute_id: z.number(),
+  course_code: z.string().min(1),
+  course_title: z.string().min(1),
+  prof: z.string().min(1),
+  type: z.string().default("theory"),
+  day: z.number().min(0).max(6),
+  from: z.date(),
+  to: z.date(),
+  group: z.string().default(""),
+  branch: z.string().min(1),
+  room: z.string().min(1),
+  semester: z.number().min(1).max(8),
+})
+
+export const scheduleArraySchema = z.object({
+  schedules: z.array(scheduleSchema),
+})
+
+export type ScheduleFormData = z.infer<typeof scheduleSchema>
