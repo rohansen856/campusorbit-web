@@ -1,6 +1,7 @@
 import React, { useState } from "react"
+import Link from "next/link"
 import { Student } from "@prisma/client"
-import { Calendar } from "lucide-react"
+import { ArrowRight, Calendar, Trash } from "lucide-react"
 
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
@@ -8,6 +9,7 @@ import { cn } from "@/lib/utils"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+import { Button } from "../ui/button"
 import { ScrollArea } from "../ui/scroll-area"
 import { AttendanceGraph } from "./attendance-graph"
 import { TotalAttendance } from "./total-attendance"
@@ -84,6 +86,7 @@ const StatusBadge = ({ status }: { status: string }) => {
 }
 
 const AttendanceCard = ({ attendance }: { attendance: TransformedRecord }) => {
+  async function deleteAttendance(id: string) {}
   return (
     <Card className="h-full">
       <CardHeader className="p-3">
@@ -107,6 +110,9 @@ const AttendanceCard = ({ attendance }: { attendance: TransformedRecord }) => {
             >
               <span className="text-sm font-medium">{detail.course_code}</span>
               <StatusBadge status={detail.status} />
+              {/* <Button variant={"destructive"} className="size-6 rounded-full" onClick={() => deleteAttendance(detail.course_code)}>
+                <Trash />
+              </Button> */}
             </div>
           ))}
         </div>
@@ -170,6 +176,13 @@ export async function AttendanceSection({
         </TabsList>
 
         <TabsContent value="overview" className="mt-0 h-full">
+          <Link
+            href={"/schedule"}
+            className="w-full py-8 text-xl bg-secondary mb-2 flex justify-center items-center rounded-xl group"
+          >
+            View Full Schedule{" "}
+            <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-2 duration-300" />
+          </Link>
           <div className="grid gap-4 md:grid-cols-2">
             <AttendanceGraph
               subjects={allSubjects}

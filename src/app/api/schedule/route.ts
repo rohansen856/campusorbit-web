@@ -50,6 +50,20 @@ export async function GET(request: Request) {
 
     const schedules = await db.schedule.findMany({
       where,
+      include: {
+        Attendance: {
+          where: {
+            studentId: user.id,
+            attendanceDate: {
+              gte: new Date(new Date().setHours(0, 0, 0, 0)), // Start of today
+              lt: new Date(new Date().setHours(24, 0, 0, 0)), // Start of tomorrow
+            },
+          },
+          select: {
+            status: true,
+          },
+        },
+      },
       orderBy: [{ day: "asc" }, { from: "asc" }],
     })
 

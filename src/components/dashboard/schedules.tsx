@@ -23,7 +23,9 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(
     null
   )
-  const [schedules, setSchedules] = useState<Schedule[]>([])
+  const [schedules, setSchedules] = useState<
+    (Schedule & { Attendance: { status: string }[] })[]
+  >([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({
     day: new Date().getDay().toString(),
@@ -36,9 +38,12 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
     const fetchSchedules = async () => {
       try {
         setLoading(true)
-        const res = await axios.get<Schedule[]>("/api/schedule", {
+        const res = await axios.get<
+          (Schedule & { Attendance: { status: string }[] })[]
+        >("/api/schedule", {
           params: filters,
         })
+        console.log(schedules)
         setSchedules(res.data)
       } catch (error) {
         toast.error("Failed to fetch schedules. Please try again later.", {

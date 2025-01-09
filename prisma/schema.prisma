@@ -157,7 +157,7 @@ model Schedule {
   to                DateTime  @map("to")
   group             String    @default("") @map("group") 
   branch            String
-  room              String
+  room              String?
   semester          Int
 
   institute         Institute @relation(fields: [institute_id], references: [id], onDelete: Cascade)

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Institute } from "@prisma/client"
+import { Separator } from "@radix-ui/react-dropdown-menu"
 import axios from "axios"
 import { Plus } from "lucide-react"
 import { useFieldArray, useForm } from "react-hook-form"
@@ -14,7 +15,7 @@ import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 
-import { Separator } from "../ui/separator"
+import { DefaultRow } from "./DefaultRow"
 import { ScheduleRow } from "./ScheduleRow"
 
 type FormData = z.infer<typeof scheduleArraySchema>
@@ -29,17 +30,7 @@ export function ScheduleForm() {
     defaultValues: {
       schedules: Array(10).fill({
         type: "theory",
-        institute_id: 0,
-        course_code: "",
-        course_title: "",
-        prof: "",
-        day: 0,
-        from: new Date(),
-        to: new Date(),
         group: "",
-        branch: "",
-        room: "",
-        semester: 0,
       }),
     },
   })
@@ -63,6 +54,36 @@ export function ScheduleForm() {
         })
       })
   }, [toast])
+
+  const handleDefaultChange = (
+    field: keyof FormData["schedules"][number],
+    value: any
+  ) => {
+    const { setValue } = form
+    fields.forEach((_, index) => {
+      setValue(`schedules.${index}.${field}`, value)
+    })
+  }
+
+  const handleInsertRow = async (index: number) => {
+    try {
+      setIsLoading(true)
+      const rowData = form.getValues(`schedules.${index}`)
+      await axios.post("/api/schedule/batch", { schedules: [rowData] })
+      toast({
+        title: "Success",
+        description: "Schedule created successfully",
+      })
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to create schedule",
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   async function onSubmit(data: FormData) {
     try {
@@ -112,34 +133,34 @@ export function ScheduleForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <div className="text-muted-foreground grid grid-cols-12 gap-2 px-2 text-sm font-medium">
-            <div className="col-span-2">Institute</div>
-            <div className="col-span-1">Code</div>
-            <div className="col-span-2">Title</div>
-            <div className="col-span-1">Prof</div>
-            <div className="col-span-1">Type</div>
-            <div className="col-span-1">Day</div>
-            <div className="col-span-1">Time</div>
-            <div className="col-span-1">Group</div>
-            <div className="col-span-1">Branch</div>
-            <div className="col-span-1">Room</div>
-          </div>
+        <div className="overflow-x-auto">
+          <div className="min-w-[1200px] space-y-4">
+            <DefaultRow
+              form={form}
+              institutes={institutes}
+              onDefaultChange={handleDefaultChange}
+            />
 
-          <div className="space-y-2">
-            {fields.map((field, index) => (
-              <>
-                <ScheduleRow
-                  key={field.id}
-                  form={form}
-                  index={index}
-                  institutes={institutes}
-                />
-                <Separator
-                  className={cn("h-1", (index + 1) % 10 == 0 ? "" : "hidden")}
-                />
-              </>
-            ))}
+            <div className="space-y-2">
+              {fields.map((field, index) => (
+                <>
+                  <ScheduleRow
+                    key={field.id}
+                    form={form}
+                    index={index}
+                    institutes={institutes}
+                    onInsertRow={handleInsertRow}
+                    isLoading={isLoading}
+                  />
+                  <Separator
+                    className={cn(
+                      "bg-secondary h-1",
+                      (index + 1) % 10 === 0 ? "block" : "hidden"
+                    )}
+                  />
+                </>
+              ))}
+            </div>
           </div>
         </div>
 

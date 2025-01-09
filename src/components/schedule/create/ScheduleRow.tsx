@@ -1,8 +1,12 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Institute } from "@prisma/client"
+import { Loader, Send } from "lucide-react"
 import { UseFormReturn } from "react-hook-form"
 
+import { days } from "@/lib/data"
+import { Button } from "@/components/ui/button"
 import { FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import {
@@ -19,11 +23,29 @@ interface ScheduleRowProps {
   form: UseFormReturn<any>
   index: number
   institutes: Institute[]
+  onInsertRow?: (index: number) => Promise<void>
+  isLoading?: boolean
 }
 
-export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
+export function ScheduleRow({
+  form,
+  index,
+  institutes,
+  onInsertRow,
+  isLoading,
+}: ScheduleRowProps) {
+  const [isRowInserting, setIsRowInserting] = useState(false)
+
+  useEffect(() => {
+    if (!isLoading) setIsRowInserting(false)
+  }, [isLoading])
+
   return (
-    <div className="grid grid-cols-12 gap-2">
+    <div className="grid grid-cols-[auto_repeat(13,1fr)_auto] items-center gap-2">
+      <div className="text-muted-foreground w-8 text-center text-sm">
+        {index + 1}
+      </div>
+
       <div className="col-span-2">
         <FormField
           control={form.control}
@@ -45,7 +67,7 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
                       key={institute.id}
                       value={institute.id.toString()}
                     >
-                      {institute.name}
+                      {institute.short_name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -62,7 +84,7 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} className="h-8" />
+                <Input {...field} className="h-8" placeholder="Code" />
               </FormControl>
             </FormItem>
           )}
@@ -76,7 +98,7 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} className="h-8" />
+                <Input {...field} className="h-8" placeholder="Title" />
               </FormControl>
             </FormItem>
           )}
@@ -90,7 +112,7 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} className="h-8" />
+                <Input {...field} className="h-8" placeholder="Prof" />
               </FormControl>
             </FormItem>
           )}
@@ -106,7 +128,7 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger className="h-8">
-                    <SelectValue />
+                    <SelectValue placeholder="Type" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -135,13 +157,11 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
-                    (day, i) => (
-                      <SelectItem key={i} value={i.toString()}>
-                        {day}
-                      </SelectItem>
-                    )
-                  )}
+                  {days.map((day, i) => (
+                    <SelectItem key={i} value={i.toString()}>
+                      {day.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </FormItem>
@@ -160,7 +180,7 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} className="h-8" />
+                <Input {...field} className="h-8" placeholder="Group" />
               </FormControl>
             </FormItem>
           )}
@@ -174,7 +194,26 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} className="h-8" />
+                <Input {...field} className="h-8" placeholder="Branch" />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </div>
+
+      <div className="col-span-1">
+        <FormField
+          control={form.control}
+          name={`schedules.${index}.semester`}
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="number"
+                  className="h-8"
+                  placeholder="Sem"
+                />
               </FormControl>
             </FormItem>
           )}
@@ -188,11 +227,30 @@ export function ScheduleRow({ form, index, institutes }: ScheduleRowProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} className="h-8" />
+                <Input {...field} className="h-8" placeholder="Room" />
               </FormControl>
             </FormItem>
           )}
         />
+      </div>
+
+      <div>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => {
+            setIsRowInserting(true)
+            onInsertRow?.(index)
+          }}
+          disabled={isLoading || isRowInserting}
+        >
+          {isRowInserting ? (
+            <Loader className="size-4 animate-spin" />
+          ) : (
+            <Send className="size-4" />
+          )}
+        </Button>
       </div>
     </div>
   )

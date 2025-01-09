@@ -1,5 +1,6 @@
 "use client"
 
+import { Schedule } from "@prisma/client"
 import { Clock } from "lucide-react"
 import { UseFormReturn } from "react-hook-form"
 
@@ -14,16 +15,35 @@ import {
 interface TimeInputProps {
   form: UseFormReturn<any>
   index: number
+  isDefault?: boolean
+  onTimeChange?: (field: keyof Omit<Schedule, "id">, value: Date) => void
 }
 
-export function TimeInput({ form, index }: TimeInputProps) {
-  const fromTime = form.watch(`schedules.${index}.from`)
-  const toTime = form.watch(`schedules.${index}.to`)
+export function TimeInput({
+  form,
+  index,
+  isDefault,
+  onTimeChange,
+}: TimeInputProps) {
+  const fromTime = isDefault ? null : form.watch(`schedules.${index}.from`)
+  const toTime = isDefault ? null : form.watch(`schedules.${index}.to`)
 
   const timeSlots = Array.from({ length: 24 }, (_, i) => {
     const hour = i.toString().padStart(2, "0")
     return [`${hour}:00`, `${hour}:30`]
   }).flat()
+
+  const handleTimeChange = (type: "from" | "to", timeStr: string) => {
+    const [hours, minutes] = timeStr.split(":")
+    const date = new Date()
+    date.setHours(parseInt(hours), parseInt(minutes))
+
+    if (isDefault && onTimeChange) {
+      onTimeChange(type, date)
+    } else {
+      form.setValue(`schedules.${index}.${type}`, date)
+    }
+  }
 
   return (
     <div className="flex gap-1">
@@ -43,7 +63,7 @@ export function TimeInput({ form, index }: TimeInputProps) {
                 hour12: false,
               })
             ) : (
-              <Clock className="size-4" />
+              <Clock className="mx-auto size-4" />
             )}
           </Button>
         </PopoverTrigger>
@@ -54,12 +74,7 @@ export function TimeInput({ form, index }: TimeInputProps) {
                 key={time}
                 variant="ghost"
                 size="sm"
-                onClick={() => {
-                  const [hours, minutes] = time.split(":")
-                  const date = new Date()
-                  date.setHours(parseInt(hours), parseInt(minutes))
-                  form.setValue(`schedules.${index}.from`, date)
-                }}
+                onClick={() => handleTimeChange("from", time)}
               >
                 {time}
               </Button>
@@ -84,7 +99,7 @@ export function TimeInput({ form, index }: TimeInputProps) {
                 hour12: false,
               })
             ) : (
-              <Clock className="size-4" />
+              <Clock className="mx-auto size-4" />
             )}
           </Button>
         </PopoverTrigger>
@@ -95,12 +110,7 @@ export function TimeInput({ form, index }: TimeInputProps) {
                 key={time}
                 variant="ghost"
                 size="sm"
-                onClick={() => {
-                  const [hours, minutes] = time.split(":")
-                  const date = new Date()
-                  date.setHours(parseInt(hours), parseInt(minutes))
-                  form.setValue(`schedules.${index}.to`, date)
-                }}
+                onClick={() => handleTimeChange("to", time)}
               >
                 {time}
               </Button>

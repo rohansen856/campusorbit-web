@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "../ui/button"
 
 interface ScheduleCardProps {
-  schedule: Schedule
+  schedule: Schedule & { Attendance: { status: string }[] }
   student: Student
   onClick: () => void
 }
@@ -79,6 +79,9 @@ export function ScheduleCard({
               <Badge variant="outline" className={typeColors?.text}>
                 {schedule.type}
               </Badge>
+              {schedule.Attendance.length > 0 && (
+                <Badge variant="default">{schedule.Attendance[0].status}</Badge>
+              )}
             </div>
           </div>
         </div>
@@ -89,7 +92,7 @@ export function ScheduleCard({
             <span className="truncate">{schedule.prof}</span>
           </div>
 
-          {schedule.room.length > 0 && (
+          {schedule.room && schedule.room.length > 0 && (
             <div className="flex items-center gap-1.5">
               <MapPin className={`w-3.5 h-3.5 ${typeColors?.icon}`} />
               <span>{schedule.room}</span>

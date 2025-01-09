@@ -139,7 +139,7 @@ export const scheduleSchema = z.object({
   to: z.date(),
   group: z.string().default(""),
   branch: z.string().min(1),
-  room: z.string().min(1),
+  room: z.string().optional(),
   semester: z.number().min(1).max(8),
 })
 
