@@ -96,7 +96,7 @@ export function AttendanceGraph({
   }, [courseAttendanceData])
 
   return (
-    <Card className="w-full md:h-[75vh]">
+    <Card className="w-full md:h-[64.5vh]">
       <CardHeader>
         <CardTitle>Attendance Percentage</CardTitle>
       </CardHeader>

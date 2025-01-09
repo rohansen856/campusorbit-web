@@ -76,14 +76,14 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
   }
 
   return (
-    <Card className="bg-gradient-to-b from-background to-muted/20 md:h-[80vh]">
+    <Card className="from-background to-muted/20 bg-gradient-to-b md:h-[80vh]">
       <section className="container mx-auto px-4 py-6">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-5xl mx-auto"
+          className="mx-auto max-w-5xl"
         >
-          <div className="bg-card border-b mb-6 shadow-sm">
+          <div className="bg-card mb-6 border-b shadow-sm">
             <ScheduleFilters student={student} onFilterChange={setFilters} />
           </div>
 
@@ -95,9 +95,9 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex flex-col items-center justify-center py-12 space-y-4"
+                  className="flex flex-col items-center justify-center space-y-4 py-12"
                 >
-                  <Loader className="h-8 w-8 animate-spin text-primary" />
+                  <Loader className="text-primary size-8 animate-spin" />
                   <p className="text-muted-foreground animate-pulse">
                     Loading your schedule...
                   </p>
@@ -125,14 +125,14 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="flex flex-col items-center justify-center py-12 space-y-4"
+                      className="flex flex-col items-center justify-center space-y-4 py-12"
                     >
-                      <div className="rounded-full bg-muted p-4">
-                        <Calendar className="h-8 w-8 text-muted-foreground" />
+                      <div className="bg-muted rounded-full p-4">
+                        <Calendar className="text-muted-foreground size-8" />
                       </div>
                       <div className="text-center">
-                        <h3 className="font-semibold mb-1">No Classes Found</h3>
-                        <p className="text-sm text-muted-foreground max-w-sm">
+                        <h3 className="mb-1 font-semibold">No Classes Found</h3>
+                        <p className="text-muted-foreground max-w-sm text-sm">
                           No classes scheduled for{" "}
                           {days[Number(filters.day)]?.label}{" "}
                           {filters.semester && "Semester " + filters.semester}{" "}

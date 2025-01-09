@@ -59,17 +59,17 @@ export function ScheduleCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02 }}
-      className={`flex flex-col md:flex-row gap-4 items-center
-        relative p-4 rounded-lg cursor-pointer
+      className={`relative flex cursor-pointer flex-col items-center
+        gap-4 rounded-lg p-4 md:flex-row
         ${typeColors?.bg || ""} ${typeColors?.border || ""}
-        border backdrop-blur-md shadow-lg
+        border shadow-lg backdrop-blur-md
         transition-all duration-300
       `}
     >
       <div className="w-full" onClick={onClick}>
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <h3 className="font-semibold text-base leading-tight">
+            <h3 className="text-base font-semibold leading-tight">
               {schedule.course_title}
             </h3>
             <div className="flex items-center gap-2 text-xs">
@@ -88,19 +88,19 @@ export function ScheduleCard({
 
         <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
           <div className="flex items-center gap-1.5">
-            <User className={`w-3.5 h-3.5 ${typeColors?.icon}`} />
+            <User className={`size-3.5 ${typeColors?.icon}`} />
             <span className="truncate">{schedule.prof}</span>
           </div>
 
           {schedule.room && schedule.room.length > 0 && (
             <div className="flex items-center gap-1.5">
-              <MapPin className={`w-3.5 h-3.5 ${typeColors?.icon}`} />
+              <MapPin className={`size-3.5 ${typeColors?.icon}`} />
               <span>{schedule.room}</span>
             </div>
           )}
 
-          <div className="flex items-center gap-1.5 col-span-2">
-            <Clock className={`w-3.5 h-3.5 ${typeColors?.icon}`} />
+          <div className="col-span-2 flex items-center gap-1.5">
+            <Clock className={`size-3.5 ${typeColors?.icon}`} />
             <span>
               {format(new Date(schedule.from), "hh:mm a")} -{" "}
               {format(new Date(schedule.to), "hh:mm a")}
@@ -108,8 +108,8 @@ export function ScheduleCard({
           </div>
 
           {scheduleDate.getDay() !== new Date().getDay() && (
-            <div className="flex items-center gap-1.5 col-span-2">
-              <CalendarDays className={`w-3.5 h-3.5 ${typeColors?.icon}`} />
+            <div className="col-span-2 flex items-center gap-1.5">
+              <CalendarDays className={`size-3.5 ${typeColors?.icon}`} />
               <span>
                 {scheduleDate.toLocaleDateString("en-GB", {
                   day: "numeric",
@@ -125,10 +125,10 @@ export function ScheduleCard({
         student.semester === schedule.semester &&
         student.group === schedule.group &&
         schedule.type.toLowerCase() !== "lab" && (
-          <div className="w-full md:w-40 md:h-full grid grid-cols-3 gap-1">
+          <div className="grid w-full grid-cols-3 gap-1 md:h-full md:w-40">
             <Button
               variant={"secondary"}
-              className="w-full col-span-1 md:col-span-3 text-green-600"
+              className="col-span-1 w-full text-green-600 md:col-span-3"
               onClick={(e) => markAttendance("PRESENT")}
             >
               <Check />
@@ -136,7 +136,7 @@ export function ScheduleCard({
             </Button>
             <Button
               variant={"secondary"}
-              className="w-full col-span-1 md:col-span-3 text-rose-600"
+              className="col-span-1 w-full text-rose-600 md:col-span-3"
               onClick={(e) => markAttendance("ABSENT")}
             >
               <X />
@@ -144,7 +144,7 @@ export function ScheduleCard({
             </Button>
             <Button
               variant={"secondary"}
-              className="w-full col-span-1 md:col-span-3 text-yellow-600"
+              className="col-span-1 w-full text-yellow-600 md:col-span-3"
               onClick={(e) => markAttendance("EXCUSED")}
             >
               Cancelled

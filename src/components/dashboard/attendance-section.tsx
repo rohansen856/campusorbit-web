@@ -78,7 +78,7 @@ const StatusBadge = ({ status }: { status: string }) => {
 
   return (
     <span
-      className={cn("text-xs px-2 py-1 rounded-full", config.bg, config.border)}
+      className={cn("rounded-full px-2 py-1 text-xs", config.bg, config.border)}
     >
       {config.text}
     </span>
@@ -91,7 +91,7 @@ const AttendanceCard = ({ attendance }: { attendance: TransformedRecord }) => {
     <Card className="h-full">
       <CardHeader className="p-3">
         <div className="flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-muted-foreground" />
+          <Calendar className="text-muted-foreground size-4" />
           <CardTitle className="text-sm font-medium">
             {new Intl.DateTimeFormat("en-GB", {
               day: "2-digit",
@@ -106,7 +106,7 @@ const AttendanceCard = ({ attendance }: { attendance: TransformedRecord }) => {
           {attendance.details.map((detail) => (
             <div
               key={detail.course_code}
-              className="flex items-center justify-between p-2 rounded bg-muted/50"
+              className="bg-muted/50 flex items-center justify-between rounded p-2"
             >
               <span className="text-sm font-medium">{detail.course_code}</span>
               <StatusBadge status={detail.status} />
@@ -168,9 +168,9 @@ export async function AttendanceSection({
   const groupedAttendance = getGroupedAttendance(attendanceHistory)
 
   return (
-    <Card className="w-full p-0 h-[80vh] border-none">
+    <Card className="h-[80vh] w-full border-none p-0">
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="w-full justify-start mb-4">
+        <TabsList className="mb-4 w-full justify-start">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="history">Attendance History</TabsTrigger>
         </TabsList>
@@ -178,10 +178,10 @@ export async function AttendanceSection({
         <TabsContent value="overview" className="mt-0 h-full">
           <Link
             href={"/schedule"}
-            className="w-full py-8 text-xl bg-secondary mb-2 flex justify-center items-center rounded-xl group"
+            className="bg-secondary group mb-2 flex w-full items-center justify-center rounded-xl py-8 text-xl"
           >
             View Full Schedule{" "}
-            <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-2 duration-300" />
+            <ArrowRight className="ml-2 size-6 duration-300 group-hover:translate-x-2" />
           </Link>
           <div className="grid gap-4 md:grid-cols-2">
             <AttendanceGraph
@@ -197,12 +197,12 @@ export async function AttendanceSection({
 
         <TabsContent value="history" className="mt-0">
           {groupedAttendance.length === 0 && (
-            <div className="w-full h-[50vh] flex justify-center items-center text-yellow-500">
+            <div className="flex h-[50vh] w-full items-center justify-center text-yellow-500">
               No record found
             </div>
           )}
           <ScrollArea className="h-[75vh]">
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {groupedAttendance.map((attendance) => (
                 <AttendanceCard key={attendance.date} attendance={attendance} />
               ))}

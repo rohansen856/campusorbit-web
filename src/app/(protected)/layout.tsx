@@ -19,7 +19,7 @@ export default async function ProtectedLayout({
   })
   if (!student) return redirect("/auth/register")
   return (
-    <div className="h-full min-h-screen py-8 px-4 w-full flex flex-col justify-between">
+    <div className="flex size-full min-h-screen flex-col justify-between px-4">
       <main className="p-4 md:p-8">{children}</main>
       <Footer />
       <Toaster position="top-center" />
