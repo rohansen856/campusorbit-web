@@ -105,7 +105,7 @@ const getClassPosition = (timeString: string | Date): number => {
 }
 
 const formatTime = (dateString: string | Date): string => {
-  return new Date(dateString).toLocaleTimeString([], {
+  return new Date(dateString + "Z").toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,

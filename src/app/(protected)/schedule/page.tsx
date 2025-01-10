@@ -55,7 +55,7 @@ export default async function Page() {
   })
 
   const groupedAttendance = getGroupedAttendance(attendanceHistory)
-  console.log(groupedAttendance)
+
   return (
     <div className="min-h-screen space-y-6">
       <AcademicSchedule classes={schedule} student={student} />
