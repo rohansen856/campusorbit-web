@@ -22,19 +22,16 @@ export const metadata: Metadata = {
         : `http://localhost:${process.env.PORT || 3000}`
   ),
   title: "Campusorbut",
-  description:
-    "This is a complete authentication example app built with Next.js 14 and Auth.js using the latest server actions.",
+  description: "One stop solution for all your campus needs",
   openGraph: {
     url: "/",
-    title: "Auth — Next.js 14 Authentication Example",
-    description:
-      "This is a complete authentication example app built with Next.js 14 and Auth.js using the latest server actions.",
+    title: "Campusorbit - built for students",
+    description: "One stop solution for all your campus needs",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Auth — Next.js 14 Authentication Example",
-    description:
-      "This is a complete authentication example app built with Next.js 14 and Auth.js using the latest server actions.",
+    title: "Campusorbit - built for students",
+    description: "One stop solution for all your campus needs",
   },
 }
 
@@ -54,7 +51,7 @@ export default async function RootLayout({
             inter.className
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <MainNav />
             <main className="z-10">{children}</main>
           </ThemeProvider>

@@ -24,6 +24,9 @@ export function ScheduleCard({
   student,
   onClick,
 }: ScheduleCardProps) {
+  const [attendanceStatus, setAttendanceStatus] = useState<string | null>(
+    schedule?.Attendance[0]?.status
+  )
   const typeColors =
     courseTypeColors[schedule.type as keyof typeof courseTypeColors]
   const scheduleDate = new Date()
@@ -45,8 +48,10 @@ export function ScheduleCard({
         status,
       })
 
-      if (res.status === 201)
+      if (res.status === 201) {
         toast.success(`You have been marked as ${status.toLowerCase()}`)
+        setAttendanceStatus(status)
+      }
     } catch (error) {
       if ((error as AxiosError).status === 409) {
         toast.warning("You have already been marked for this schedule.")
@@ -79,8 +84,8 @@ export function ScheduleCard({
               <Badge variant="outline" className={typeColors?.text}>
                 {schedule.type}
               </Badge>
-              {schedule.Attendance.length > 0 && (
-                <Badge variant="default">{schedule.Attendance[0].status}</Badge>
+              {attendanceStatus && (
+                <Badge variant="default">{attendanceStatus}</Badge>
               )}
             </div>
           </div>

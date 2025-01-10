@@ -1,59 +1,19 @@
 import React, { useState } from "react"
 import Link from "next/link"
+import { AttendanceRecord, TransformedAttendanceRecord } from "@/types"
 import { Student } from "@prisma/client"
 import { ArrowRight, Calendar, Trash } from "lucide-react"
 
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
+import { getGroupedAttendance } from "@/lib/group-attendace"
 import { cn } from "@/lib/utils"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import { Button } from "../ui/button"
 import { ScrollArea } from "../ui/scroll-area"
 import { AttendanceGraph } from "./attendance-graph"
 import { TotalAttendance } from "./total-attendance"
-
-type AttendanceRecord = {
-  attendanceDate: Date
-  status: string
-  schedule: { course_code: string }
-}
-
-type TransformedRecord = {
-  date: string
-  details: { course_code: string; status: string }[]
-}
-
-function getGroupedAttendance(
-  records: AttendanceRecord[]
-): TransformedRecord[] {
-  const groupedByDate: Record<
-    string,
-    { course_code: string; status: string }[]
-  > = {}
-
-  records.forEach((record) => {
-    const { attendanceDate, status, schedule } = record
-    const date = new Date(attendanceDate).toISOString()
-
-    if (!groupedByDate[date]) {
-      groupedByDate[date] = []
-    }
-
-    groupedByDate[date].push({
-      course_code: schedule.course_code,
-      status: status,
-    })
-  })
-
-  return Object.entries(groupedByDate)
-    .map(([date, details]) => ({
-      date,
-      details,
-    }))
-    .sort((a, b) => (a.date > b.date ? 1 : -1))
-}
 
 const StatusBadge = ({ status }: { status: string }) => {
   const statusConfig = {
@@ -85,7 +45,11 @@ const StatusBadge = ({ status }: { status: string }) => {
   )
 }
 
-const AttendanceCard = ({ attendance }: { attendance: TransformedRecord }) => {
+const AttendanceCard = ({
+  attendance,
+}: {
+  attendance: TransformedAttendanceRecord
+}) => {
   async function deleteAttendance(id: string) {}
   return (
     <Card className="h-full">

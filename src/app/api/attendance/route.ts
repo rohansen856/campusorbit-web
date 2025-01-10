@@ -43,7 +43,7 @@ export async function POST(req: Request) {
         status,
       },
     })
-    console.log(attendance)
+    // console.log(attendance)
     return new Response(JSON.stringify(attendance), { status: 201 })
   } catch (error) {
     console.log(error)

@@ -192,7 +192,7 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
   }, [])
 
   return (
-    <div className="relative rounded-lg border shadow-lg">
+    <div className="relative rounded-lg border bg-slate-100 shadow-lg dark:bg-gray-950">
       <div className="flex items-center justify-between border-b p-4">
         <div className="flex items-center gap-2">
           <Calendar className="size-5 text-blue-600" />

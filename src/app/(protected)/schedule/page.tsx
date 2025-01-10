@@ -1,5 +1,10 @@
+import { AttendanceRecord } from "@/types"
+
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
+import { getGroupedAttendance } from "@/lib/group-attendace"
+import { Separator } from "@/components/ui/separator"
+import { CalendarView } from "@/components/schedule/calendar-view"
 import { AcademicSchedule } from "@/components/schedule/schedule-view"
 
 export default async function Page() {
@@ -31,9 +36,29 @@ export default async function Page() {
       group: "A",
     },
   })
+
+  const attendanceHistory: AttendanceRecord[] = await db.attendance.findMany({
+    where: {
+      studentId: user.id,
+    },
+    select: {
+      attendanceDate: true,
+      status: true,
+      schedule: {
+        select: {
+          course_code: true,
+        },
+      },
+    },
+  })
+
+  const groupedAttendance = getGroupedAttendance(attendanceHistory)
+  console.log(groupedAttendance)
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen space-y-6">
       <AcademicSchedule classes={schedule} />
+      <Separator className="w-full" />
+      <CalendarView attendanceRecords={groupedAttendance} />
     </div>
   )
 }

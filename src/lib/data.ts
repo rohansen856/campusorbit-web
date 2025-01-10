@@ -1,3 +1,4 @@
+import { SpecialDate } from "@/types"
 import { Activity, Book, Code, Music, Palette, Users } from "lucide-react"
 
 export const branches = [
@@ -14,7 +15,7 @@ export const branches = [
   { key: "CH", label: "Chemical Engineering" },
   { key: "BT", label: "Biotechnology" },
 ]
-export const groups = ["A", "B", "C", "Z"]
+export const groups = ["A", "B", "C", "D", "D1", "D2", "E", "E1", "E2", "Z"]
 export const semesters = [1, 2, 3, 4, 5, 6, 7, 8]
 export const days = [
   { value: 0, label: "Sunday" },
@@ -70,3 +71,5 @@ export const clubTypeColors: Record<string, string> = {
   social: "from-yellow-500/20 to-orange-500/20 border-yellow-200/20",
   sports: "from-pink-500/20 to-purple-500/20 border-pink-200/20",
 }
+
+export const specialDates: SpecialDate[] = []

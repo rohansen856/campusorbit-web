@@ -100,7 +100,7 @@ export async function GET(req: Request) {
                 fontWeight: "normal",
               }}
             >
-              tx.campusorbit.com
+              https://campusorbit.vercel.app
             </div>
             <div
               tw="flex items-center text-xl"
@@ -125,7 +125,7 @@ export async function GET(req: Request) {
                   stroke-linejoin="round"
                 />
               </svg>
-              <div tw="flex ml-2">github.com/campusorbit/campusorbit</div>
+              <div tw="flex ml-2">github.com/rohansen856/campusorbit</div>
             </div>
           </div>
         </div>

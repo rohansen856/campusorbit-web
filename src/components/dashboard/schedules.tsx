@@ -43,7 +43,6 @@ export function ScheduleSection({ student, ...props }: ScheduleSectionProps) {
         >("/api/schedule", {
           params: filters,
         })
-        console.log(schedules)
         setSchedules(res.data)
       } catch (error) {
         toast.error("Failed to fetch schedules. Please try again later.", {
