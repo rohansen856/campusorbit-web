@@ -56,7 +56,7 @@ export default async function Page() {
   console.log(groupedAttendance)
   return (
     <div className="min-h-screen space-y-6">
-      <AcademicSchedule classes={schedule} />
+      <AcademicSchedule classes={schedule} student={student} />
       <Separator className="w-full" />
       <CalendarView attendanceRecords={groupedAttendance} />
     </div>

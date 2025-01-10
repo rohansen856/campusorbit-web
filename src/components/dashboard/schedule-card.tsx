@@ -133,7 +133,7 @@ export function ScheduleCard({
           <div className="grid w-full grid-cols-3 gap-1 md:h-full md:w-40">
             <Button
               variant={"secondary"}
-              className="col-span-1 w-full text-green-600 md:col-span-3"
+              className="md:test-md col-span-1 w-full text-xs text-green-600 md:col-span-3"
               onClick={(e) => markAttendance("PRESENT")}
             >
               <Check />
@@ -141,7 +141,7 @@ export function ScheduleCard({
             </Button>
             <Button
               variant={"secondary"}
-              className="col-span-1 w-full text-rose-600 md:col-span-3"
+              className="md:test-md col-span-1 w-full text-xs text-rose-600 md:col-span-3"
               onClick={(e) => markAttendance("ABSENT")}
             >
               <X />
@@ -149,7 +149,7 @@ export function ScheduleCard({
             </Button>
             <Button
               variant={"secondary"}
-              className="col-span-1 w-full text-yellow-600 md:col-span-3"
+              className="md:test-md col-span-1 w-full text-xs text-yellow-600 md:col-span-3"
               onClick={(e) => markAttendance("EXCUSED")}
             >
               Cancelled

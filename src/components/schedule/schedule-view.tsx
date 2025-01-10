@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Schedule } from "@prisma/client"
+import { Schedule, Student } from "@prisma/client"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   Calendar,
@@ -31,6 +31,8 @@ import {
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 
+import { Badge } from "../ui/badge"
+
 interface TypeColors {
   [key: string]: string
   theory: string
@@ -48,6 +50,7 @@ interface ClassBoxProps {
 
 interface AcademicScheduleProps {
   classes: Schedule[]
+  student: Student
 }
 
 const timeSlots: number[] = Array.from({ length: 24 }, (_, i) => (i + 8) % 24) // 0-23 hours
@@ -116,6 +119,7 @@ const getCurrentTimePosition = () => {
 
 export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
   classes,
+  student,
 }) => {
   const [selectedClass, setSelectedClass] = useState<Schedule | null>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
@@ -197,6 +201,11 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
         <div className="flex items-center gap-2">
           <Calendar className="size-5 text-blue-600" />
           <h2 className="text-lg font-semibold">Class Schedule</h2>
+        </div>
+        <div className="space-x-1">
+          <Badge>branch: {student.branch}</Badge>
+          <Badge>sem: {student.semester}</Badge>
+          <Badge>group: {student.group}</Badge>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex gap-2">
