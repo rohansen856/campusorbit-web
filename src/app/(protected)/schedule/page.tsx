@@ -33,9 +33,11 @@ export default async function Page() {
       institute_id: student.institute_id,
       branch: student.branch,
       semester: student.semester,
-      group: "A",
+      group: student.group,
     },
   })
+
+  console.log(schedule[0])
 
   const attendanceHistory: AttendanceRecord[] = await db.attendance.findMany({
     where: {
