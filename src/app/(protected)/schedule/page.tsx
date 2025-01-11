@@ -44,6 +44,7 @@ export default async function Page() {
       studentId: user.id,
     },
     select: {
+      id: true,
       attendanceDate: true,
       status: true,
       schedule: {
