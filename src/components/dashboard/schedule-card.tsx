@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { AttendanceStatus } from "@/types"
 import { Schedule, Student } from "@prisma/client"
 import axios, { AxiosError } from "axios"
 import { format } from "date-fns"
@@ -34,7 +35,7 @@ export function ScheduleCard({
     scheduleDate.getDate() + (schedule.day - new Date().getDay())
   )
 
-  async function markAttendance(status: "PRESENT" | "ABSENT" | "EXCUSED") {
+  async function markAttendance(status: AttendanceStatus) {
     try {
       const res = await axios.post("/api/attendance", {
         studentId: student.user_id,

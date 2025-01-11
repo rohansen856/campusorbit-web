@@ -148,3 +148,19 @@ export const scheduleArraySchema = z.object({
 })
 
 export type ScheduleFormData = z.infer<typeof scheduleSchema>
+
+export const attendanceEntrySchema = z.object({
+  scheduleId: z.string().min(1, "Course is required"),
+  status: z.enum(["PRESENT", "ABSENT", "EXCUSED"], {
+    required_error: "Status is required",
+  }),
+})
+
+export const attendanceFormSchema = z.object({
+  date: z.date({
+    required_error: "Date is required",
+  }),
+  entries: z
+    .array(attendanceEntrySchema)
+    .min(1, "At least one attendance entry is required"),
+})

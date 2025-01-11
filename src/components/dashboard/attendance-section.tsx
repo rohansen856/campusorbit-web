@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { ScrollArea } from "../ui/scroll-area"
+import { AddAttendanceDialog } from "./add-attendance"
 import { AttendanceGraph } from "./attendance-graph"
 import { AttendanceCard } from "./attendance-history-card"
 import { TotalAttendance } from "./total-attendance"
@@ -43,6 +44,19 @@ export async function AttendanceSection({
     orderBy: [{ day: "asc" }, { from: "asc" }],
   })
 
+  const schedules = await db.schedule.findMany({
+    where: {
+      institute_id: student.institute_id,
+      branch: student.branch,
+      semester: student.semester,
+      group: student.group,
+      NOT: {
+        type: "lab",
+      },
+    },
+    distinct: ["course_code"],
+  })
+
   const attendanceHistory: AttendanceRecord[] = await db.attendance.findMany({
     where: {
       studentId: user.id,
@@ -70,13 +84,16 @@ export async function AttendanceSection({
         </TabsList>
 
         <TabsContent value="overview" className="mt-0 h-full">
-          <Link
-            href={"/schedule"}
-            className="bg-secondary group mb-2 flex w-full items-center justify-center rounded-xl py-8 text-xl"
-          >
-            View Full Schedule{" "}
-            <ArrowRight className="ml-2 size-6 duration-300 group-hover:translate-x-2" />
-          </Link>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Link
+              href={"/schedule"}
+              className="bg-secondary group mb-2 flex w-full items-center justify-center rounded-xl py-8 text-xl"
+            >
+              View Full Schedule{" "}
+              <ArrowRight className="ml-2 size-6 duration-300 group-hover:translate-x-2" />
+            </Link>
+            <AddAttendanceDialog schedules={schedules} />
+          </div>
           <div className="grid gap-4 md:grid-cols-2">
             <AttendanceGraph
               subjects={allSubjects}

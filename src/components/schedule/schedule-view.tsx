@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Schedule, Student } from "@prisma/client"
+import { toZonedTime } from "date-fns-tz"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   Calendar,
@@ -100,7 +101,7 @@ const getClassDuration = (from: string | Date, to: string | Date): number => {
 }
 
 const getClassPosition = (timeString: string | Date): number => {
-  const hour = new Date(timeString).getHours()
+  const hour = toZonedTime(new Date(timeString), "Asia/Kolkata").getHours()
   return timeSlots.indexOf(hour)
 }
 
@@ -123,10 +124,6 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
 }) => {
   const [selectedClass, setSelectedClass] = useState<Schedule | null>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
-  const [isScrolling, setIsScrolling] = useState<boolean>(false)
-  const [currentTime, setCurrentTime] = useState<number>(
-    getCurrentTimePosition()
-  )
   const [cellWidth, setCellWidth] = useState(144)
   const [show24Hours, setShow24Hours] = useState(true)
 
@@ -139,14 +136,6 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
     [show24Hours]
   )
 
-  // Update current time every minute
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(getCurrentTimePosition())
-    }, 60000)
-    return () => clearInterval(interval)
-  }, [])
-
   const handleScroll = (direction: "left" | "right"): void => {
     if (contentRef.current) {
       const scrollAmount = direction === "left" ? -cellWidth * 2 : cellWidth * 2
@@ -157,29 +146,6 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
     }
   }
 
-  // Sync scroll between header and content
-  useEffect(() => {
-    const timeHeader = timeHeaderRef.current
-    const content = contentRef.current
-
-    if (!timeHeader || !content) return
-
-    const handleContentScroll = (): void => {
-      if (timeHeader) {
-        timeHeader.scrollLeft = content.scrollLeft
-      }
-      setIsScrolling(true)
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current)
-      }
-      scrollTimeoutRef.current = setTimeout(() => setIsScrolling(false), 150)
-    }
-
-    content.addEventListener("scroll", handleContentScroll)
-    return () => content.removeEventListener("scroll", handleContentScroll)
-  }, [])
-
-  // Update container width on resize
   useEffect(() => {
     const updateWidth = (): void => {
       if (contentRef.current) {
@@ -197,7 +163,7 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
 
   return (
     <div className="relative rounded-lg border bg-slate-100 shadow-lg dark:bg-gray-950">
-      <div className="flex items-center justify-between border-b p-4">
+      <div className="flex flex-col justify-between gap-2 border-b p-4 md:flex-row md:items-center">
         <div className="flex items-center gap-2">
           <Calendar className="size-5 text-blue-600" />
           <h2 className="text-lg font-semibold">Class Schedule</h2>
@@ -312,12 +278,17 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
             ref={contentRef}
             className="scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 overflow-x-auto"
           >
-            {days.map((day) => (
+            {days.map((day, idx) => (
               <div key={day.label} className="relative flex">
                 {visibleTimeSlots.map((hour) => (
                   <div
                     key={`${day.value}-${hour}`}
-                    className="bg-background shrink-0 border-b border-r"
+                    className={cn(
+                      "shrink-0 border-b border-r",
+                      idx === new Date().getDay()
+                        ? "bg-secondary/20"
+                        : "bg-background "
+                    )}
                     style={{
                       width: `${cellWidth}px`,
                       height: "80px",
@@ -372,10 +343,12 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
                       `${formatTime(selectedClass.from)} - ${formatTime(selectedClass.to)}`}
                   </div>
                 </div>
-                <div>
-                  <div className="text-sm font-semibold">Room</div>
-                  <div>{selectedClass?.room}</div>
-                </div>
+                {selectedClass?.room && (
+                  <div>
+                    <div className="text-sm font-semibold">Room</div>
+                    <div>{selectedClass?.room}</div>
+                  </div>
+                )}
                 <div>
                   <div className="text-sm font-semibold">Professor</div>
                   <div>{selectedClass?.prof}</div>

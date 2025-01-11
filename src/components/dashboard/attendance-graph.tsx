@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import { AttendanceStatus } from "@/types"
 import axios from "axios"
 import {
   Label,
@@ -37,7 +38,7 @@ interface AttendanceGraphProps {
 }
 
 type AttendanceData = {
-  status: "PRESENT" | "ABSENT" | "EXCUSED"
+  status: AttendanceStatus
   _count: { status: number }
 }
 
@@ -127,11 +128,11 @@ export function AttendanceGraph({
 
           {selectedSubject &&
           radialChartData[0].absent + radialChartData[0].present === 0 ? (
-            <p className="text-center w-full py-12 italic text-yellow-500">
+            <p className="w-full py-12 text-center italic text-yellow-500">
               No Data Available
             </p>
           ) : subjects.length === 0 ? (
-            <p className="text-center py-12 text-yellow-500">
+            <p className="py-12 text-center text-yellow-500">
               No attendance data
             </p>
           ) : (
@@ -183,7 +184,7 @@ export function AttendanceGraph({
                             <tspan
                               x={viewBox.cx}
                               y={(viewBox.cy || 0) + 30}
-                              className="text-lg fill-primary"
+                              className="fill-primary text-lg"
                             >
                               Total Classes:{" "}
                               {radialChartData[0].present +
@@ -192,14 +193,14 @@ export function AttendanceGraph({
                             <tspan
                               x={(viewBox.cx || 0) - 56}
                               y={(viewBox.cy || 0) + 56}
-                              className="text-lg fill-green-500"
+                              className="fill-green-500 text-lg"
                             >
                               Present: {radialChartData[0].present}
                             </tspan>
                             <tspan
                               x={(viewBox.cx || 0) + 56}
                               y={(viewBox.cy || 0) + 56}
-                              className="text-lg fill-red-500"
+                              className="fill-red-500 text-lg"
                             >
                               Absent: {radialChartData[0].absent}
                             </tspan>
