@@ -5,11 +5,11 @@ export function getGroupedAttendance(
 ): TransformedAttendanceRecord[] {
   const groupedByDate: Record<
     string,
-    { course_code: string; status: string }[]
+    { id: string; course_code: string; status: string }[]
   > = {}
 
   records.forEach((record) => {
-    const { attendanceDate, status, schedule } = record
+    const { id, attendanceDate, status, schedule } = record
     const date = new Date(attendanceDate).toISOString()
 
     if (!groupedByDate[date]) {
@@ -17,6 +17,7 @@ export function getGroupedAttendance(
     }
 
     groupedByDate[date].push({
+      id: record.id,
       course_code: schedule.course_code,
       status: status,
     })
@@ -24,8 +25,9 @@ export function getGroupedAttendance(
 
   return Object.entries(groupedByDate)
     .map(([date, details]) => ({
-      date,
-      details,
+      id: date, // Using the date as the id since we need an id field
+      date: date,
+      details: details,
     }))
     .sort((a, b) => (a.date > b.date ? 1 : -1))
 }

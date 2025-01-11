@@ -43,7 +43,6 @@ export async function POST(req: Request) {
         status,
       },
     })
-    // console.log(attendance)
     return new Response(JSON.stringify(attendance), { status: 201 })
   } catch (error) {
     console.log(error)
@@ -91,6 +90,40 @@ export async function GET(req: Request) {
     return new Response(JSON.stringify(attendance), { status: 200 })
   } catch (error) {
     console.log(error)
+    return new Response(JSON.stringify({ error }), { status: 500 })
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const body = await req.json()
+    const { id } = body
+    if (!id) {
+      return new Response(JSON.stringify({ error: "id is required" }), {
+        status: 400,
+      })
+    }
+    const attendance = await db.attendance.delete({
+      where: {
+        id,
+      },
+    })
+
+    return new Response(JSON.stringify(attendance), { status: 200 })
+  } catch (error) {
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return new Response(
+        JSON.stringify({
+          error: "Attendance data not found or already deleted",
+        }),
+        {
+          status: 404,
+        }
+      )
+    }
     return new Response(JSON.stringify({ error }), { status: 500 })
   }
 }

@@ -1,89 +1,18 @@
-import React, { useState } from "react"
 import Link from "next/link"
-import { AttendanceRecord, TransformedAttendanceRecord } from "@/types"
+import { AttendanceRecord } from "@/types"
 import { Student } from "@prisma/client"
 import { ArrowRight, Calendar, Trash } from "lucide-react"
 
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
 import { getGroupedAttendance } from "@/lib/group-attendace"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { ScrollArea } from "../ui/scroll-area"
 import { AttendanceGraph } from "./attendance-graph"
+import { AttendanceCard } from "./attendance-history-card"
 import { TotalAttendance } from "./total-attendance"
-
-const StatusBadge = ({ status }: { status: string }) => {
-  const statusConfig = {
-    PRESENT: {
-      bg: "bg-green-500/30",
-      border: "border-green-500",
-      text: "Present",
-    },
-    ABSENT: {
-      bg: "bg-red-500/30",
-      border: "border-red-500",
-      text: "Absent",
-    },
-    EXCUSED: {
-      bg: "bg-gray-500/30",
-      border: "border-gray-500",
-      text: "Excused",
-    },
-  }
-
-  const config = statusConfig[status as keyof typeof statusConfig]
-
-  return (
-    <span
-      className={cn("rounded-full px-2 py-1 text-xs", config.bg, config.border)}
-    >
-      {config.text}
-    </span>
-  )
-}
-
-const AttendanceCard = ({
-  attendance,
-}: {
-  attendance: TransformedAttendanceRecord
-}) => {
-  async function deleteAttendance(id: string) {}
-  return (
-    <Card className="h-full">
-      <CardHeader className="p-3">
-        <div className="flex items-center gap-2">
-          <Calendar className="text-muted-foreground size-4" />
-          <CardTitle className="text-sm font-medium">
-            {new Intl.DateTimeFormat("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            }).format(new Date(attendance.date))}
-          </CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent className="p-3 pt-0">
-        <div className="space-y-2">
-          {attendance.details.map((detail) => (
-            <div
-              key={detail.course_code}
-              className="bg-muted/50 flex items-center justify-between rounded p-2"
-            >
-              <span className="text-sm font-medium">{detail.course_code}</span>
-              <StatusBadge status={detail.status} />
-              {/* <Button variant={"destructive"} className="size-6 rounded-full" onClick={() => deleteAttendance(detail.course_code)}>
-                <Trash />
-              </Button> */}
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
 
 interface AttendanceSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   student: Student
@@ -119,6 +48,7 @@ export async function AttendanceSection({
       studentId: user.id,
     },
     select: {
+      id: true,
       attendanceDate: true,
       status: true,
       schedule: {

@@ -1,4 +1,5 @@
 export type AttendanceRecord = {
+  id: string
   attendanceDate: Date
   status: string
   schedule: { course_code: string }
@@ -6,7 +7,7 @@ export type AttendanceRecord = {
 
 export type TransformedAttendanceRecord = {
   date: string
-  details: { course_code: string; status: string }[]
+  details: { id: string; course_code: string; status: string }[]
 }
 
 export type SpecialDate = {
