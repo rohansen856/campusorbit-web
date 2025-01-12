@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Schedule } from "@prisma/client"
 import axios from "axios"
 import { format } from "date-fns"
-import { CalendarIcon, Loader2, Plus, X } from "lucide-react"
+import { CalendarIcon, Loader, Plus, X } from "lucide-react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -45,11 +45,16 @@ import {
 
 import { ScrollArea } from "../ui/scroll-area"
 
-type Props = {
+interface AddAttendanceDialog extends React.HTMLAttributes<typeof Button> {
+  date?: Date | undefined
   schedules: Schedule[]
 }
 
-export function AddAttendanceDialog({ schedules }: Props) {
+export function AddAttendanceDialog({
+  schedules,
+  date,
+  ...props
+}: AddAttendanceDialog) {
   const router = useRouter()
   const [open, setOpen] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -57,7 +62,7 @@ export function AddAttendanceDialog({ schedules }: Props) {
   const form = useForm<AttendanceFormData>({
     resolver: zodResolver(attendanceFormSchema),
     defaultValues: {
-      date: new Date(),
+      date: date || new Date(),
       entries: [{ scheduleId: "", status: "PRESENT" }],
     },
   })
@@ -102,10 +107,7 @@ export function AddAttendanceDialog({ schedules }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          size="sm"
-          className="bg-secondary text-primary h-22 hover:bg-secondary group mb-2 w-full gap-2 rounded-xl py-8 text-xl"
-        >
+        <Button size="sm" className={cn("group gap-2", props.className)}>
           <Plus className="size-4 duration-300 group-hover:rotate-180" />
           Add Attendance
         </Button>
@@ -155,7 +157,7 @@ export function AddAttendanceDialog({ schedules }: Props) {
                               onSelect={field.onChange}
                               disabled={(date) =>
                                 date > new Date() ||
-                                date < new Date("1900-01-01")
+                                date < new Date("2025-01-01")
                               }
                               initialFocus
                             />
@@ -278,7 +280,7 @@ export function AddAttendanceDialog({ schedules }: Props) {
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="mr-2 size-4 animate-spin" />
+                    <Loader className="mr-2 size-4 animate-spin" />
                     Submitting...
                   </>
                 ) : (

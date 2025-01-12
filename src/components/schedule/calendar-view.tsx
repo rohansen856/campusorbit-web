@@ -1,11 +1,10 @@
 "use client"
 
 import React, { useState } from "react"
-import {
-  AttendanceRecord,
-  SpecialDate,
-  TransformedAttendanceRecord,
-} from "@/types"
+import { useRouter } from "next/navigation"
+import { TransformedAttendanceRecord } from "@/types"
+import { Schedule } from "@prisma/client"
+import axios, { AxiosError } from "axios"
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -16,7 +15,8 @@ import {
   parseISO,
   startOfMonth,
 } from "date-fns"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, Loader, Trash } from "lucide-react"
+import { toast } from "sonner"
 
 import { specialDates } from "@/lib/data"
 import { cn } from "@/lib/utils"
@@ -28,6 +28,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+
+import { AddAttendanceDialog } from "../dashboard/add-attendance"
 
 const StatusBadge = ({ status }: { status: string }) => {
   const statusConfig = {
@@ -60,10 +62,12 @@ const StatusBadge = ({ status }: { status: string }) => {
 }
 
 interface CalendarViewProps {
+  schedules: Schedule[]
   attendanceRecords: TransformedAttendanceRecord[]
 }
 
 export function CalendarView({
+  schedules,
   attendanceRecords,
   ...props
 }: CalendarViewProps) {
@@ -101,14 +105,14 @@ export function CalendarView({
     const record = getAttendanceForDate(date)
     if (!record) return null
 
-    const summary: { [key in "PRESENT" | "ABSENT" | "CANCELLED"]: number } = {
+    const summary: { [key in "PRESENT" | "ABSENT" | "EXCUSED"]: number } = {
       PRESENT: 0,
       ABSENT: 0,
-      CANCELLED: 0,
+      EXCUSED: 0,
     }
 
     record.details.forEach((detail) => {
-      summary[detail.status as "PRESENT" | "ABSENT" | "CANCELLED"]++
+      summary[detail.status as "PRESENT" | "ABSENT" | "EXCUSED"]++
     })
 
     return summary
@@ -119,8 +123,29 @@ export function CalendarView({
     setIsDialogOpen(true)
   }
 
+  const router = useRouter()
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  async function deleteAttendance(id: string) {
+    setIsDeleting(true)
+    setDeletingId(id)
+    try {
+      await axios.delete(`/api/attendance`, { data: { id } })
+      toast.success("Attendance deleted successfully")
+      router.refresh()
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.status === 404) {
+        toast.error("Attendance not found or already deleted")
+      }
+      toast.error("Failed to delete attendance")
+    } finally {
+      setIsDeleting(false)
+      setDeletingId(null)
+    }
+  }
+
   return (
-    <div className="mx-auto max-w-4xl p-4">
+    <div className="mx-auto max-w-4xl p-4" id="calendar-view">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-3xl font-bold">
           {format(currentDate, "MMMM yyyy")}
@@ -168,7 +193,7 @@ export function CalendarView({
               key={date.toISOString()}
               onClick={() => handleDateClick(date)}
               className={cn(
-                "relative flex aspect-square flex-col items-center rounded-lg border p-2 transition-colors",
+                "relative flex aspect-square flex-col items-center overflow-hidden rounded-lg border p-2 transition-colors",
                 "hover:bg-accent",
                 {
                   "bg-red-100 dark:bg-red-900/30":
@@ -189,30 +214,69 @@ export function CalendarView({
               {attendanceSummary && (
                 <div className="absolute inset-x-1 bottom-1 flex justify-center gap-1 text-[8px]">
                   {attendanceSummary.PRESENT > 0 && (
-                    <Badge
-                      variant={"outline"}
-                      className="text-green-600 dark:text-green-400"
-                    >
-                      {attendanceSummary.PRESENT}P
-                    </Badge>
+                    <>
+                      <Badge
+                        variant={"outline"}
+                        className="hidden text-green-600 md:block dark:text-green-400"
+                      >
+                        {attendanceSummary.PRESENT}P
+                      </Badge>
+                      <div className="mr-1 flex gap-0.5 md:hidden">
+                        {[...Array(attendanceSummary.PRESENT)].map(
+                          (_, index) => (
+                            <div
+                              key={`present-${index}`}
+                              className="size-1.5 rounded-full bg-green-600 dark:bg-green-400"
+                            />
+                          )
+                        )}
+                      </div>
+                    </>
                   )}
                   {attendanceSummary.ABSENT > 0 && (
-                    <Badge
-                      variant={"outline"}
-                      className="text-red-600 dark:text-red-400"
-                    >
-                      {attendanceSummary.ABSENT}A
-                    </Badge>
+                    <>
+                      <Badge
+                        variant={"outline"}
+                        className="hidden text-red-600 md:block dark:text-red-400"
+                      >
+                        {attendanceSummary.ABSENT}A
+                      </Badge>
+                      <div className="mr-1 flex gap-0.5 md:hidden">
+                        {[...Array(attendanceSummary.ABSENT)].map(
+                          (_, index) => (
+                            <div
+                              key={`absent-${index}`}
+                              className="size-1.5 rounded-full bg-red-600 dark:bg-red-400"
+                            />
+                          )
+                        )}
+                      </div>
+                    </>
                   )}
-                  {attendanceSummary.CANCELLED > 0 && (
-                    <Badge
-                      variant={"outline"}
-                      className="text-yellow-600 dark:text-yellow-400"
-                    >
-                      {attendanceSummary.CANCELLED}C
-                    </Badge>
+                  {attendanceSummary.EXCUSED > 0 && (
+                    <>
+                      <Badge
+                        variant={"outline"}
+                        className="hidden text-yellow-600 md:block dark:text-yellow-400"
+                      >
+                        {attendanceSummary.EXCUSED}C
+                      </Badge>
+                      <div className="flex gap-0.5 md:hidden">
+                        {[...Array(attendanceSummary.EXCUSED)].map(
+                          (_, index) => (
+                            <div
+                              key={`excused-${index}`}
+                              className="size-1.5 rounded-full bg-yellow-600 dark:bg-yellow-400"
+                            />
+                          )
+                        )}
+                      </div>
+                    </>
                   )}
                 </div>
+              )}
+              {attendanceSummary && (
+                <div className="absolute inset-x-1 bottom-1 flex justify-center gap-1"></div>
               )}
             </button>
           )
@@ -252,12 +316,24 @@ export function CalendarView({
                       (detail, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between rounded border p-2"
+                          className="flex items-center justify-between gap-2 rounded border p-2"
                         >
                           <span className="font-medium">
                             {detail.course_code}
                           </span>
                           <StatusBadge status={detail.status} />
+                          <Button
+                            variant={"destructive"}
+                            className="ml-auto size-6 rounded-full"
+                            onClick={() => deleteAttendance(detail.id)}
+                            disabled={isDeleting}
+                          >
+                            {isDeleting && deletingId === detail.id ? (
+                              <Loader className="animate-spin" />
+                            ) : (
+                              <Trash />
+                            )}
+                          </Button>
                         </div>
                       )
                     )}
@@ -270,6 +346,11 @@ export function CalendarView({
                     No events or attendance records for this date.
                   </p>
                 )}
+              <AddAttendanceDialog
+                schedules={schedules}
+                date={selectedDate}
+                className="w-full"
+              />
             </div>
           )}
         </DialogContent>

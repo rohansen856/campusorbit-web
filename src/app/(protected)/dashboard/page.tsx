@@ -26,9 +26,9 @@ export default async function ProfilePage() {
   if (!student) return null
 
   return (
-    <div className="w-full flex gap-4 flex-col-reverse md:flex-row mb-16">
+    <div className="mb-16 flex w-full flex-col-reverse gap-4 md:flex-row">
       <AttendanceSection student={student} />
-      <div className="w-full md:w-2/5 py-4 md:pt-0">
+      <div className="w-full py-4 md:w-2/5 md:pt-0">
         <ScheduleSection student={student} />
       </div>
     </div>

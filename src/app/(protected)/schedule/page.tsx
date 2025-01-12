@@ -37,8 +37,6 @@ export default async function Page() {
     },
   })
 
-  console.log(schedule[0])
-
   const attendanceHistory: AttendanceRecord[] = await db.attendance.findMany({
     where: {
       studentId: user.id,
@@ -57,11 +55,27 @@ export default async function Page() {
 
   const groupedAttendance = getGroupedAttendance(attendanceHistory)
 
+  const schedules = await db.schedule.findMany({
+    where: {
+      institute_id: student.institute_id,
+      branch: student.branch,
+      semester: student.semester,
+      group: student.group,
+      NOT: {
+        type: "lab",
+      },
+    },
+    distinct: ["course_code"],
+  })
+
   return (
     <div className="min-h-screen space-y-6">
       <AcademicSchedule classes={schedule} student={student} />
       <Separator className="w-full" />
-      <CalendarView attendanceRecords={groupedAttendance} />
+      <CalendarView
+        schedules={schedules}
+        attendanceRecords={groupedAttendance}
+      />
     </div>
   )
 }
