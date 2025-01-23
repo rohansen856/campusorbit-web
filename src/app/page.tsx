@@ -10,7 +10,7 @@ export default async function HomePage() {
   const user = await currentUser()
   if (user) return redirect("/dashboard")
   return (
-    <div className="min-h-screen relative">
+    <div className="relative min-h-screen">
       <HeroSection />
       <FeaturesSection />
       <StatsSection />

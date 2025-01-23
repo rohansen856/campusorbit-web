@@ -113,11 +113,6 @@ const formatTime = (dateString: string | Date): string => {
   })
 }
 
-const getCurrentTimePosition = () => {
-  const now = new Date()
-  return now.getHours() + now.getMinutes() / 60
-}
-
 export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
   classes,
   student,
@@ -389,23 +384,6 @@ export const AcademicSchedule: React.FC<AcademicScheduleProps> = ({
           </DialogHeader>
         </DialogContent>
       </Dialog>
-
-      {/* Loading overlay */}
-      <AnimatePresence>
-        {!classes.length && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="justify-center/80 absolute inset-0 flex items-center backdrop-blur-sm"
-          >
-            <div className="flex flex-col items-center gap-4">
-              <div className="size-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
-              <p className="text-sm">Loading schedule...</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   )
 }

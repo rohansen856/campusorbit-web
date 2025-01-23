@@ -1,6 +1,7 @@
 import { currentUser } from "@/lib/authentication"
 import { db } from "@/lib/db"
 import { Separator } from "@/components/ui/separator"
+import { ChatBot } from "@/components/chat-bot"
 import { AttendanceSection } from "@/components/dashboard/attendance-section"
 import { ScheduleSection } from "@/components/dashboard/schedules"
 
@@ -26,11 +27,12 @@ export default async function ProfilePage() {
   if (!student) return null
 
   return (
-    <div className="mb-16 flex w-full flex-col-reverse gap-4 md:flex-row">
+    <div className="relative mb-16 flex w-full flex-col-reverse gap-4 md:flex-row">
       <AttendanceSection student={student} />
       <div className="w-full py-4 md:w-2/5 md:pt-0">
         <ScheduleSection student={student} />
       </div>
+      <ChatBot studentInfo={student} />
     </div>
   )
 }

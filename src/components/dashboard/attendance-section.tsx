@@ -71,7 +71,7 @@ export async function AttendanceSection({
         </TabsList>
 
         <TabsContent value="overview" className="mt-0 h-full">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
             <Link
               href={"/schedule"}
               className="bg-secondary group mb-2 flex w-full items-center justify-center rounded-xl py-8 text-xl"
