@@ -161,7 +161,7 @@ export function ChatBot({ studentInfo }: ChatBotProps) {
                 <h2 className="text-lg font-semibold">Class Assistant</h2>
                 {tokens !== null && (
                   <Badge variant="secondary" className="ml-2">
-                    {tokens.toString()} tokens
+                    {tokens?.toString()} tokens
                   </Badge>
                 )}
               </div>
